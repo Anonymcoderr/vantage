@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Vantage</title>
+<meta name="description" content="Vantage decides leakage contracts parameterised by a keying of extra-architectural state, on Arm and RISC-V Sail semantics with address-translation events.">
+<style>
+  :root { --bg:#ffffff; --fg:#1f2328; --muted:#59636e; --line:#d1d9e0; --accent:#0b5cad; --card:#f6f8fa; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --muted:#9198a1; --line:#30363d; --accent:#4493f8; --card:#151b23; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  main { max-width: 46rem; margin: 0 auto; padding: 3rem 1rem 4rem; }
+  h1 { font-size: 2.2rem; margin: 0 0 .25rem; letter-spacing: .02em; }
+  .subtitle { color: var(--muted); margin: 0 0 2rem; font-size: 1.05rem; }
+  h2 { font-size: 1.15rem; margin: 2.2rem 0 .6rem; }
+  p, li { color: var(--fg); }
+  .muted { color: var(--muted); }
+  a { color: var(--accent); }
+  .cta { display:block; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:1.1rem 1.25rem; margin: 1rem 0; }
+  .cta a.button { display:inline-block; margin-top:.4rem; padding:.55rem 1rem; border-radius:8px; background:var(--accent); color:#fff; text-decoration:none; font-weight:600; }
+  ul { padding-left: 1.2rem; }
+  code { font-size: .92em; background: var(--card); border:1px solid var(--line); border-radius:4px; padding: .05em .3em; }
+  footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Vantage</h1>
+  <p class="subtitle">Companion tool for <em>Leakage Containment is Relative: Parameterising Extra-Architectural State</em></p>
+
+  <p>A leakage contract states what a program may reveal to an adversary who watches
+  microarchitectural state. Checking one requires deciding which piece of that state each
+  event disturbs: which cache line, which TLB entry. Vantage makes that decision an explicit
+  parameter, a <em>keying</em>, and decides contracts under it.</p>
+  <p>For a given contract, Vantage returns the verdict, evidence that the verdict is not
+  vacuous, and the maximal keyings under which the contract survives. It is built on
+  authoritative Arm and RISC-V Sail semantics with address-translation events.</p>
+
+  <div class="cta">
+    <strong>Anonymous review materials</strong><br>
+    <span class="muted">The live review instance is being prepared. Access details will appear here when it is available.</span>
+  </div>
+
+  <h2>Application usage</h2>
+  <ul>
+    <li><strong>Start page:</strong> the contract flow. Pick a program, choose or edit a contract and its
+      keying, and run it. The corpus browser is at <code>/browse</code>.</li>
+    <li><strong>One analysis at a time.</strong> Runs are serialised on purpose. If another run is in
+      progress, the page shows that yours is queued and replaces itself with the result when it is ready.</li>
+    <li><strong>Some analyses take minutes.</strong> Programs with address translation enumerate many
+      executions; several minutes is normal. Keep the tab open; the page updates by itself.</li>
+    <li><strong>Corpus pages are cached.</strong> A corpus page that has already been computed opens immediately.</li>
+  </ul>
+
+  <h2>Precomputed results</h2>
+  <p class="muted">A browsable set of precomputed results will be added here.</p>
+
+  <footer>Analyses are performed with the Isla symbolic executor and the z3 solver.</footer>
+</main>
+</body>
+</html>
