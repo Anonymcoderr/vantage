@@ -1,0 +1,361 @@
+{
+ "cells": {
+  "armv8p5|lcm/AddrTransmitter.toml|lcm-t1-dt.cat|2": {
+   "file": "AddrTransmitter__lcm-t1-dt__d2.html",
+   "verdict": "forbidden (0 of 1)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 18.9,
+   "arch": "armv8p5",
+   "test": "lcm/AddrTransmitter.toml",
+   "model": "lcm-t1-dt.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/AddrTransmitter.toml|lcm-t1-ct.cat|2": {
+   "file": "AddrTransmitter__lcm-t1-ct__d2.html",
+   "verdict": "forbidden (0 of 1)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 19.0,
+   "arch": "armv8p5",
+   "test": "lcm/AddrTransmitter.toml",
+   "model": "lcm-t1-ct.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/AddrTransmitter.toml|lcm-t1-udt.cat|2": {
+   "file": "AddrTransmitter__lcm-t1-udt__d2.html",
+   "verdict": "forbidden (0 of 1)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 18.9,
+   "arch": "armv8p5",
+   "test": "lcm/AddrTransmitter.toml",
+   "model": "lcm-t1-udt.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/CtrlTransmitter.toml|lcm-t1-dt.cat|2": {
+   "file": "CtrlTransmitter__lcm-t1-dt__d2.html",
+   "verdict": "forbidden (0 of 2)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 22.5,
+   "arch": "armv8p5",
+   "test": "lcm/CtrlTransmitter.toml",
+   "model": "lcm-t1-dt.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/CtrlTransmitter.toml|lcm-t1-ct.cat|2": {
+   "file": "CtrlTransmitter__lcm-t1-ct__d2.html",
+   "verdict": "allowed (1 of 2)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ4 taxonomy",
+   "seconds": 24.4,
+   "arch": "armv8p5",
+   "test": "lcm/CtrlTransmitter.toml",
+   "model": "lcm-t1-ct.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/CtrlTransmitter.toml|lcm-t1-udt.cat|2": {
+   "file": "CtrlTransmitter__lcm-t1-udt__d2.html",
+   "verdict": "forbidden (0 of 2)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 22.5,
+   "arch": "armv8p5",
+   "test": "lcm/CtrlTransmitter.toml",
+   "model": "lcm-t1-udt.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/CtrlTransmitter.toml|lcm-t1-uct.cat|2": {
+   "file": "CtrlTransmitter__lcm-t1-uct__d2.html",
+   "verdict": "forbidden (0 of 2)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 22.5,
+   "arch": "armv8p5",
+   "test": "lcm/CtrlTransmitter.toml",
+   "model": "lcm-t1-uct.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/DataTransmitter.toml|lcm-t1-dt.cat|2": {
+   "file": "DataTransmitter__lcm-t1-dt__d2.html",
+   "verdict": "forbidden (0 of 1)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 19.6,
+   "arch": "armv8p5",
+   "test": "lcm/DataTransmitter.toml",
+   "model": "lcm-t1-dt.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/DataTransmitter.toml|lcm-t1-ct.cat|2": {
+   "file": "DataTransmitter__lcm-t1-ct__d2.html",
+   "verdict": "forbidden (0 of 1)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 19.7,
+   "arch": "armv8p5",
+   "test": "lcm/DataTransmitter.toml",
+   "model": "lcm-t1-ct.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/DataTransmitter.toml|lcm-t1-udt.cat|2": {
+   "file": "DataTransmitter__lcm-t1-udt__d2.html",
+   "verdict": "forbidden (0 of 1)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 19.7,
+   "arch": "armv8p5",
+   "test": "lcm/DataTransmitter.toml",
+   "model": "lcm-t1-udt.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/DataTransmitter.toml|lcm-t1-uct.cat|2": {
+   "file": "DataTransmitter__lcm-t1-uct__d2.html",
+   "verdict": "forbidden (0 of 1)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 19.8,
+   "arch": "armv8p5",
+   "test": "lcm/DataTransmitter.toml",
+   "model": "lcm-t1-uct.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/DataTransmitterProbe.toml|lcm-t1-dt.cat|2": {
+   "file": "DataTransmitterProbe__lcm-t1-dt__d2.html",
+   "verdict": "allowed (1 of 1)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ4 taxonomy",
+   "seconds": 23.6,
+   "arch": "armv8p5",
+   "test": "lcm/DataTransmitterProbe.toml",
+   "model": "lcm-t1-dt.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/DataTransmitterProbe.toml|lcm-t1-ct.cat|2": {
+   "file": "DataTransmitterProbe__lcm-t1-ct__d2.html",
+   "verdict": "forbidden (0 of 1)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 20.6,
+   "arch": "armv8p5",
+   "test": "lcm/DataTransmitterProbe.toml",
+   "model": "lcm-t1-ct.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/DataTransmitterProbe.toml|lcm-t1-udt.cat|2": {
+   "file": "DataTransmitterProbe__lcm-t1-udt__d2.html",
+   "verdict": "forbidden (0 of 1)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 20.5,
+   "arch": "armv8p5",
+   "test": "lcm/DataTransmitterProbe.toml",
+   "model": "lcm-t1-udt.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/DataTransmitterProbe.toml|lcm-t1-uct.cat|2": {
+   "file": "DataTransmitterProbe__lcm-t1-uct__d2.html",
+   "verdict": "forbidden (0 of 1)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 20.6,
+   "arch": "armv8p5",
+   "test": "lcm/DataTransmitterProbe.toml",
+   "model": "lcm-t1-uct.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/SpectreV1.toml|lcm-t1-udt.cat|2": {
+   "file": "SpectreV1__lcm-t1-udt__d2.html",
+   "verdict": "forbidden (0 of 2)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 29.4,
+   "arch": "armv8p5",
+   "test": "lcm/SpectreV1.toml",
+   "model": "lcm-t1-udt.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/SpectreV1Fig3Probe.toml|lcm-t1-udt.cat|2": {
+   "file": "SpectreV1Fig3Probe__lcm-t1-udt__d2.html",
+   "verdict": "allowed (1 of 2)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ4 taxonomy",
+   "seconds": 71.3,
+   "arch": "armv8p5",
+   "test": "lcm/SpectreV1Fig3Probe.toml",
+   "model": "lcm-t1-udt.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/SpectreV1Fig3Probe.toml|lcm-t1-uct.cat|2": {
+   "file": "SpectreV1Fig3Probe__lcm-t1-uct__d2.html",
+   "verdict": "forbidden (0 of 2)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 33.1,
+   "arch": "armv8p5",
+   "test": "lcm/SpectreV1Fig3Probe.toml",
+   "model": "lcm-t1-uct.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/SpectreV1ProbeFixed.toml|lcm-t1-dt.cat|2": {
+   "file": "SpectreV1ProbeFixed__lcm-t1-dt__d2.html",
+   "verdict": "allowed (1 of 2)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ4 taxonomy",
+   "seconds": 47.1,
+   "arch": "armv8p5",
+   "test": "lcm/SpectreV1ProbeFixed.toml",
+   "model": "lcm-t1-dt.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/SpectreV1ProbeFixed.toml|lcm-t1-uct.cat|2": {
+   "file": "SpectreV1ProbeFixed__lcm-t1-uct__d2.html",
+   "verdict": "forbidden (0 of 2)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 32.4,
+   "arch": "armv8p5",
+   "test": "lcm/SpectreV1ProbeFixed.toml",
+   "model": "lcm-t1-uct.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/UnivCtrlTransmitter.toml|lcm-t1-dt.cat|2": {
+   "file": "UnivCtrlTransmitter__lcm-t1-dt__d2.html",
+   "verdict": "forbidden (0 of 2)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 30.2,
+   "arch": "armv8p5",
+   "test": "lcm/UnivCtrlTransmitter.toml",
+   "model": "lcm-t1-dt.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/UnivCtrlTransmitter.toml|lcm-t1-udt.cat|2": {
+   "file": "UnivCtrlTransmitter__lcm-t1-udt__d2.html",
+   "verdict": "forbidden (0 of 2)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ4 taxonomy",
+   "seconds": 27.7,
+   "arch": "armv8p5",
+   "test": "lcm/UnivCtrlTransmitter.toml",
+   "model": "lcm-t1-udt.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/UnivCtrlTransmitter.toml|lcm-t1-uct.cat|2": {
+   "file": "UnivCtrlTransmitter__lcm-t1-uct__d2.html",
+   "verdict": "allowed (1 of 2)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ4 taxonomy",
+   "seconds": 86.2,
+   "arch": "armv8p5",
+   "test": "lcm/UnivCtrlTransmitter.toml",
+   "model": "lcm-t1-uct.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/CtrlTransmitter.toml|lcm-ct-ct.cat|2": {
+   "file": "CtrlTransmitter__lcm-ct-ct__d2.html",
+   "verdict": "allowed (1 of 2)",
+   "banner": "DISCIPLINE CAN BE MET  allowed",
+   "label": "RQ4 constant-time dual",
+   "seconds": 0.0,
+   "arch": "armv8p5",
+   "test": "lcm/CtrlTransmitter.toml",
+   "model": "lcm-ct-ct.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/DataTransmitterProbe.toml|lcm-ct-dt.cat|2": {
+   "file": "DataTransmitterProbe__lcm-ct-dt__d2.html",
+   "verdict": "forbidden (0 of 1)",
+   "banner": "DISCIPLINE CANNOT BE MET  forb",
+   "label": "RQ4 constant-time dual",
+   "seconds": 21.2,
+   "arch": "armv8p5",
+   "test": "lcm/DataTransmitterProbe.toml",
+   "model": "lcm-ct-dt.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/SpectreV1Fig3Probe.toml|lcm-ct-dt.cat|2": {
+   "file": "SpectreV1Fig3Probe__lcm-ct-dt__d2.html",
+   "verdict": "allowed (1 of 2)",
+   "banner": "DISCIPLINE CAN BE MET  allowed",
+   "label": "RQ4 constant-time dual",
+   "seconds": 79.0,
+   "arch": "armv8p5",
+   "test": "lcm/SpectreV1Fig3Probe.toml",
+   "model": "lcm-ct-dt.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/SpectreV1ProbeFixed.toml|lcm-ct-dt.cat|2": {
+   "file": "SpectreV1ProbeFixed__lcm-ct-dt__d2.html",
+   "verdict": "allowed (1 of 2)",
+   "banner": "DISCIPLINE CAN BE MET  allowed",
+   "label": "RQ4 constant-time dual",
+   "seconds": 60.5,
+   "arch": "armv8p5",
+   "test": "lcm/SpectreV1ProbeFixed.toml",
+   "model": "lcm-ct-dt.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/SpectreV1Fig3Probe.toml|lcm-ct-udt.cat|2": {
+   "file": "SpectreV1Fig3Probe__lcm-ct-udt__d2.html",
+   "verdict": "allowed (1 of 2)",
+   "banner": "DISCIPLINE CAN BE MET  allowed",
+   "label": "RQ4 constant-time dual",
+   "seconds": 242.1,
+   "arch": "armv8p5",
+   "test": "lcm/SpectreV1Fig3Probe.toml",
+   "model": "lcm-ct-udt.cat",
+   "depth": "2"
+  },
+  "armv8p5|lcm/UnivCtrlTransmitter.toml|lcm-ct-uct.cat|2": {
+   "file": "UnivCtrlTransmitter__lcm-ct-uct__d2.html",
+   "verdict": "forbidden (0 of 2)",
+   "banner": "DISCIPLINE CANNOT BE MET  forb",
+   "label": "RQ4 constant-time dual",
+   "seconds": 33.6,
+   "arch": "armv8p5",
+   "test": "lcm/UnivCtrlTransmitter.toml",
+   "model": "lcm-ct-uct.cat",
+   "depth": "2"
+  },
+  "riscv64 (virtual memory)|riscv64/RVPteStoreThenTwoWalks.toml|lcm-rv-xlevel-line.cat|0": {
+   "file": "RVPteStoreThenTwoWalks__lcm-rv-xlevel-line__d0.html",
+   "verdict": "forbidden (0 of 9)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ3 join at real parameters",
+   "seconds": 13.6,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVPteStoreThenTwoWalks.toml",
+   "model": "lcm-rv-xlevel-line.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVPteStoreThenTwoWalks.toml|lcm-rv-xlevel-tlb.cat|0": {
+   "file": "RVPteStoreThenTwoWalks__lcm-rv-xlevel-tlb__d0.html",
+   "verdict": "forbidden (0 of 9)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ3 join at real parameters",
+   "seconds": 13.8,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVPteStoreThenTwoWalks.toml",
+   "model": "lcm-rv-xlevel-tlb.cat",
+   "depth": "0"
+  }
+ },
+ "skipped": [
+  {
+   "arch": "armv8p5",
+   "test": "lcm/SpectreV1.toml",
+   "model": "lcm-t1-ct.cat",
+   "depth": "2",
+   "why": "no verdict after 1201s"
+  },
+  {
+   "arch": "armv8p5",
+   "test": "lcm/SpectreV1Fig3Probe.toml",
+   "model": "lcm-t1-dt.cat",
+   "depth": "2",
+   "why": "no verdict after 1201s"
+  }
+ ]
+}

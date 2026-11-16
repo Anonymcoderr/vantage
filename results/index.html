@@ -1,0 +1,520 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Vantage</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.55 system-ui,sans-serif;margin:0;color:#1f2328;background:#fff}
+
+/* HEADER: what this is, once, so the panels below can be terse. */
+header{padding:10px 20px;border-bottom:1px solid #d0d7de;background:#f6f8fa;
+display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+header h1{margin:0;font-size:15px;font-weight:650;letter-spacing:.01em}
+header .sub{color:#656d76;font-size:12px}
+
+
+.wrap{display:flex;align-items:stretch;min-height:calc(100vh - 44px)}
+.side{width:390px;min-width:330px;border-right:1px solid #d0d7de;background:#fbfcfd;
+padding:0 0 16px;overflow-y:auto;max-height:calc(100vh - 44px)}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+
+
+.step{padding:16px 18px;border-bottom:1px solid #eaeef2}
+.step h2{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;
+color:#656d76;display:flex;align-items:center;gap:7px}
+.step h2 .n{display:inline-flex;align-items:center;justify-content:center;
+width:17px;height:17px;border-radius:50%;background:#0969da;color:#fff;
+font-size:10px;font-weight:700}
+.step select,.step input{width:100%;font:13px system-ui,sans-serif;padding:6px 8px;
+border:1px solid #d0d7de;border-radius:6px;background:#fff}
+.step input:disabled,.step input.pinned{background:#f0f3f6;color:#8c959f;cursor:not-allowed}
+.step .why{font-size:11.5px;color:#7b8794;margin:7px 0 0;line-height:1.45}
+.step .filt{display:block;margin:8px 0 0;font-size:12px;color:#24292f;cursor:pointer;user-select:none}
+.step .filt input{margin-right:6px;vertical-align:middle}
+.step .cnt{color:#7b8794;font-size:11px}
+/* The filter sits above the list, and reads as a control rather than a note. */
+.step .filt{display:flex;align-items:center;gap:7px;margin:0 0 8px;padding:7px 9px;
+border:1px solid #d0d7de;border-radius:6px;background:#fff;font-size:12.5px;
+color:#24292f;cursor:pointer;user-select:none}
+.step .filt:hover{background:#f6f8fa}
+.step .filt input{margin:0;width:auto;flex:none}
+.step .filt span:first-of-type{flex:1}
+.disc{color:#0969da;text-decoration:none;border-bottom:1px dotted #0969da8c}
+.disc:hover{border-bottom-style:solid}
+.fold{display:none}
+.fold.open{display:block;background:#f6f8fa;border-left:2px solid #d0d7de;
+padding:7px 9px;border-radius:0 4px 4px 0}
+.runbar{padding:16px 18px}
+button{font:600 13px system-ui;padding:9px 18px;border:0;border-radius:6px;width:100%;
+background:#1f883d;color:#fff;cursor:pointer}button:hover{background:#1a7f37}
+
+/* RESULT REGION. */
+.result-head{padding:9px 20px;border-bottom:1px solid #eaeef2;background:#fff;
+font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#656d76}
+iframe{width:100%;flex:1;min-height:300px;border:0;display:block}
+.hint{color:#656d76;font-size:12px;padding:9px 20px;border-top:1px solid #eaeef2}
+.err{color:#cf222e;padding:16px 20px;white-space:pre-wrap;font:12px ui-monospace,monospace;
+background:#fff8f8;border-bottom:1px solid #ffcecb}
+
+
+#advice-wrap{border-bottom:1px solid #eaeef2}
+#advice-wrap>summary{cursor:pointer;padding:9px 20px;font-size:11px;
+text-transform:uppercase;letter-spacing:.05em;color:#656d76;background:#fbfcfd;
+user-select:none}
+#advice-wrap>summary:hover{color:#0969da}
+#advice{padding:12px 20px 4px;font-size:13px;max-height:46vh;overflow-y:auto}
+#advice h4{margin:12px 0 5px;font-size:11px;text-transform:uppercase;
+letter-spacing:.04em;color:#656d76}
+#advice h4:first-child{margin-top:0}
+#advice table{border-collapse:collapse;width:100%}
+#advice td{padding:5px 10px 5px 0;vertical-align:top;border-top:1px solid #f0f3f6}
+#advice td.m{font:12px ui-monospace,monospace;color:#0969da;width:26%}
+#advice td.m .mb{font:11px/1.35 system-ui,sans-serif;color:#656d76;
+white-space:normal;margin-top:2px}
+#advice td.a{color:#333;width:34%}
+#advice td.e{color:#555}
+#advice .none{color:#656d76}
+#advice b.yes{color:#1a7f37} #advice b.no{color:#8250df}
+#advice b.warn{color:#9a6700} #advice b.res{color:#0969da}
+.cat-note{color:#656d76;font-size:11px;margin:6px 0 0}
+.runbar{display:flex;align-items:center;gap:14px}
+header .submitlink{margin-left:auto}
+.submitlink{font-size:13px;color:#0969da;text-decoration:none;border:1px solid #d0d7de;
+  border-radius:6px;padding:5px 10px;background:#f6f8fa;white-space:nowrap}
+.submitlink:hover{background:#eef2f6}
+.runstatus{display:none;margin:10px 14px 0;padding:8px 10px;border-radius:6px;
+  background:#fff8c5;border:1px solid #d4a72c55;font:12px/1.5 system-ui;color:#4d2d00}
+.runstatus.done{background:#dafbe1;border-color:#2da44e55;color:#0a5c2e}
+.lcm-caution{margin:6px 0;padding:6px 9px;background:#fdf6f0;border-left:3px solid #d9a066}
+.lcm-reading{margin:6px 0;padding:6px 9px;background:#f2f7f2;border-left:3px solid #8fbf8f}
+
+details.guide{padding:12px 16px;font-size:12.5px}
+details.guide summary{cursor:pointer;font-weight:600;color:#0969da;font-size:12px}
+details.guide h4{margin:12px 0 4px;font-size:11px;text-transform:uppercase;
+letter-spacing:.04em;color:#656d76}
+details.guide pre{background:#fff;border:1px solid #d0d7de;border-radius:6px;
+padding:8px 10px;font:11px/1.45 ui-monospace,monospace;overflow-x:auto;margin:4px 0}
+details.guide p{margin:4px 0}
+details.guide code{background:#eef1f4;border-radius:3px;padding:1px 4px;
+font:11px ui-monospace,monospace}
+@media (max-width:900px){.wrap{display:block}.side{width:auto;max-height:none;
+border-right:0;border-bottom:1px solid #d0d7de}}
+</style></head><body><div style="padding:9px 20px;background:#eef6ff;border-bottom:1px solid #c6e0ff;font:12.5px/1.6 system-ui;color:#264c73"><b>Precomputed results.</b> This is the interface of the analyser with its answers rendered in advance &mdash; every result below is genuine output, but nothing is computed here. The picker offers only the <b id="cellcount">available</b> combinations that were rendered; analysing your own contract needs the tool itself.</div>
+
+<header>
+  <h1>Vantage corpus browser</h1>
+  <span class="sub">Pick an architecture, a program and a question. The tool
+  enumerates every execution and checks each against the model.</span>
+  
+</header>
+
+<div class="wrap">
+<form class="side" action="no-script.html" method="get" target="graph" onsubmit="runStarted()">
+
+  <div class="step">
+    <h2><span class="n">1</span> Architecture</h2>
+    <select name="arch"><optgroup label="Architecture"><option value="armv8p5" data-isa="arm" data-tt="0" selected>armv8p5</option><option value="armv9p4 (virtual memory)" data-isa="arm" data-tt="1">armv9p4 (virtual memory)</option><option value="armv9p4 (virtual memory, STAGE-2 - slow)" data-isa="arm" data-tt="1">armv9p4 (virtual memory, STAGE-2 - slow)</option><option value="riscv64" data-isa="riscv" data-tt="0">riscv64</option><option value="riscv64 (virtual memory)" data-isa="riscv" data-tt="1">riscv64 (virtual memory)</option></optgroup></select>
+    <p class="why">The ISA whose semantics generates the events. Filters
+    everything below to what it can run. The machine (the keying
+    &sigma;<sub>M</sub>) is chosen on
+    <a href="https://vantage-review.anonymcoderr.workers.dev/" rel="noreferrer" style="color:#0969da">the contract page of the online instance</a>; here it is fixed by
+    whichever model you pick in step 3.</p>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">2</span> Program</h2>
+    
+    <label class="filt"><input type="checkbox" id="lkonly">
+      <span>Leakage programs only</span><span id="lkcount" class="cnt"></span></label>
+    <select name="test"><optgroup label="Leakage experiments - speculation"><option value="lcm/AddrTransmitter.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="0">AddrTransmitter</option><option value="lcm/CoWW-diffvalue.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="0">CoWW-diffvalue  (coherence w-w)</option><option value="lcm/CtrlTransmitter.toml" data-br="1" data-isa="arm" data-lk="1" data-tt="0">CtrlTransmitter</option><option value="lcm/DataTransmitter.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="0">DataTransmitter</option><option value="lcm/DataTransmitterProbe.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="0">DataTransmitterProbe</option><option value="lcm/SilentStore.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="0">SilentStore</option><option value="lcm/SpectreV1.toml" data-br="1" data-isa="arm" data-lk="1" data-tt="0" selected>SpectreV1</option><option value="lcm/SpectreV1Atomic.toml" data-br="1" data-isa="arm" data-lk="1" data-tt="0">SpectreV1Atomic</option><option value="lcm/SpectreV1Fig3Probe.toml" data-br="1" data-isa="arm" data-lk="1" data-tt="0">SpectreV1Fig3Probe</option><option value="lcm/SpectreV1ProbeFixed.toml" data-br="1" data-isa="arm" data-lk="1" data-tt="0">SpectreV1ProbeFixed</option><option value="lcm/SpectreV1ProbeMasked.toml" data-br="1" data-isa="arm" data-lk="1" data-tt="0">SpectreV1ProbeMasked</option><option value="lcm/SpectreV1Reconverge.toml" data-br="1" data-isa="arm" data-lk="1" data-tt="0">SpectreV1Reconverge</option><option value="lcm/SpectreV1Secret.toml" data-br="1" data-isa="arm" data-lk="1" data-tt="0">SpectreV1Secret</option><option value="lcm/SpectreV1SecretMasked.toml" data-br="1" data-isa="arm" data-lk="1" data-tt="0">SpectreV1SecretMasked</option><option value="lcm/SpectreV1Store.toml" data-br="1" data-isa="arm" data-lk="1" data-tt="0">SpectreV1Store</option><option value="lcm/SpectreV4.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="0">SpectreV4</option><option value="lcm/StoreForward.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="0">StoreForward</option><option value="lcm/TakenTaken.toml" data-br="1" data-isa="arm" data-lk="1" data-tt="0">TakenTaken</option><option value="lcm/UnivCtrlTransmitter.toml" data-br="1" data-isa="arm" data-lk="1" data-tt="0">UnivCtrlTransmitter</option></optgroup><optgroup label="Leakage experiments - address translation"><option value="lcm-vmsa/AddrDepWalk.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="1">AddrDepWalk</option><option value="lcm-vmsa/AddrDepWalkRecv.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="1">AddrDepWalkRecv</option><option value="lcm-vmsa/PageWalkAddrDep.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="1">PageWalkAddrDep</option><option value="lcm-vmsa/PageWalkDistinct.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="1">PageWalkDistinct</option><option value="lcm-vmsa/PageWalkPteStore.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="1">PageWalkPteStore</option><option value="lcm-vmsa/PageWalkSecret.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="1">PageWalkSecret</option><option value="lcm-vmsa/PageWalkSecretBranch.toml" data-br="1" data-isa="arm" data-lk="1" data-tt="1">PageWalkSecretBranch</option><option value="lcm-vmsa/PageWalkShared.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="1">PageWalkShared</option><option value="lcm-vmsa/PageWalkSharedMin.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="1">PageWalkSharedMin</option><option value="lcm-vmsa/PteStoreThenTwoWalks.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="1">PteStoreThenTwoWalks</option><option value="lcm-vmsa/PteStoreThenTwoWalksMin.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="1">PteStoreThenTwoWalksMin</option></optgroup><optgroup label="Leakage experiments - instruction fetch (recorded on &#x27;riscv64 (virtual memory)&#x27;)"><option value="lcm-if/IF12-secret.toml" data-br="1" data-isa="riscv" data-lk="1" data-tt="0">IF12-secret</option><option value="lcm-if/IF13-nonsecret.toml" data-br="1" data-isa="riscv" data-lk="1" data-tt="0">IF13-nonsecret</option><option value="lcm-if/IF14-masked.toml" data-br="1" data-isa="riscv" data-lk="1" data-tt="0">IF14-masked</option><option value="lcm-if/IF15-read-not-branched.toml" data-br="1" data-isa="riscv" data-lk="1" data-tt="0">IF15-read-not-branched</option><option value="lcm-if/IF16-ext.toml" data-br="1" data-isa="riscv" data-lk="1" data-tt="0">IF16-ext</option><option value="lcm-if/IF17-wide.toml" data-br="1" data-isa="riscv" data-lk="1" data-tt="0">IF17-wide</option><option value="lcm-if/IF7-sep160.toml" data-br="1" data-isa="riscv" data-lk="1" data-tt="0">IF7-sep160</option><option value="lcm-if/IF7-sep32.toml" data-br="1" data-isa="riscv" data-lk="1" data-tt="0">IF7-sep32</option><option value="lcm-if/IF7-sep320.toml" data-br="1" data-isa="riscv" data-lk="1" data-tt="0">IF7-sep320</option><option value="lcm-if/IF7-sep8.toml" data-br="1" data-isa="riscv" data-lk="1" data-tt="0">IF7-sep8</option><option value="lcm-if/IF7-sep96.toml" data-br="1" data-isa="riscv" data-lk="1" data-tt="0">IF7-sep96</option></optgroup><optgroup label="AArch64 litmus (ordinary memory model)"><option value="aarch64/2+2W+dmb.sys.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">2+2W+dmb.sys  (two-plus-two writes)</option><option value="aarch64/2+2W.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">2+2W  (two-plus-two writes)</option><option value="aarch64/CoRR1.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">CoRR1  (coherence r-r)</option><option value="aarch64/CoRW.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">CoRW  (coherence r-w)</option><option value="aarch64/CoRW1.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">CoRW1  (coherence r-w)</option><option value="aarch64/CoWR.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">CoWR  (coherence w-r)</option><option value="aarch64/CoWW.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">CoWW  (coherence w-w)</option><option value="aarch64/IRIW+addrs.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">IRIW+addrs  (independent reads)</option><option value="aarch64/IRIW+dmb.sys.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">IRIW+dmb.sys  (independent reads)</option><option value="aarch64/IRIW.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">IRIW  (independent reads)</option><option value="aarch64/ISA2+dmb.sy+addr+addr.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">ISA2+dmb.sy+addr+addr  (three-thread chain)</option><option value="aarch64/ISA2.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">ISA2  (three-thread chain)</option><option value="aarch64/LB+addrs+RW.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">LB+addrs+RW  (load buffering)</option><option value="aarch64/LB+addrs+WW.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">LB+addrs+WW  (load buffering)</option><option value="aarch64/LB+addrs.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">LB+addrs  (load buffering)</option><option value="aarch64/LB+ctrls.toml" data-br="2" data-isa="arm" data-lk="0" data-tt="0">LB+ctrls  (load buffering)</option><option value="aarch64/LB+datas+WW.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">LB+datas+WW  (load buffering)</option><option value="aarch64/LB+datas.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">LB+datas  (load buffering)</option><option value="aarch64/LB+rs.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">LB+rs  (load buffering)</option><option value="aarch64/LB.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">LB  (load buffering)</option><option value="aarch64/MP+dmb.sy+ctrl.toml" data-br="1" data-isa="arm" data-lk="0" data-tt="0">MP+dmb.sy+ctrl  (message passing)</option><option value="aarch64/MP+dmb.sy+ctrlisb.toml" data-br="1" data-isa="arm" data-lk="0" data-tt="0">MP+dmb.sy+ctrlisb  (message passing)</option><option value="aarch64/MP+dmb.sy+fri-rfi-ctrlisb.toml" data-br="1" data-isa="arm" data-lk="0" data-tt="0">MP+dmb.sy+fri-rfi-ctrlisb  (message passing)</option><option value="aarch64/MP+dmb.sy+po.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">MP+dmb.sy+po  (message passing)</option><option value="aarch64/MP+dmb.sy+rs.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">MP+dmb.sy+rs  (message passing)</option><option value="aarch64/MP+dmb.sys.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">MP+dmb.sys  (message passing)</option><option value="aarch64/MP+nondep+dmb.sy.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">MP+nondep+dmb.sy  (message passing)</option><option value="aarch64/MP.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">MP  (message passing)</option><option value="aarch64/MP_e.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">MP_e  (message passing)</option><option value="aarch64/PPOAA.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">PPOAA  (preserved order (addr-addr))</option><option value="aarch64/PPOCA.toml" data-br="1" data-isa="arm" data-lk="0" data-tt="0">PPOCA  (preserved order (ctrl-addr))</option><option value="aarch64/R+dmb.sys.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">R+dmb.sys  (read-read)</option><option value="aarch64/R.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">R  (read-read)</option><option value="aarch64/RDW.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">RDW  (read different writes)</option><option value="aarch64/RDWI.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">RDWI  (read different writes)</option><option value="aarch64/RSW.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">RSW  (read same write)</option><option value="aarch64/RWC+dmb.sys.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">RWC+dmb.sys  (read-write causality)</option><option value="aarch64/RWC.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">RWC  (read-write causality)</option><option value="aarch64/S+dmb.sy+ctrl.toml" data-br="1" data-isa="arm" data-lk="0" data-tt="0">S+dmb.sy+ctrl  (store-store)</option><option value="aarch64/S+dmb.sy+data.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">S+dmb.sy+data  (store-store)</option><option value="aarch64/S+dmb.sy+po.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">S+dmb.sy+po  (store-store)</option><option value="aarch64/S+dmb.sys.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">S+dmb.sys  (store-store)</option><option value="aarch64/S.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">S  (store-store)</option><option value="aarch64/SB+dmb.sys.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">SB+dmb.sys  (store buffering)</option><option value="aarch64/SB.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">SB  (store buffering)</option><option value="aarch64/WRC+addrs.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">WRC+addrs  (write-read causality)</option><option value="aarch64/WRC+dmb.sy+addr.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">WRC+dmb.sy+addr  (write-read causality)</option><option value="aarch64/WRC.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">WRC  (write-read causality)</option></optgroup><optgroup label="AArch64 litmus - translation"><option value="aarch64-vmsa/W.toml" data-br="0" data-isa="arm" data-lk="1" data-tt="1">W</option></optgroup><optgroup label="Instruction-fetch (ESOP 2020)"><option value="ifetch/CoRF.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">CoRF  (coherence read-fetch)</option><option value="ifetch/FOW.toml" data-br="2" data-isa="arm" data-lk="0" data-tt="0">FOW  (fetch-ordered write)</option><option value="ifetch/MP.R.RF+addr-cachesync+dmb+ctrl-isb.toml" data-br="1" data-isa="arm" data-lk="0" data-tt="0">MP.R.RF+addr-cachesync+dmb+ctrl-isb  (message passing)</option><option value="ifetch/MP.RF+dc+ctrl-isb-isb.toml" data-br="1" data-isa="arm" data-lk="0" data-tt="0">MP.RF+dc+ctrl-isb-isb  (message passing)</option><option value="ifetch/SM+cachesync-isb.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">SM+cachesync-isb  (store-modify (ifetch))</option><option value="ifetch/SM.F+ic.toml" data-br="1" data-isa="arm" data-lk="0" data-tt="0">SM.F+ic  (store-modify (ifetch))</option><option value="ifetch/SM.toml" data-br="0" data-isa="arm" data-lk="0" data-tt="0">SM  (store-modify (ifetch))</option></optgroup><optgroup label="RISC-V litmus (ordinary memory model)"><option value="riscv64/2+2W+fence.rw.rw+po.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">2+2W+fence.rw.rw+po  (two-plus-two writes)</option><option value="riscv64/2+2W+fence.rw.rws.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">2+2W+fence.rw.rws  (two-plus-two writes)</option><option value="riscv64/2+2W.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">2+2W  (two-plus-two writes)</option><option value="riscv64/LB+ctrl+po.toml" data-br="1" data-isa="riscv" data-lk="0" data-tt="0">LB+ctrl+po  (load buffering)</option><option value="riscv64/LB+ctrls.toml" data-br="2" data-isa="riscv" data-lk="0" data-tt="0">LB+ctrls  (load buffering)</option><option value="riscv64/LB+data+ctrl.toml" data-br="1" data-isa="riscv" data-lk="0" data-tt="0">LB+data+ctrl  (load buffering)</option><option value="riscv64/LB+data+po.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">LB+data+po  (load buffering)</option><option value="riscv64/LB+datas.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">LB+datas  (load buffering)</option><option value="riscv64/LB+fence.rw.rw+ctrl.toml" data-br="1" data-isa="riscv" data-lk="0" data-tt="0">LB+fence.rw.rw+ctrl  (load buffering)</option><option value="riscv64/LB+fence.rw.rw+data.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">LB+fence.rw.rw+data  (load buffering)</option><option value="riscv64/LB+fence.rw.rw+po.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">LB+fence.rw.rw+po  (load buffering)</option><option value="riscv64/LB+fence.rw.rws.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">LB+fence.rw.rws  (load buffering)</option><option value="riscv64/LB.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">LB  (load buffering)</option><option value="riscv64/MP+fence.rw.rw+addr.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">MP+fence.rw.rw+addr  (message passing)</option><option value="riscv64/MP+fence.rw.rw+ctrl.toml" data-br="1" data-isa="riscv" data-lk="0" data-tt="0">MP+fence.rw.rw+ctrl  (message passing)</option><option value="riscv64/MP+fence.rw.rw+po.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">MP+fence.rw.rw+po  (message passing)</option><option value="riscv64/MP+fence.rw.rws.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">MP+fence.rw.rws  (message passing)</option><option value="riscv64/MP+po+addr.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">MP+po+addr  (message passing)</option><option value="riscv64/MP+po+ctrl.toml" data-br="1" data-isa="riscv" data-lk="0" data-tt="0">MP+po+ctrl  (message passing)</option><option value="riscv64/MP+po+fence.rw.rw.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">MP+po+fence.rw.rw  (message passing)</option><option value="riscv64/MP.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">MP  (message passing)</option><option value="riscv64/R+fence.rw.rw+po.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">R+fence.rw.rw+po  (read-read)</option><option value="riscv64/R+fence.rw.rws.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">R+fence.rw.rws  (read-read)</option><option value="riscv64/R+po+fence.rw.rw.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">R+po+fence.rw.rw  (read-read)</option><option value="riscv64/R.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">R  (read-read)</option><option value="riscv64/RVAddrDepWalk.toml" data-br="0" data-isa="riscv" data-lk="1" data-tt="1">RVAddrDepWalk</option><option value="riscv64/RVBenignDisjoint.toml" data-br="0" data-isa="riscv" data-lk="1" data-tt="1">RVBenignDisjoint</option><option value="riscv64/RVCtrlToTranslate.toml" data-br="1" data-isa="riscv" data-lk="1" data-tt="1">RVCtrlToTranslate</option><option value="riscv64/RVNonSecretPteStoreThenTwoWalks.toml" data-br="1" data-isa="riscv" data-lk="1" data-tt="1">RVNonSecretPteStoreThenTwoWalks</option><option value="riscv64/RVPageWalkDistinct.toml" data-br="0" data-isa="riscv" data-lk="1" data-tt="1">RVPageWalkDistinct</option><option value="riscv64/RVPageWalkShared.toml" data-br="0" data-isa="riscv" data-lk="1" data-tt="1">RVPageWalkShared</option><option value="riscv64/RVPteStoreThenTwoWalks.toml" data-br="0" data-isa="riscv" data-lk="1" data-tt="1">RVPteStoreThenTwoWalks</option><option value="riscv64/RVPteStoreThenTwoWalksSpread.toml" data-br="0" data-isa="riscv" data-lk="1" data-tt="1">RVPteStoreThenTwoWalksSpread</option><option value="riscv64/RVSecretOnePteStoreThenTwoWalks.toml" data-br="1" data-isa="riscv" data-lk="1" data-tt="1">RVSecretOnePteStoreThenTwoWalks</option><option value="riscv64/RVSecretPteStoreThenTwoWalks.toml" data-br="1" data-isa="riscv" data-lk="1" data-tt="1">RVSecretPteStoreThenTwoWalks</option><option value="riscv64/RVTlbSectorContrast.toml" data-br="0" data-isa="riscv" data-lk="1" data-tt="1">RVTlbSectorContrast</option><option value="riscv64/RVTranslateMret.toml" data-br="0" data-isa="riscv" data-lk="1" data-tt="1">RVTranslateMret</option><option value="riscv64/RVTranslateProbe.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">RVTranslateProbe</option><option value="riscv64/S+fence.rw.rw+ctrl.toml" data-br="1" data-isa="riscv" data-lk="0" data-tt="0">S+fence.rw.rw+ctrl  (store-store)</option><option value="riscv64/S+fence.rw.rw+data.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">S+fence.rw.rw+data  (store-store)</option><option value="riscv64/S+fence.rw.rw+po.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">S+fence.rw.rw+po  (store-store)</option><option value="riscv64/S+fence.rw.rws.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">S+fence.rw.rws  (store-store)</option><option value="riscv64/S+po+ctrl.toml" data-br="1" data-isa="riscv" data-lk="0" data-tt="0">S+po+ctrl  (store-store)</option><option value="riscv64/S+po+data.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">S+po+data  (store-store)</option><option value="riscv64/S+po+fence.rw.rw.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">S+po+fence.rw.rw  (store-store)</option><option value="riscv64/S.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">S  (store-store)</option><option value="riscv64/SB+fence.rw.rw+po.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">SB+fence.rw.rw+po  (store buffering)</option><option value="riscv64/SB+fence.rw.rws.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">SB+fence.rw.rws  (store buffering)</option><option value="riscv64/SB.toml" data-br="0" data-isa="riscv" data-lk="0" data-tt="0">SB  (store buffering)</option><option value="riscv64/zzPte3Control.toml" data-br="0" data-isa="riscv" data-lk="1" data-tt="1">zzPte3Control</option><option value="riscv64/zzPte3Probe.toml" data-br="0" data-isa="riscv" data-lk="1" data-tt="1">zzPte3Probe</option></optgroup></select>
+    <p class="why">Greyed entries need a different machine.
+      <a href="#" class="disc" data-target="lkwhy">what does this hide?</a></p>
+    <p class="why fold" id="lkwhy">Most of the corpus is inherited memory-consistency
+    litmus tests (MP, LB, SB, CoRW, 2+2W), here because the architectural
+    model needs them, not because they say anything about leakage. A program counts as
+    leakage-relevant if it is a leakage experiment or builds page tables. They are
+    hidden, never refused: untick to get them back.</p>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">3</span> Question</h2>
+    <label class="filt"><input type="checkbox" id="seconly">
+      <span>Security questions only</span><span id="seccount" class="cnt"></span></label>
+    <select name="model"><optgroup label="0. Controls - run one of these to check a `forbidden` verdict"><option value="lcm-rv-baseline.cat" data-isa="riscv" data-sec="0" data-tt="1">lcm-rv-baseline.cat  -  Weak baseline control: the architecture alone, with no leakage axiom.</option><option value="lcm-vm-baseline.cat" data-isa="arm" data-sec="0" data-tt="1">lcm-vm-baseline.cat  -  Weak baseline control: the architecture alone, with no leakage axiom.</option></optgroup><optgroup label="1. Architecture models - pick one of these for ordinary work"><option value="aarch64.cat" data-isa="arm" data-sec="0" data-tt="0">aarch64.cat  -  The ARMv8 Application Level Memory Model.</option><option value="aarch64_mmu_strong_ETS.cat" data-isa="arm" data-sec="0" data-tt="1">aarch64_mmu_strong_ETS.cat  -  Observed by</option><option value="riscv.cat" data-isa="riscv" data-sec="0" data-tt="0">riscv.cat  -  RISC-V fences</option></optgroup><optgroup label="2. Leakage: detection models (these ask the question)"><option value="lcm-aarch64.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-aarch64.cat  -  Leakage Containment Model over the Armv8-A architectural model.</option><option value="lcm-ct-ct.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-ct-ct.cat  -  Constant-time discipline for transmitter class ct: no secret-dependent xstate</option><option value="lcm-ct-dt.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-ct-dt.cat  -  Constant-time discipline for transmitter class dt: no secret-dependent xstate</option><option value="lcm-ct-uct.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-ct-uct.cat  -  Constant-time discipline for transmitter class uct: no secret-dependent xstate</option><option value="lcm-ct-udt.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-ct-udt.cat  -  Constant-time discipline for transmitter class udt: no secret-dependent xstate</option><option value="lcm-intervening.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-intervening.cat  -  Subrosa&#x27;s second leakage disjunct, translated faithfully.</option><option value="lcm-nostoreforward.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-nostoreforward.cat  -  Strict half of the store-forwarding pair: same query, no binding.</option><option value="lcm-sct-ct.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-sct-ct.cat  -  Speculative constant-time, class ct, witness direction (Cauligi et al., pldi 2020).</option><option value="lcm-sct-dt.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-sct-dt.cat  -  Speculative constant-time, class dt, witness direction (Cauligi et al., pldi 2020).</option><option value="lcm-sct-uct.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-sct-uct.cat  -  Speculative constant-time, class uct, witness direction (Cauligi et al., pldi 2020).</option><option value="lcm-sct-udt.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-sct-udt.cat  -  Speculative constant-time, class udt, witness direction (Cauligi et al., pldi 2020).</option><option value="lcm-silentstore.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-silentstore.cat  -  LCM for a microarchitecture implementing silent stores.</option><option value="lcm-spectrev1.cat" data-isa="arm" data-sec="1" data-tt="0" selected>lcm-spectrev1.cat  -  Spectre v1 detection, Mosier et al., ISCA 2022 Fig.</option><option value="lcm-spectrev4-strict.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-spectrev4-strict.cat  -  A stale forward that feeds A transmitter, not merely one that is possible.</option><option value="lcm-spectrev4.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-spectrev4.cat  -  A stale forward that feeds A transmitter, not merely one that is possible.</option><option value="lcm-storeforward.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-storeforward.cat  -  Store-forwarding contract Mosier et al., ISCA 2022 sec 3.3, Fig.</option><option value="lcm-strictpin.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-strictpin.cat  -  Over-strong contract: coherence-linked xstate order plus a lift that rules</option><option value="lcm-table1-dt.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-table1-dt.cat  -  Probe: Table 1 (Mosier et al., ISCA 2022)&#x27;s data-transmitter pattern IN full for the transient case.</option><option value="lcm-transmitters.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-transmitters.cat  -  Transmitter detection, Table 1 (Mosier et al., ISCA 2022).</option></optgroup><optgroup label="3. Leakage: xstate keying variants (pairs differ by one line)"><option value="lcm-rv-fill-line.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-fill-line.cat  -  Fill chain under the line keying alone; a fill has no address</option><option value="lcm-rv-fill-secret.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-fill-secret.cat  -  Secret-sourced fill chain at sigma_M; needs a test that declares a secret</option><option value="lcm-rv-fill-tlb.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-fill-tlb.cat  -  Fill chain under the TLB keying alone; a store has no TLB entry</option><option value="lcm-rv-fill-xlevel.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-fill-xlevel.cat  -  Fill chain at sigma_M (B=64, N=4), TLB location on the fill event</option><option value="lcm-rv-line-alias.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-line-alias.cat  -  Sigma_line, aliasing only: two accesses at different addresses that collide in</option><option value="lcm-rv-line-tlb-join.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-line-tlb-join.cat  -  Sigma_line join sigma_tlb, the TLBleed contract shape.</option><option value="lcm-rv-set-alias.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-set-alias.cat  -  Sigma_set, aliasing only: two accesses at different addresses that collide in</option><option value="lcm-rv-setvalued.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-setvalued.cat  -  Set-valued xstate on risc-V: does `cox` actually have a two-cycle on a real</option><option value="lcm-rv-share-leaf.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-share-leaf.cat  -  DO not use --merge-translations with this model.</option><option value="lcm-rv-share-wholewalk.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-share-wholewalk.cat  -  The whole-walk row of RQ1&#x27;s pair-count table was</option><option value="lcm-rv-sigmaM-leaf.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-sigmaM-leaf.cat  -  The leaf-sharing question at sigma_M, the machine&#x27;s own keying.</option><option value="lcm-rv-sm-addrtx.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-sm-addrtx.cat  -  The transmitter question at sigma_M, in its xloc-only form.</option><option value="lcm-rv-sm-c3.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-sm-c3.cat  -  C3 at sigma_M, the reference machine&#x27;s own keying.</option><option value="lcm-rv-sm-dep.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-sm-dep.cat  -  The transmitter question at sigma_M, over the dependency union.</option><option value="lcm-rv-sm-dep2.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-sm-dep2.cat  -  The corrected transmitter question at sigma_M.</option><option value="lcm-rv-sm-leaf.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-sm-leaf.cat  -  Leaf at sigma_M, the reference machine&#x27;s own keying.</option><option value="lcm-rv-sm-walker-sameaddr.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-sm-walker-sameaddr.cat  -  Walker at sigma_M, same-address form, kept for the record; the contract is lcm-rv-sm-walker.cat.</option><option value="lcm-rv-sm-walker.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-sm-walker.cat  -  Walker at sigma_M, distinct-address sharing, the reference machine&#x27;s own keying.</option><option value="lcm-rv-sm-xlevel.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-sm-xlevel.cat  -  Xlevel at sigma_M, the reference machine&#x27;s own keying.</option><option value="lcm-rv-strictpin-join.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-strictpin-join.cat  -  The first contract that IS both multi-axiom and multi-channel.</option><option value="lcm-rv-strictpin-vacuity.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-strictpin-vacuity.cat  -  Vacuity check for the third axiom of lcm-rv-strictpin-join.cat.</option><option value="lcm-rv-tlb-sector1.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-tlb-sector1.cat  -  TLB xstate keyed on sectors of 1 page(s), risc-V.</option><option value="lcm-rv-tlb-sector4.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-tlb-sector4.cat  -  TLB xstate keyed on sectors of 4 page(s), risc-V.</option><option value="lcm-rv-tlbleed-join.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-tlbleed-join.cat  -  Not the reference machine: rocket-chip sets</option><option value="lcm-rv-tlbleed-line.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-tlbleed-line.cat  -  Not the reference machine: rocket-chip sets</option><option value="lcm-rv-tlbleed-tlb.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-tlbleed-tlb.cat  -  Not the reference machine: rocket-chip sets</option><option value="lcm-rv-walker.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-walker.cat  -  Sigma_walker, the page-table walker cache, keyed on the physical address of</option><option value="lcm-rv-xlevel-join.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-xlevel-join.cat  -  Cross-level chain at the reference geometry (N=4, B=64).</option><option value="lcm-rv-xlevel-line.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-xlevel-line.cat  -  Cross-level chain at the reference geometry (N=4, B=64).</option><option value="lcm-rv-xlevel-tlb.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-xlevel-tlb.cat  -  Cross-level chain at the reference geometry (N=4, B=64).</option><option value="lcm-vm-addr-at-ne.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-addr-at-ne.cat  -  Does an address dependency reach a translate event?</option><option value="lcm-vm-addr-at.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-addr-at.cat  -  Does an address dependency reach a translate event?</option><option value="lcm-vm-atprobe.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-atprobe.cat  -  Non-vacuity companion: are there translate events at all?</option><option value="lcm-vm-keying-pte-empty.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-keying-pte-empty.cat  -  Theorem 2 witness, keying pte, proof direction.</option><option value="lcm-vm-keying-pte.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-keying-pte.cat  -  Theorem 2 witness, keying pte.</option><option value="lcm-vm-keying-tlb.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-keying-tlb.cat  -  Theorem 2 witness, keying tlb.</option><option value="lcm-vm-line-alias.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-line-alias.cat  -  Sigma_line, aliasing only: two accesses at different addresses that collide in</option><option value="lcm-vm-set-alias.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-set-alias.cat  -  Sigma_set, aliasing only: two accesses at different addresses that collide in</option><option value="lcm-vm-setvalued.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-setvalued.cat  -  Set-valued xstate: a walk occupies its descriptor line and its TLB entry.</option><option value="lcm-vm-share-leaf-noax.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-share-leaf-noax.cat  -  DO not use --merge-translations with this model.</option><option value="lcm-vm-share-leaf.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-share-leaf.cat  -  DO not use --merge-translations with this model.</option><option value="lcm-vm-share-wholewalk.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-share-wholewalk.cat  -  The whole-walk row of RQ1&#x27;s pair-count table was</option><option value="lcm-vm-tlbcomx.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-tlbcomx.cat  -  TLB xstate communication, the step lcm-vm-tlbshare.cat cannot take.</option><option value="lcm-vm-tlbprobe.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-tlbprobe.cat  -  Non-vacuity for the TLB cells.</option><option value="lcm-vm-tlbshare-empty.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-tlbshare-empty.cat  -  Retired, this asks a degenerate question, and is kept only so the reason is</option><option value="lcm-vm-tlbshare.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-tlbshare.cat  -  Retired, this asks a degenerate question, and is kept only so the reason is</option><option value="lcm-vm-txshare-empty.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-txshare-empty.cat  -  Retired, this asks a degenerate question, and is kept only so the reason is</option><option value="lcm-vm-txshare.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-txshare.cat  -  Retired, this asks a degenerate question, and is kept only so the reason is</option></optgroup><optgroup label="4. Experiment cells (one per table cell; not for browsing)"><option value="lcm-rv-c3-join.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-c3-join.cat  -  Corollary 3 on risc-V, cell &quot;the join (set-valued)&quot; of three.</option><option value="lcm-rv-c3-pte.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-c3-pte.cat  -  Corollary 3 on risc-V, cell &quot;sigma_pte alone&quot; of three.</option><option value="lcm-rv-c3-sat-join.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-c3-sat-join.cat  -  Satisfiability companion for the join cell, and it must be a separate file.</option><option value="lcm-rv-c3-sat.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-c3-sat.cat  -  Satisfiability companion for RVPteStoreThenTwoWalks.toml, not a result.</option><option value="lcm-rv-c3-tlb.cat" data-isa="riscv" data-sec="1" data-tt="1">lcm-rv-c3-tlb.cat  -  Corollary 3 on risc-V, cell &quot;sigma_tlb alone&quot; of three.</option><option value="lcm-t1-ct.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-t1-ct.cat  -  Experiment 2, Table 1 (Mosier et al., ISCA 2022) transmitter taxonomy.</option><option value="lcm-t1-dt.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-t1-dt.cat  -  Experiment 2, Table 1 (Mosier et al., ISCA 2022) transmitter taxonomy.</option><option value="lcm-t1-rv-ct.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-t1-rv-ct.cat  -  Experiment 2, Table 1 (Mosier et al., ISCA 2022) taxonomy, risc-V counterpart of lcm-t1-ct.cat.</option><option value="lcm-t1-rv-dt.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-t1-rv-dt.cat  -  Experiment 2, Table 1 (Mosier et al., ISCA 2022) taxonomy, risc-V counterpart of lcm-t1-dt.cat.</option><option value="lcm-t1-rv-uct.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-t1-rv-uct.cat  -  Experiment 2, Table 1 (Mosier et al., ISCA 2022) taxonomy, UCT, the universal control transmitter.</option><option value="lcm-t1-rv-udt.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-t1-rv-udt.cat  -  Experiment 2, Table 1 (Mosier et al., ISCA 2022) taxonomy, risc-V counterpart of lcm-t1-udt.cat.</option><option value="lcm-t1-uct.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-t1-uct.cat  -  Experiment 2, Table 1 (Mosier et al., ISCA 2022) taxonomy, UCT, the universal control transmitter.</option><option value="lcm-t1-udt.cat" data-isa="arm" data-sec="1" data-tt="0">lcm-t1-udt.cat  -  Experiment 2, Table 1 (Mosier et al., ISCA 2022) transmitter taxonomy.</option><option value="lcm-vm-c3-join.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-c3-join.cat  -  Corollary 3, cell &quot;the join (set-valued)&quot; of three.</option><option value="lcm-vm-c3-pte.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-c3-pte.cat  -  Corollary 3, cell &quot;sigma_pte alone&quot; of three.</option><option value="lcm-vm-c3-tlb.cat" data-isa="arm" data-sec="1" data-tt="1">lcm-vm-c3-tlb.cat  -  Corollary 3, cell &quot;sigma_tlb alone&quot; of three.</option></optgroup><optgroup label="5. Instruction-fetch keyings - pair these with the IF tests"><option value="lcm-if/pg-pp-data-line-64.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/pg-pp-data-line-64.cat  -  Gate 1 probe for the data-side control.</option><option value="lcm-if/pg-pp-data-set-64x8.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/pg-pp-data-set-64x8.cat  -  Gate 1 probe for the data-side control.</option><option value="lcm-if/pg-pp-iline-64.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/pg-pp-iline-64.cat  -  Gate 1 probe for pp-iline-64: binds xloc-iline-64 and asserts nothing, so the</option><option value="lcm-if/pg-pp-iset-64x4.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/pg-pp-iset-64x4.cat  -  Gate 1 probe for pp-iset-64x4: binds xloc-iset-64x4 and asserts nothing, so the</option><option value="lcm-if/pg-pp-iset-64x5.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/pg-pp-iset-64x5.cat  -  Gate 1 probe for pp-iset-64x5: binds xloc-iset-64x5 and asserts nothing, so the</option><option value="lcm-if/pg-pp-iset-64x6.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/pg-pp-iset-64x6.cat  -  Gate 1 probe for pp-iset-64x6: binds xloc-iset-64x6 and asserts nothing, so the</option><option value="lcm-if/pg-pp-iset-64x7.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/pg-pp-iset-64x7.cat  -  Gate 1 probe for pp-iset-64x7: binds xloc-iset-64x7 and asserts nothing, so the</option><option value="lcm-if/pg-pp-iset-64x8.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/pg-pp-iset-64x8.cat  -  Gate 1 probe for pp-iset-64x8: binds xloc-iset-64x8 and asserts nothing, so the</option><option value="lcm-if/pp-data-line-64.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/pp-data-line-64.cat  -  Data-side control for the Prime+Probe column: the same pattern, the same</option><option value="lcm-if/pp-data-set-64x8.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/pp-data-set-64x8.cat  -  Data-side control for the Prime+Probe column: the same pattern, the same</option><option value="lcm-if/pp-iline-64.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/pp-iline-64.cat  -  Prime+probe cell: xloc-iline-64, targeted (ext) receiver, served stride.</option><option value="lcm-if/pp-iset-64x4.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/pp-iset-64x4.cat  -  Prime+probe cell: xloc-iset-64x4, targeted (ext) receiver, served stride.</option><option value="lcm-if/pp-iset-64x5.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/pp-iset-64x5.cat  -  Prime+probe cell: xloc-iset-64x5, targeted (ext) receiver, served stride.</option><option value="lcm-if/pp-iset-64x6.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/pp-iset-64x6.cat  -  Prime+probe cell: xloc-iset-64x6, targeted (ext) receiver, served stride.</option><option value="lcm-if/pp-iset-64x7.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/pp-iset-64x7.cat  -  Prime+probe cell: xloc-iset-64x7, targeted (ext) receiver, served stride.</option><option value="lcm-if/pp-iset-64x8.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/pp-iset-64x8.cat  -  Prime+probe cell: xloc-iset-64x8, targeted (ext) receiver, served stride.</option><option value="lcm-if/probe-iline.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/probe-iline.cat  -  Positive control for xloc-iline-&lt;B&gt;.</option><option value="lcm-if/secret-128-DATA.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/secret-128-DATA.cat  -  Secret-sourced ifetch discipline, ambient receiver.</option><option value="lcm-if/secret-128.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/secret-128.cat  -  Secret-sourced ifetch discipline, ambient receiver.</option><option value="lcm-if/uct-64.cat" data-isa="riscv" data-sec="1" data-tt="0">lcm-if/uct-64.cat  -  Universal-control ifetch Table 1 (Mosier et al., ISCA 2022) row &quot;universal control&quot;), with the</option></optgroup></select>
+    <p class="why">Group&nbsp;1 is the architecture; the rest ask about leakage.
+      <a href="#" class="disc" data-target="secwhy">what does this hide?</a></p>
+    <p class="why fold" id="secwhy">Hides the four architecture models and the two
+    baselines, the ones that describe ordinary memory behaviour or exist to
+    check a <code>forbidden</code> verdict, rather than asking whether anything
+    leaks. They are hidden, never refused, and you will want them back: a leakage
+    verdict only means something beside the architectural one, and every
+    <code>forbidden</code> needs a control to rule out vacuity.</p>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">4</span> Speculation depth</h2>
+    <input type="number" name="depth" value="2" min="0" max="8">
+    <p class="why">Transient window size. 0 disables speculation.</p>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">5</span> Extra analysis</h2>
+    
+    <label class="filt"><input type="checkbox" name="noxstate" value="1">
+      <span>Skip solver-decided edges</span></label>
+    <p class="why">Leaves out <code>rfx</code>, <code>cox</code> and <code>frx</code>.
+    Renders faster, but a leak carried by one of them will have no path drawn.</p>
+  </div>
+
+  <div class="runbar"><button type="submit" id="runbtn">Run</button>
+      <span class="submitlink" style="opacity:.55;cursor:default" title="Needs the backend: clone the repository and run lcm-server.py">Analyse your own contract &mdash; needs the tool itself</span></div>
+  <div id="runstatus" class="runstatus"></div>
+
+<script>
+var runT0=null;
+function runStarted() {
+  runT0 = Date.now();
+  var s = document.getElementById('runstatus');
+  if (s) { s.style.display = 'none'; s.innerHTML = ''; }
+  document.getElementById('runbtn').disabled = true;
+}
+function runFinished() {
+  if (runT0 === null) return;            // the iframe's initial empty load
+  document.getElementById('runbtn').disabled = false;
+  runT0 = null;
+}
+</script>
+<details class="guide">
+<summary>What this is, what to pick, and how to read the result</summary>
+<h4>What it does</h4>
+<p>Choose a <b>test</b> (a small concurrent program) and a <b>memory model</b> (a <code>.cat</code> file of relations and axioms). The tool enumerates every execution the program allows, checks each against the model, and draws one.</p>
+<h4>What a test looks like</h4>
+<pre>arch = "AArch64"
+name = "MP+po+addr"
+symbolic = ["x", "y"]            # fresh memory locations
+
+[thread.0]
+init = { X1 = "x", X3 = "y" }     # seed registers
+code = &quot;&quot;&quot;
+    MOV W0,#1
+    STR W0,[X1]                  # write the data
+    MOV W2,#1
+    STR W2,[X3]                  # then set the flag
+&quot;&quot;&quot;
+
+[final]
+assertion = "1:X0 = 1 &amp; 1:X2 = 0"    # the outcome being asked about</pre>
+<p>Names encode the <b>shape</b> then the <b>ordering used in each thread</b>: <code>MP+po+addr</code> is message passing where thread&nbsp;0 relies on program order and thread&nbsp;1 on an address dependency. <code>+dmb.sy</code> is a full barrier, <code>+ctrl</code> a control dependency, <code>+fence.rw.rw</code> the RISC-V fence.</p>
+<h4>Which model to pick</h4>
+<p>Group&nbsp;1 holds the <b>architecture models</b>. Pick one of those for ordinary memory-model work. The leakage groups pose a research question and are not alternatives to each other: a question is posed <i>by</i> a model, which is why there are so many. Groups&nbsp;3 and&nbsp;4 come in families where two files differ by one line, and running both <i>is</i> the experiment.</p>
+<p><b>Do not</b> pick an <code>lcm-</code> model to check ordinary ordering, or a bare architecture model to ask a leakage question.</p>
+<h4>What comes back</h4>
+<p><code>allowed (n of m)</code> means the model <b>permits</b> the outcome; at least one execution satisfies it. <code>forbidden (0 of m)</code> means none does. <code>m</code> counts results, not candidates: for a forbidden cell it equals the candidate count; for an allowed cell it counts satisfying models and is <b>not</b> reproducible between runs.</p>
+<p><b>Caution.</b> A <code>forbidden</code> only means something if the program has executions at all, and for leakage cells only if the relation could have been populated. Both have produced false results here.</p>
+<h4>Speculation depth</h4>
+<p>0 means no speculative execution. Spectre-style tests need <b>2 or more</b>: at depth 0 there are no transient events, so nothing is detected and the cell reports a clean negative that measures nothing.</p>
+</details>
+</form>
+
+<div class="main">
+  <details id="advice-wrap" open>
+    <summary id="advice-sum">What this selection means</summary>
+    <div id="advice"></div>
+    <p class="hint" id="compat-note"></p>
+  </details>
+  <div class="result-head">Result</div>
+  <div class="hint">Choose a test and press Run. Spectre tests need a speculation depth of 2 or more. At depth 0 there are no speculative events and nothing is detected.</div><iframe name="graph" onload="runFinished()"></iframe><div class="hint" style="position:absolute;bottom:0"></div>
+</div>
+</div>
+
+<script>
+
+(function () {
+  var f = document.forms[0];
+  if (!f) return;
+  var A = f.arch, T = f.test, M = f.model, note = document.getElementById('compat-note');
+  var d = function (o, k) { return o.getAttribute('data-' + k); };
+
+  function firstEnabled(sel) {
+    for (var i = 0; i < sel.options.length; i++)
+      if (!sel.options[i].disabled) return sel.options[i];
+    return null;
+  }
+
+  var GUIDE = {}, MODEL_ABOUT = {};
+  
+  (function () {
+    for (var i = 0; i < M.options.length; i++) {
+      var o = M.options[i], parts = o.text.split('  -  ');
+      if (parts.length > 1) MODEL_ABOUT[o.value] = parts.slice(1).join('  -  ');
+    }
+  })();
+  
+  
+  
+  Array.prototype.forEach.call(document.querySelectorAll('.disc'), function (a) {
+    a.addEventListener('click', function (ev) {
+      ev.preventDefault();
+      var t = document.getElementById(a.getAttribute('data-target'));
+      if (t) t.classList.toggle('open');
+    });
+  });
+
+  
+  (function () {
+    var box = document.getElementById('seconly');
+    if (!box) return;
+    try { box.checked = localStorage.getItem('lcm.seconly') === '1'; } catch (e) {}
+    box.addEventListener('change', function () {
+      try { localStorage.setItem('lcm.seconly', box.checked ? '1' : '0'); } catch (e) {}
+      refresh();
+    });
+  })();
+
+  (function () {
+    var box = document.getElementById('lkonly');
+    if (!box) return;
+    try { box.checked = localStorage.getItem('lcm.leakonly') === '1'; } catch (e) {}
+    box.addEventListener('change', function () {
+      try { localStorage.setItem('lcm.leakonly', box.checked ? '1' : '0'); } catch (e) {}
+      refresh();
+    });
+  })();
+
+  fetch('/guidance.json').then(function (r) { return r.json(); })
+                         .then(function (j) { GUIDE = j; refresh(); })
+                         .catch(function () {});
+
+  
+  function advise() {
+    var box = document.getElementById('advice');
+    var a = A.options[A.selectedIndex], sel = T.options[T.selectedIndex];
+    if (!a || !sel) { box.innerHTML = ''; return; }
+    var isa = d(a, 'isa'), tt = d(a, 'tt');
+    var kind = (isa === 'riscv' ? 'RISC-V' : 'AArch64')
+             + (tt === '1' ? ', address translation ON' : ', no address translation');
+
+    var n = 0, groups = {};
+    for (var i = 0; i < T.options.length; i++) {
+      var o = T.options[i];
+      if (o.disabled) continue;
+      n++;
+      var g = o.parentNode && o.parentNode.label ? o.parentNode.label : 'other';
+      groups[g] = (groups[g] || 0) + 1;
+    }
+    var runnable = Object.keys(groups).map(function (g) {
+      return groups[g] + ' ' + g;
+    }).join('; ');
+
+    var file = sel.value.split('/').pop();
+    var entry = GUIDE[file] || {};
+    var rows = entry.models || [];
+    var html = '<h4>' + a.text + ' &mdash; ' + kind + '</h4>'
+             + '<p style="margin:2px 0 8px">' + n + ' tests runnable here: '
+             + runnable + '.</p>';
+
+    
+    var br = parseInt(d(sel, 'br') || '0', 10);
+    
+    if (br === 0) {
+      f.depth.value = '0';
+      
+      f.depth.readOnly = true;
+      f.depth.classList.add('pinned');
+      f.depth.title = 'This program has no conditional branch: nothing to speculate on.';
+    } else {
+      f.depth.readOnly = false;
+      f.depth.classList.remove('pinned');
+      f.depth.title = '';
+    }
+    var dep = parseInt(f.depth.value, 10) || 0;
+    if (br === 0) {
+      html += '<p class="lcm-reading" style="margin:2px 0 10px">Speculation depth is '
+           + '<b>fixed at 0</b> and the control is disabled: this program contains no '
+           + 'conditional branch, so there is nothing to speculate on and any depth '
+           + 'above 0 emits 0 speculative events while adding cost.</p>';
+    } else if (false) {
+      html += '<p class="lcm-caution" style="margin:2px 0 10px"><b>Set speculation '
+           + 'depth to 0.</b> This program contains no conditional branch, so there '
+           + 'is nothing to speculate on: depth ' + dep + ' emits <b>0 speculative '
+           + 'events</b> and only adds cost. On a virtual-memory model that is enough '
+           + 'to turn a cell that returns into one that does not.</p>';
+    } else if (br > 0 && dep === 0) {
+      html += '<p class="lcm-caution" style="margin:2px 0 10px"><b>Raise speculation '
+           + 'depth to 2 or more.</b> This program has ' + br + ' conditional branch(es), '
+           + 'and at depth 0 there are no transient events, so a speculative leak cannot '
+           + 'be detected however the model is written.</p>';
+    }
+
+    if (entry.about) {
+      html += '<h4>What ' + file + ' is</h4><p style="margin:2px 0 10px">'
+           + entry.about + '</p>';
+    }
+
+    if (!rows.length) {
+      html += '<p class="none">No models are listed for <b>' + file + '</b>. '
+            + 'Every model compatible with this architecture is still selectable in '
+            + 'the picker.</p>';
+    } else {
+      html += '<h4>Models it can be run under, and what each is about</h4><table>';
+      rows.forEach(function (r) {
+        var e = r.expect || '';
+        
+        var LABEL = {
+          'observed':       ['yes',  'will fire'],
+          'lacks-edge':     ['no',   'cannot occur here'],
+          'unobserved':     ['no',   'expressible, not exhibited'],
+          'undetermined':   ['warn', 'may not return'],
+          'not-reportable': ['warn', 'not reportable'],
+          'research':       ['res',  'research cell']
+        };
+        var L = LABEL[r.state] || ['', ''];
+        var mark = L[1] ? '<b class="' + L[0] + '">' + L[1] + '</b> &mdash; ' : '';
+        var about = MODEL_ABOUT[r.model] ? '<div class="mb">' + MODEL_ABOUT[r.model] + '</div>' : '';
+        html += '<tr><td class="m">' + r.model + about + '</td><td class="a">'
+             + (r.asks || '') + '</td><td class="e">' + mark + e + '</td></tr>';
+      });
+      html += '</table>';
+      if (entry.more) {
+        html += '<p class="cat-note">' + entry.more + ' further compatible model(s) are '
+             + 'selectable in the picker; these are the ones whose vocabulary matches '
+             + 'this test.</p>';
+      }
+    }
+    box.innerHTML = html;
+  }
+
+  function apply() {
+    var a = A.options[A.selectedIndex];
+    if (!a) return;
+    var isa = d(a, 'isa'), tt = d(a, 'tt'), hidden = 0;
+
+    
+    var lkonly = document.getElementById('lkonly');
+    var only = !!(lkonly && lkonly.checked), filtered = 0;
+    for (var i = 0; i < T.options.length; i++) {
+      var o = T.options[i];
+      var bad = (d(o, 'isa') !== isa) || (d(o, 'tt') !== tt);
+      var off = only && d(o, 'lk') === '0';
+      
+      o.hidden = off;
+      o.disabled = bad || off;
+      if (bad && !off) hidden++;
+      if (off) filtered++;
+    }
+    var lkc = document.getElementById('lkcount');
+    if (lkc) lkc.textContent = only ? '(' + filtered + ' hidden)' : '';
+    var seconly = document.getElementById('seconly');
+    var sonly = !!(seconly && seconly.checked), secfiltered = 0;
+    for (var j = 0; j < M.options.length; j++) {
+      var m = M.options[j];
+      var mi = d(m, 'isa');
+      var soff = sonly && d(m, 'sec') === '0';
+      m.hidden = soff;
+      if (soff) secfiltered++;
+      
+      var badm = (mi !== 'any' && mi !== isa) || (d(m, 'tt') === '1' && tt !== '1');
+      m.disabled = badm || soff;
+    }
+    var secc = document.getElementById('seccount');
+    if (secc) secc.textContent = sonly ? '(' + secfiltered + ' hidden)' : '';
+    
+
+    
+    var moved = null;
+    [T, M].forEach(function (s) {
+      var cur = s.options[s.selectedIndex];
+      if (cur && cur.disabled) { var n = firstEnabled(s); if (n) { n.selected = true; moved = s; } }
+    });
+
+    var kind = (isa === 'riscv' ? 'RISC-V' : 'AArch64')
+             + (tt === '1' ? ' with address translation ON' : ' without address translation');
+    note.textContent = hidden
+      ? 'Showing tests and models for ' + kind + '. ' + hidden + ' test(s) greyed out '
+        + 'because they need a different ISA or the other translation setting. '
+        + 'Switch Architecture to reach them.'
+        + (moved ? ' Your selection was moved to a compatible one.' : '')
+      : 'Showing tests and models for ' + kind + '.';
+  }
+
+  var wrap = document.getElementById('advice-wrap');
+  var sum  = document.getElementById('advice-sum');
+  f.addEventListener('submit', function () {
+    
+    if (wrap) {
+      wrap.open = false;
+      if (sum) sum.textContent = 'What this selection means (click to reopen)';
+    }
+  });
+  function refresh() {
+    apply(); advise();
+    if (wrap) {
+      wrap.open = true;
+      if (sum) sum.textContent = 'What this selection means';
+    }
+  }
+  A.addEventListener('change', refresh);
+  T.addEventListener('change', refresh);
+  f.depth.addEventListener('input', advise);
+  refresh();
+})();
+</script>
+
+<script>
+// STATIC MODE. The form still submits, the iframe still fills, the page still
+// looks like the tool -- but the answer comes from a file rendered earlier
+// instead of from /run, because a static host executes nothing.
+(function () {
+  var M = null, form = document.querySelector('form.side');
+  var frame = document.getElementsByName('graph')[0];
+  var btn = document.getElementById('runbtn');
+  function key() {
+    return [form.arch.value, form.test.value, form.model.value, form.depth.value].join('|');
+  }
+  function note(msg) {
+    frame.removeAttribute('src');
+    var d = frame.contentDocument;
+    d.open();
+    d.write('<body style="font:14px/1.6 system-ui;margin:0;padding:44px 28px;color:#1f2328">'
+          + msg + '</body>');
+    d.close();
+  }
+  function refresh() {
+    if (!M) return;
+    var hit = M.cells[key()];
+    btn.disabled = !hit;
+    btn.textContent = hit ? 'Show result' : 'Not precomputed';
+  }
+  fetch('manifest.json').then(function (r) { return r.json(); }).then(function (m) {
+    M = m;
+    var cc = document.getElementById('cellcount');
+    if (cc) cc.textContent = Object.keys(M.cells).length;
+    // Narrow the pickers to what exists, so a reader cannot pick a dead cell.
+    var have = {arch: {}, test: {}, model: {}, depth: {}};
+    Object.keys(M.cells).forEach(function (k) {
+      var p = k.split('|');
+      have.arch[p[0]] = 1; have.test[p[1]] = 1; have.model[p[2]] = 1; have.depth[p[3]] = 1;
+    });
+    ['arch', 'test', 'model'].forEach(function (n) {
+      var sel = form[n];
+      Array.prototype.slice.call(sel.options).forEach(function (o) {
+        if (!have[n][o.value]) { o.disabled = true; o.textContent = o.textContent + '  (not precomputed)'; }
+      });
+      var first = Array.prototype.slice.call(sel.options).filter(function (o) { return !o.disabled; })[0];
+      if (first && sel.selectedOptions[0] && sel.selectedOptions[0].disabled) sel.value = first.value;
+      sel.addEventListener('change', refresh);
+    });
+    form.depth.addEventListener('input', refresh);
+    var d = Object.keys(have.depth)[0]; if (d !== undefined) form.depth.value = d;
+    refresh();
+  });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var hit = M && M.cells[key()];
+    if (hit) { frame.src = hit.file; }
+    else {
+      note('<b>This combination was not precomputed.</b><br><br>'
+         + 'A static site holds only the pages rendered in advance. '
+         + 'To analyse this cell, clone the repository and run '
+         + '<code>python3 lcm-server.py</code>.');
+    }
+  });
+})();
+</script>
+</body></html>

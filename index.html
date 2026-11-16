@@ -22,6 +22,11 @@
   .cta a.button { display:inline-block; margin-top:.4rem; padding:.55rem 1rem; border-radius:8px; background:var(--accent); color:#fff; text-decoration:none; font-weight:600; }
   ul { padding-left: 1.2rem; }
   code { font-size: .92em; background: var(--card); border:1px solid var(--line); border-radius:4px; padding: .05em .3em; }
+  table { width:100%; border-collapse:collapse; font-size:.9rem; margin:.4rem 0 1.2rem; }
+  th, td { text-align:left; vertical-align:top; padding:.35rem .5rem; border-bottom:1px solid var(--line); }
+  th { font-weight:600; }
+  h3 { font-size:1rem; margin:1.6rem 0 .3rem; }
+  .small { font-size:.85rem; }
   footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
 </style>
 </head>
@@ -39,8 +44,14 @@
   authoritative Arm and RISC-V Sail semantics with address-translation events.</p>
 
   <div class="cta">
+    <strong>The paper's results, precomputed</strong><br>
+    <span class="muted">Every result page below was rendered in advance by the tool. They open instantly and need no login.</span><br>
+    <a class="button" href="#results">See the results</a>
+  </div>
+
+  <div class="cta">
     <strong>Try it online</strong><br>
-    <span class="muted">Access requires the reviewer login.</span><br>
+    <span class="muted">Access requires the reviewer login. Runs are live, so some take minutes.</span><br>
     <a class="button" href="https://vantage-review.anonymcoderr.workers.dev/" rel="noreferrer">Open Vantage</a>
   </div>
 
@@ -57,10 +68,23 @@
     <li><strong>Some analyses take minutes.</strong> Programs with address translation enumerate many
       executions; several minutes is normal. Keep the tab open; the page updates by itself.</li>
     <li><strong>Corpus pages are cached.</strong> A corpus page that has already been computed opens immediately.</li>
+    <li><strong>The running example is the slowest analysis.</strong> On the start page, the paper's running
+      example with the frontier on takes tens of minutes per run. Its cells are precomputed below.</li>
   </ul>
 
-  <h2>Precomputed results</h2>
-  <p class="muted">A browsable set of precomputed results will be added here.</p>
+  <h2 id="results">The paper's results, precomputed</h2>
+  <p>Each link opens the tool's own result page for one cell: the verdict and its reading, the
+  execution graph, and the contract. The pages were rendered by the online instance and are served
+  here as static files. The <a href="results/">precomputed browser</a> offers the same cells through
+  the tool's usual pickers.</p>
+<!-- results:start -->
+<h3>RQ4: the transmitter taxonomy (Armv8.5)</h3>
+<p class="muted small">One cell per program and transmitter pattern. A dash marks a cell with no precomputed page: five cells the paper reports as undetermined, and two that did not return within the online instance's twenty-minute limit.</p>
+<table><thead><tr><th>Program</th><th>data</th><th>control</th><th>universal data</th><th>universal control</th></tr></thead><tbody><tr><td><code>AddrTransmitter</code></td><td><a href="results/AddrTransmitter__lcm-t1-dt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td><td><a href="results/AddrTransmitter__lcm-t1-ct__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td><td><a href="results/AddrTransmitter__lcm-t1-udt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td><td><span class="muted">&mdash;</span></td></tr><tr><td><code>CtrlTransmitter</code></td><td><a href="results/CtrlTransmitter__lcm-t1-dt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 2)</span></td><td><a href="results/CtrlTransmitter__lcm-t1-ct__d2.html">LEAK EXHIBITED</a><br><span class="muted small">allowed (1 of 2)</span></td><td><a href="results/CtrlTransmitter__lcm-t1-udt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 2)</span></td><td><a href="results/CtrlTransmitter__lcm-t1-uct__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 2)</span></td></tr><tr><td><code>DataTransmitter</code></td><td><a href="results/DataTransmitter__lcm-t1-dt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td><td><a href="results/DataTransmitter__lcm-t1-ct__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td><td><a href="results/DataTransmitter__lcm-t1-udt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td><td><a href="results/DataTransmitter__lcm-t1-uct__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td></tr><tr><td><code>DataTransmitterProbe</code></td><td><a href="results/DataTransmitterProbe__lcm-t1-dt__d2.html">LEAK EXHIBITED</a><br><span class="muted small">allowed (1 of 1)</span></td><td><a href="results/DataTransmitterProbe__lcm-t1-ct__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td><td><a href="results/DataTransmitterProbe__lcm-t1-udt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td><td><a href="results/DataTransmitterProbe__lcm-t1-uct__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td></tr><tr><td><code>SpectreV1</code></td><td><span class="muted">&mdash;</span></td><td><span class="muted">&mdash;</span></td><td><a href="results/SpectreV1__lcm-t1-udt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 2)</span></td><td><span class="muted">&mdash;</span></td></tr><tr><td><code>SpectreV1Fig3Probe</code></td><td><span class="muted">&mdash;</span></td><td><span class="muted">&mdash;</span></td><td><a href="results/SpectreV1Fig3Probe__lcm-t1-udt__d2.html">LEAK EXHIBITED</a><br><span class="muted small">allowed (1 of 2)</span></td><td><a href="results/SpectreV1Fig3Probe__lcm-t1-uct__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 2)</span></td></tr><tr><td><code>SpectreV1ProbeFixed</code></td><td><a href="results/SpectreV1ProbeFixed__lcm-t1-dt__d2.html">LEAK EXHIBITED</a><br><span class="muted small">allowed (1 of 2)</span></td><td><span class="muted">&mdash;</span></td><td><span class="muted">&mdash;</span></td><td><a href="results/SpectreV1ProbeFixed__lcm-t1-uct__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 2)</span></td></tr><tr><td><code>UnivCtrlTransmitter</code></td><td><a href="results/UnivCtrlTransmitter__lcm-t1-dt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 2)</span></td><td><span class="muted">&mdash;</span></td><td><a href="results/UnivCtrlTransmitter__lcm-t1-udt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 2)</span></td><td><a href="results/UnivCtrlTransmitter__lcm-t1-uct__d2.html">LEAK EXHIBITED</a><br><span class="muted small">allowed (1 of 2)</span></td></tr></tbody></table>
+<h3>RQ4: the constant-time dual</h3>
+<p class="muted small">The constant-time discipline on the six observed cells.</p>
+<table><thead><tr><th>Program</th><th>Contract</th><th>Result</th></tr></thead><tbody><tr><td><code>CtrlTransmitter</code></td><td><code>lcm-ct-ct</code></td><td><a href="results/CtrlTransmitter__lcm-ct-ct__d2.html">DISCIPLINE CAN BE MET</a><br><span class="muted small">allowed (1 of 2)</span></td></tr><tr><td><code>DataTransmitterProbe</code></td><td><code>lcm-ct-dt</code></td><td><a href="results/DataTransmitterProbe__lcm-ct-dt__d2.html">DISCIPLINE CANNOT BE MET</a><br><span class="muted small">forbidden (0 of 1)</span></td></tr><tr><td><code>SpectreV1Fig3Probe</code></td><td><code>lcm-ct-dt</code></td><td><a href="results/SpectreV1Fig3Probe__lcm-ct-dt__d2.html">DISCIPLINE CAN BE MET</a><br><span class="muted small">allowed (1 of 2)</span></td></tr><tr><td><code>SpectreV1ProbeFixed</code></td><td><code>lcm-ct-dt</code></td><td><a href="results/SpectreV1ProbeFixed__lcm-ct-dt__d2.html">DISCIPLINE CAN BE MET</a><br><span class="muted small">allowed (1 of 2)</span></td></tr><tr><td><code>SpectreV1Fig3Probe</code></td><td><code>lcm-ct-udt</code></td><td><a href="results/SpectreV1Fig3Probe__lcm-ct-udt__d2.html">DISCIPLINE CAN BE MET</a><br><span class="muted small">allowed (1 of 2)</span></td></tr><tr><td><code>UnivCtrlTransmitter</code></td><td><code>lcm-ct-uct</code></td><td><a href="results/UnivCtrlTransmitter__lcm-ct-uct__d2.html">DISCIPLINE CANNOT BE MET</a><br><span class="muted small">forbidden (0 of 2)</span></td></tr></tbody></table>
+<!-- results:end -->
 
   <footer>Analyses are performed with the Isla symbolic executor and the z3 solver.</footer>
 </main>
