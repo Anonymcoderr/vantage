@@ -417,6 +417,50 @@
    "test": "riscv64/RVAddrDepWalk.toml",
    "model": "lcm-rv-sm-xlevel.cat",
    "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVCtrlToTranslate.toml|lcm-rv-sm-xlevel.cat|0": {
+   "file": "RVCtrlToTranslate__lcm-rv-sm-xlevel__d0.html",
+   "verdict": "forbidden (0 of 20)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ5 certification, cross-level",
+   "seconds": 18.3,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVCtrlToTranslate.toml",
+   "model": "lcm-rv-sm-xlevel.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVPteStoreThenTwoWalks.toml|lcm-rv-sm-xlevel.cat|0": {
+   "file": "RVPteStoreThenTwoWalks__lcm-rv-sm-xlevel__d0.html",
+   "verdict": "allowed (9 of 9)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ5 certification, cross-level",
+   "seconds": 1129.1,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVPteStoreThenTwoWalks.toml",
+   "model": "lcm-rv-sm-xlevel.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVTlbSectorContrast.toml|lcm-rv-sm-xlevel.cat|0": {
+   "file": "RVTlbSectorContrast__lcm-rv-sm-xlevel__d0.html",
+   "verdict": "forbidden (0 of 9)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ5 certification, cross-level",
+   "seconds": 13.1,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVTlbSectorContrast.toml",
+   "model": "lcm-rv-sm-xlevel.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVTranslateMret.toml|lcm-rv-sm-xlevel.cat|0": {
+   "file": "RVTranslateMret__lcm-rv-sm-xlevel__d0.html",
+   "verdict": "forbidden (0 of 8)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ5 certification, cross-level",
+   "seconds": 11.6,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVTranslateMret.toml",
+   "model": "lcm-rv-sm-xlevel.cat",
+   "depth": "0"
   }
  },
  "skipped": [
