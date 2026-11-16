@@ -3,93 +3,151 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow, noarchive">
 <title>Vantage</title>
-<meta name="description" content="Vantage decides leakage contracts parameterised by a keying of extra-architectural state, on Arm and RISC-V Sail semantics with address-translation events.">
+<meta name="description" content="Vantage, the companion tool for Leakage Containment is Relative: Parameterising Extra-Architectural State.">
 <style>
-  :root { --bg:#ffffff; --fg:#1f2328; --muted:#59636e; --line:#d1d9e0; --accent:#0b5cad; --card:#f6f8fa; }
-  @media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --muted:#9198a1; --line:#30363d; --accent:#4493f8; --card:#151b23; } }
+  :root {
+    --bg:#ffffff; --fg:#1f2328; --muted:#59636e; --line:#d1d9e0; --soft:#f6f8fa; --accent:#0b5cad;
+    --ok-fg:#1a7f37; --ok-bg:#dafbe1; --bad-fg:#b42318; --bad-bg:#fdecea; --neutral-bg:#eef1f4; --na:#8c959f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:#0d1117; --fg:#e6edf3; --muted:#9198a1; --line:#30363d; --soft:#151b23; --accent:#4493f8;
+      --ok-fg:#56d364; --ok-bg:rgba(46,160,67,.16); --bad-fg:#ff7b72; --bad-bg:rgba(248,81,73,.16);
+      --neutral-bg:#21262d; --na:#6e7681;
+    }
+  }
   * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
-  main { max-width: 46rem; margin: 0 auto; padding: 3rem 1rem 4rem; }
-  h1 { font-size: 2.2rem; margin: 0 0 .25rem; letter-spacing: .02em; }
-  .subtitle { color: var(--muted); margin: 0 0 2rem; font-size: 1.05rem; }
-  h2 { font-size: 1.15rem; margin: 2.2rem 0 .6rem; }
-  p, li { color: var(--fg); }
-  .muted { color: var(--muted); }
+  body { margin:0; background:var(--bg); color:var(--fg);
+         font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  main { max-width: 58rem; margin: 0 auto; padding: 3.5rem 1.25rem 4rem; }
   a { color: var(--accent); }
-  .cta { display:block; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:1.1rem 1.25rem; margin: 1rem 0; }
-  .cta a.button { display:inline-block; margin-top:.4rem; padding:.55rem 1rem; border-radius:8px; background:var(--accent); color:#fff; text-decoration:none; font-weight:600; }
-  ul { padding-left: 1.2rem; }
-  code { font-size: .92em; background: var(--card); border:1px solid var(--line); border-radius:4px; padding: .05em .3em; }
-  table { width:100%; border-collapse:collapse; font-size:.9rem; margin:.4rem 0 1.2rem; }
-  th, td { text-align:left; vertical-align:top; padding:.35rem .5rem; border-bottom:1px solid var(--line); }
-  th { font-weight:600; }
-  h3 { font-size:1rem; margin:1.6rem 0 .3rem; }
-  .small { font-size:.85rem; }
-  footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+  code { font: .86em ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+
+  header { padding-bottom: 1.4rem; border-bottom: 1px solid var(--line); }
+  h1 { font-size: 2.5rem; line-height: 1.15; margin: 0; letter-spacing: -.015em; }
+  .subtitle { color: var(--muted); margin: .45rem 0 0; font-size: 1.05rem; }
+  .lead { margin-top: 1.4rem; }
+  .lead p { max-width: 44rem; margin: 0 0 .8rem; }
+
+  .cards { display:grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.8rem 0 0; }
+  @media (max-width: 680px) { .cards { grid-template-columns: 1fr; } }
+  .card { display:flex; flex-direction:column; border:1px solid var(--line); border-radius:12px;
+          padding: 1.15rem 1.25rem 1.2rem; background: var(--soft); }
+  .card h2 { font-size: 1.05rem; margin: 0 0 .35rem; }
+  .card p { flex: 1; margin: 0 0 1rem; color: var(--muted); font-size: .95rem; }
+  .button { align-self:flex-start; display:inline-block; padding:.5rem 1rem; border-radius:8px;
+            background:var(--accent); color:#fff; text-decoration:none; font-weight:600; font-size:.95rem; }
+  .button.secondary { background:transparent; color:var(--accent); border:1px solid var(--accent); }
+  .button:hover { filter: brightness(1.08); }
+
+  h2.section { font-size: 1.45rem; margin: 3rem 0 .4rem; letter-spacing: -.01em; }
+  .intro { max-width: 46rem; margin: 0 0 .9rem; }
+  .legend { display:flex; flex-wrap:wrap; gap:.5rem 1.2rem; margin: .2rem 0 1rem; font-size:.88rem; color:var(--muted); }
+  .legend span { display:inline-flex; align-items:center; gap:.4rem; }
+
+  .toc { display:flex; flex-wrap:wrap; gap:.45rem; list-style:none; padding:0; margin: 0 0 .5rem; }
+  .toc a { display:inline-block; padding:.18rem .7rem; border:1px solid var(--line); border-radius:999px;
+           font-size:.85rem; text-decoration:none; color:var(--fg); background:var(--bg); }
+  .toc a:hover { border-color: var(--accent); color: var(--accent); }
+
+  h3 { font-size: 1.08rem; margin: 2.2rem 0 .2rem; scroll-margin-top: 1rem; }
+  .note { color: var(--muted); font-size: .9rem; margin: 0 0 .7rem; max-width: 46rem; }
+
+  .tablewrap { overflow-x:auto; border:1px solid var(--line); border-radius:10px; }
+  table { width:100%; border-collapse:collapse; font-size:.9rem; }
+  th, td { text-align:left; padding:.5rem .75rem; border-bottom:1px solid var(--line); white-space:nowrap; vertical-align:middle; }
+  tbody tr:last-child td { border-bottom: 0; }
+  thead th { background: var(--soft); color: var(--muted); font-weight:600; font-size:.8rem; }
+  tbody tr:hover { background: var(--soft); }
+
+  a.v { display:inline-flex; align-items:center; gap:.5rem; text-decoration:none; color:inherit; }
+  .badge { display:inline-block; font-size:.78rem; font-weight:600; line-height:1.5; padding:.05rem .55rem; border-radius:999px; }
+  .ok { color: var(--ok-fg); background: var(--ok-bg); }
+  .bad { color: var(--bad-fg); background: var(--bad-bg); }
+  .neutral { color: var(--muted); background: var(--neutral-bg); }
+  .raw { font: .76rem ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; color: var(--muted); }
+  a.v:hover .raw { color: var(--accent); text-decoration: underline; }
+  .na { color: var(--na); }
+  table.matrix a.v { flex-direction:column; align-items:flex-start; gap:.12rem; }
+  table.matrix td { padding:.55rem .75rem; }
+
+  ul.tips { padding-left: 1.2rem; max-width: 46rem; }
+  ul.tips li { margin: .45rem 0; }
+  footer { margin-top: 3.5rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .88rem; }
 </style>
 </head>
 <body>
 <main>
-  <h1>Vantage</h1>
-  <p class="subtitle">Companion tool for <em>Leakage Containment is Relative: Parameterising Extra-Architectural State</em></p>
+  <header>
+    <h1>Vantage</h1>
+    <p class="subtitle">Companion tool for <em>Leakage Containment is Relative: Parameterising Extra-Architectural State</em></p>
+  </header>
 
-  <p>A leakage contract states what a program may reveal to an adversary who watches
-  microarchitectural state. Checking one requires deciding which piece of that state each
-  event disturbs: which cache line, which TLB entry. Vantage makes that decision an explicit
-  parameter, a <em>keying</em>, and decides contracts under it.</p>
-  <p>For a given contract, Vantage returns the verdict, evidence that the verdict is not
-  vacuous, and the maximal keyings under which the contract survives. It is built on
-  authoritative Arm and RISC-V Sail semantics with address-translation events.</p>
-
-  <div class="cta">
-    <strong>The paper's results, precomputed</strong><br>
-    <span class="muted">Every result page below was rendered in advance by the tool. They open instantly and need no login.</span><br>
-    <a class="button" href="#results">See the results</a>
+  <div class="lead">
+    <p>A leakage contract states what a program may reveal to an adversary who watches
+    microarchitectural state. Checking one requires deciding which piece of that state each
+    event disturbs: which cache line, which TLB entry. Vantage makes that decision an explicit
+    parameter, a <em>keying</em>, and decides contracts under it.</p>
+    <p>For a given contract, Vantage returns the verdict, evidence that the verdict is not
+    vacuous, and the maximal keyings under which the contract survives. It is built on
+    authoritative Arm and RISC-V Sail semantics with address-translation events.</p>
   </div>
 
-  <div class="cta">
-    <strong>Try it online</strong><br>
-    <span class="muted">Access requires the reviewer login. Runs are live, so some take minutes.</span><br>
-    <a class="button" href="https://vantage-review.anonymcoderr.workers.dev/" rel="noreferrer">Open Vantage</a>
+  <div class="cards">
+    <div class="card">
+      <h2>The paper's results, precomputed</h2>
+      <p>Every result page was rendered in advance by the tool. The pages open instantly and need no login.</p>
+      <a class="button" href="#results">See the results</a>
+    </div>
+    <div class="card">
+      <h2>Try it online</h2>
+      <p>Run your own contracts on the live instance. Access requires the reviewer login, and some runs take minutes.</p>
+      <a class="button secondary" href="https://vantage-review.anonymcoderr.workers.dev/" rel="noreferrer">Open Vantage</a>
+    </div>
   </div>
 
-  <h2>Using the online instance</h2>
-  <ul>
-    <li><strong>Start page of the online instance:</strong> pick a program, choose or edit a
-      contract and its keying, and run it.</li>
-    <li><strong>Corpus browser:</strong>
+  <h2 class="section" id="results">The paper's results</h2>
+  <p class="intro">Each result links to the tool's own page for that cell: the verdict and its
+  reading, the execution graph, and the contract. The pages were rendered by the online instance
+  and are served here as static files. The <a href="results/">precomputed browser</a> offers the
+  same cells through the tool's usual pickers.</p>
+  <div class="legend">
+    <span><span class="badge ok">contained</span> no execution has the queried path</span>
+    <span><span class="badge bad">not contained</span> some execution has it</span>
+    <span><code>forbidden (0 of 9)</code> the tool's raw verdict</span>
+  </div>
+<!-- results:start -->
+<ul class="toc"><li><a href="#rq3">RQ3</a></li><li><a href="#rq4">RQ4 taxonomy</a></li><li><a href="#rq4-ct">RQ4 dual</a></li><li><a href="#rq5">RQ5</a></li></ul>
+<h3 id="rq3">RQ3 &middot; The join at the reference design's parameters</h3>
+<p class="note">The running example of the paper's overview, on <code>RVPteStoreThenTwoWalks</code>. Each structure alone contains the program, and their join does not, under either placement of a walk's TLB access.</p>
+<div class="tablewrap"><table class="matrix"><thead><tr><th>Placement</th><th>cache line, 64&nbsp;B</th><th>TLB sector, 4 pages</th><th>both (join)</th></tr></thead><tbody><tr><td>TLB access at each descriptor read</td><td><a class="v" href="results/RVPteStoreThenTwoWalks__lcm-rv-xlevel-line__d0.html" title="NO LEAK under this keying"><span class="badge ok">contained</span><span class="raw">forbidden (0 of 9)</span></a></td><td><a class="v" href="results/RVPteStoreThenTwoWalks__lcm-rv-xlevel-tlb__d0.html" title="NO LEAK under this keying"><span class="badge ok">contained</span><span class="raw">forbidden (0 of 9)</span></a></td><td><a class="v" href="results/RVPteStoreThenTwoWalks__lcm-rv-xlevel-join__d0.html" title="LEAK EXHIBITED"><span class="badge bad">not contained</span><span class="raw">allowed (9 of 9)</span></a></td></tr><tr><td>one TLB fill per walk</td><td><a class="v" href="results/RVPteStoreThenTwoWalks__lcm-rv-fill-line__d0.html" title="NO LEAK under this keying"><span class="badge ok">contained</span><span class="raw">forbidden (0 of 9)</span></a></td><td><a class="v" href="results/RVPteStoreThenTwoWalks__lcm-rv-fill-tlb__d0.html" title="NO LEAK under this keying"><span class="badge ok">contained</span><span class="raw">forbidden (0 of 9)</span></a></td><td><a class="v" href="results/RVPteStoreThenTwoWalks__lcm-rv-fill-xlevel__d0.html" title="LEAK EXHIBITED"><span class="badge bad">not contained</span><span class="raw">allowed (9 of 9)</span></a></td></tr></tbody></table></div>
+<h3 id="rq4">RQ4 &middot; The transmitter taxonomy (Armv8.5)</h3>
+<p class="note">One cell per program and transmitter pattern. A dash marks a cell with no precomputed page: five cells the paper reports as undetermined, and two that did not return within the online instance's twenty-minute limit.</p>
+<div class="tablewrap"><table class="matrix"><thead><tr><th>Program</th><th>data</th><th>control</th><th>universal data</th><th>universal control</th></tr></thead><tbody><tr><td><code>AddrTransmitter</code></td><td><a class="v" href="results/AddrTransmitter__lcm-t1-dt__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 1)</span></a></td><td><a class="v" href="results/AddrTransmitter__lcm-t1-ct__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 1)</span></a></td><td><a class="v" href="results/AddrTransmitter__lcm-t1-udt__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 1)</span></a></td><td><span class="na" title="No precomputed page">&mdash;</span></td></tr><tr><td><code>CtrlTransmitter</code></td><td><a class="v" href="results/CtrlTransmitter__lcm-t1-dt__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 2)</span></a></td><td><a class="v" href="results/CtrlTransmitter__lcm-t1-ct__d2.html" title="LEAK EXHIBITED"><span class="badge bad">observed</span><span class="raw">allowed (1 of 2)</span></a></td><td><a class="v" href="results/CtrlTransmitter__lcm-t1-udt__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 2)</span></a></td><td><a class="v" href="results/CtrlTransmitter__lcm-t1-uct__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 2)</span></a></td></tr><tr><td><code>DataTransmitter</code></td><td><a class="v" href="results/DataTransmitter__lcm-t1-dt__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 1)</span></a></td><td><a class="v" href="results/DataTransmitter__lcm-t1-ct__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 1)</span></a></td><td><a class="v" href="results/DataTransmitter__lcm-t1-udt__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 1)</span></a></td><td><a class="v" href="results/DataTransmitter__lcm-t1-uct__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 1)</span></a></td></tr><tr><td><code>DataTransmitterProbe</code></td><td><a class="v" href="results/DataTransmitterProbe__lcm-t1-dt__d2.html" title="LEAK EXHIBITED"><span class="badge bad">observed</span><span class="raw">allowed (1 of 1)</span></a></td><td><a class="v" href="results/DataTransmitterProbe__lcm-t1-ct__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 1)</span></a></td><td><a class="v" href="results/DataTransmitterProbe__lcm-t1-udt__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 1)</span></a></td><td><a class="v" href="results/DataTransmitterProbe__lcm-t1-uct__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 1)</span></a></td></tr><tr><td><code>SpectreV1</code></td><td><span class="na" title="No precomputed page">&mdash;</span></td><td><span class="na" title="No precomputed page">&mdash;</span></td><td><a class="v" href="results/SpectreV1__lcm-t1-udt__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 2)</span></a></td><td><span class="na" title="No precomputed page">&mdash;</span></td></tr><tr><td><code>SpectreV1Fig3Probe</code></td><td><span class="na" title="No precomputed page">&mdash;</span></td><td><span class="na" title="No precomputed page">&mdash;</span></td><td><a class="v" href="results/SpectreV1Fig3Probe__lcm-t1-udt__d2.html" title="LEAK EXHIBITED"><span class="badge bad">observed</span><span class="raw">allowed (1 of 2)</span></a></td><td><a class="v" href="results/SpectreV1Fig3Probe__lcm-t1-uct__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 2)</span></a></td></tr><tr><td><code>SpectreV1ProbeFixed</code></td><td><a class="v" href="results/SpectreV1ProbeFixed__lcm-t1-dt__d2.html" title="LEAK EXHIBITED"><span class="badge bad">observed</span><span class="raw">allowed (1 of 2)</span></a></td><td><span class="na" title="No precomputed page">&mdash;</span></td><td><span class="na" title="No precomputed page">&mdash;</span></td><td><a class="v" href="results/SpectreV1ProbeFixed__lcm-t1-uct__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 2)</span></a></td></tr><tr><td><code>UnivCtrlTransmitter</code></td><td><a class="v" href="results/UnivCtrlTransmitter__lcm-t1-dt__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 2)</span></a></td><td><span class="na" title="No precomputed page">&mdash;</span></td><td><a class="v" href="results/UnivCtrlTransmitter__lcm-t1-udt__d2.html" title="NO LEAK under this keying"><span class="badge ok">not observed</span><span class="raw">forbidden (0 of 2)</span></a></td><td><a class="v" href="results/UnivCtrlTransmitter__lcm-t1-uct__d2.html" title="LEAK EXHIBITED"><span class="badge bad">observed</span><span class="raw">allowed (1 of 2)</span></a></td></tr></tbody></table></div>
+<h3 id="rq4-ct">RQ4 &middot; The constant-time dual</h3>
+<p class="note">The constant-time discipline on the six observed cells.</p>
+<div class="tablewrap"><table><thead><tr><th>Program</th><th>Contract</th><th>Result</th></tr></thead><tbody><tr><td><code>CtrlTransmitter</code></td><td><code>lcm-ct-ct</code></td><td><a class="v" href="results/CtrlTransmitter__lcm-ct-ct__d2.html" title="DISCIPLINE CAN BE MET"><span class="badge ok">can be met</span><span class="raw">allowed (1 of 2)</span></a></td></tr><tr><td><code>DataTransmitterProbe</code></td><td><code>lcm-ct-dt</code></td><td><a class="v" href="results/DataTransmitterProbe__lcm-ct-dt__d2.html" title="DISCIPLINE CANNOT BE MET"><span class="badge bad">cannot be met</span><span class="raw">forbidden (0 of 1)</span></a></td></tr><tr><td><code>SpectreV1Fig3Probe</code></td><td><code>lcm-ct-dt</code></td><td><a class="v" href="results/SpectreV1Fig3Probe__lcm-ct-dt__d2.html" title="DISCIPLINE CAN BE MET"><span class="badge ok">can be met</span><span class="raw">allowed (1 of 2)</span></a></td></tr><tr><td><code>SpectreV1ProbeFixed</code></td><td><code>lcm-ct-dt</code></td><td><a class="v" href="results/SpectreV1ProbeFixed__lcm-ct-dt__d2.html" title="DISCIPLINE CAN BE MET"><span class="badge ok">can be met</span><span class="raw">allowed (1 of 2)</span></a></td></tr><tr><td><code>SpectreV1Fig3Probe</code></td><td><code>lcm-ct-udt</code></td><td><a class="v" href="results/SpectreV1Fig3Probe__lcm-ct-udt__d2.html" title="DISCIPLINE CAN BE MET"><span class="badge ok">can be met</span><span class="raw">allowed (1 of 2)</span></a></td></tr><tr><td><code>UnivCtrlTransmitter</code></td><td><code>lcm-ct-uct</code></td><td><a class="v" href="results/UnivCtrlTransmitter__lcm-ct-uct__d2.html" title="DISCIPLINE CANNOT BE MET"><span class="badge bad">cannot be met</span><span class="raw">forbidden (0 of 2)</span></a></td></tr></tbody></table></div>
+<h3 id="rq5">RQ5 &middot; Certification at the reference design's keying</h3>
+<p class="note">Three contracts over the seven address-translation programs, at the cache-and-TLB keying of the reference design.</p>
+<div class="tablewrap"><table class="matrix"><thead><tr><th>Program</th><th>cross-level</th></tr></thead><tbody><tr><td><code>RVPageWalkShared</code></td><td><a class="v" href="results/RVPageWalkShared__lcm-rv-sm-xlevel__d0.html" title="NO LEAK under this keying"><span class="badge ok">contained</span><span class="raw">forbidden (0 of 9)</span></a></td></tr><tr><td><code>RVPageWalkDistinct</code></td><td><a class="v" href="results/RVPageWalkDistinct__lcm-rv-sm-xlevel__d0.html" title="NO LEAK under this keying"><span class="badge ok">contained</span><span class="raw">forbidden (0 of 9)</span></a></td></tr><tr><td><code>RVAddrDepWalk</code></td><td><a class="v" href="results/RVAddrDepWalk__lcm-rv-sm-xlevel__d0.html" title="NO LEAK under this keying"><span class="badge ok">contained</span><span class="raw">forbidden (0 of 10)</span></a></td></tr><tr><td><code>RVCtrlToTranslate</code></td><td><a class="v" href="results/RVCtrlToTranslate__lcm-rv-sm-xlevel__d0.html" title="NO LEAK under this keying"><span class="badge ok">contained</span><span class="raw">forbidden (0 of 20)</span></a></td></tr><tr><td><code>RVPteStoreThenTwoWalks</code></td><td><a class="v" href="results/RVPteStoreThenTwoWalks__lcm-rv-sm-xlevel__d0.html" title="LEAK EXHIBITED"><span class="badge bad">not contained</span><span class="raw">allowed (9 of 9)</span></a></td></tr><tr><td><code>RVTlbSectorContrast</code></td><td><a class="v" href="results/RVTlbSectorContrast__lcm-rv-sm-xlevel__d0.html" title="NO LEAK under this keying"><span class="badge ok">contained</span><span class="raw">forbidden (0 of 9)</span></a></td></tr><tr><td><code>RVTranslateMret</code></td><td><a class="v" href="results/RVTranslateMret__lcm-rv-sm-xlevel__d0.html" title="NO LEAK under this keying"><span class="badge ok">contained</span><span class="raw">forbidden (0 of 8)</span></a></td></tr></tbody></table></div>
+<!-- results:end -->
+
+  <h2 class="section">Using the online instance</h2>
+  <ul class="tips">
+    <li><strong>Start page.</strong> Pick a program, choose or edit a contract and its keying, and run it.</li>
+    <li><strong>Corpus browser.</strong>
       <a href="https://vantage-review.anonymcoderr.workers.dev/browse" rel="noreferrer">vantage-review.anonymcoderr.workers.dev/browse</a>
       (same login) runs the tool's built-in contracts on its built-in programs. The start page
       also links to it as "Browse the corpus".</li>
     <li><strong>One analysis at a time.</strong> Runs are serialised on purpose. If another run is in
       progress, the page shows that yours is queued and replaces itself with the result when it is ready.</li>
     <li><strong>Some analyses take minutes.</strong> Programs with address translation enumerate many
-      executions; several minutes is normal. Keep the tab open; the page updates by itself.</li>
-    <li><strong>Corpus pages are cached.</strong> A corpus page that has already been computed opens immediately.</li>
+      executions, so several minutes is normal. Keep the tab open, and the page updates by itself.</li>
     <li><strong>The running example is the slowest analysis.</strong> On the start page, the paper's running
-      example with the frontier on takes tens of minutes per run. Its cells are precomputed below.</li>
+      example with the frontier on takes tens of minutes per run. Its cells are precomputed above.</li>
+    <li><strong>Corpus pages are cached.</strong> A corpus page that has already been computed opens immediately.</li>
   </ul>
-
-  <h2 id="results">The paper's results, precomputed</h2>
-  <p>Each link opens the tool's own result page for one cell: the verdict and its reading, the
-  execution graph, and the contract. The pages were rendered by the online instance and are served
-  here as static files. The <a href="results/">precomputed browser</a> offers the same cells through
-  the tool's usual pickers.</p>
-<!-- results:start -->
-<h3>RQ3: the join at the reference design's parameters</h3>
-<p class="muted small">The running example of the paper's overview: the cache keying, the TLB keying and their join, with a walk's TLB access placed at its reads and, below, at one fill per walk.</p>
-<table><thead><tr><th>Program</th><th>Contract</th><th>Result</th></tr></thead><tbody><tr><td><code>RVPteStoreThenTwoWalks</code></td><td><code>lcm-rv-xlevel-line</code></td><td><a href="results/RVPteStoreThenTwoWalks__lcm-rv-xlevel-line__d0.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 9)</span></td></tr><tr><td><code>RVPteStoreThenTwoWalks</code></td><td><code>lcm-rv-xlevel-tlb</code></td><td><a href="results/RVPteStoreThenTwoWalks__lcm-rv-xlevel-tlb__d0.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 9)</span></td></tr><tr><td><code>RVPteStoreThenTwoWalks</code></td><td><code>lcm-rv-xlevel-join</code></td><td><a href="results/RVPteStoreThenTwoWalks__lcm-rv-xlevel-join__d0.html">LEAK EXHIBITED</a><br><span class="muted small">allowed (9 of 9)</span></td></tr><tr><td><code>RVPteStoreThenTwoWalks</code></td><td><code>lcm-rv-fill-line</code></td><td><a href="results/RVPteStoreThenTwoWalks__lcm-rv-fill-line__d0.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 9)</span></td></tr><tr><td><code>RVPteStoreThenTwoWalks</code></td><td><code>lcm-rv-fill-tlb</code></td><td><a href="results/RVPteStoreThenTwoWalks__lcm-rv-fill-tlb__d0.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 9)</span></td></tr><tr><td><code>RVPteStoreThenTwoWalks</code></td><td><code>lcm-rv-fill-xlevel</code></td><td><a href="results/RVPteStoreThenTwoWalks__lcm-rv-fill-xlevel__d0.html">LEAK EXHIBITED</a><br><span class="muted small">allowed (9 of 9)</span></td></tr></tbody></table>
-<h3>RQ4: the transmitter taxonomy (Armv8.5)</h3>
-<p class="muted small">One cell per program and transmitter pattern. A dash marks a cell with no precomputed page: five cells the paper reports as undetermined, and two that did not return within the online instance's twenty-minute limit.</p>
-<table><thead><tr><th>Program</th><th>data</th><th>control</th><th>universal data</th><th>universal control</th></tr></thead><tbody><tr><td><code>AddrTransmitter</code></td><td><a href="results/AddrTransmitter__lcm-t1-dt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td><td><a href="results/AddrTransmitter__lcm-t1-ct__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td><td><a href="results/AddrTransmitter__lcm-t1-udt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td><td><span class="muted">&mdash;</span></td></tr><tr><td><code>CtrlTransmitter</code></td><td><a href="results/CtrlTransmitter__lcm-t1-dt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 2)</span></td><td><a href="results/CtrlTransmitter__lcm-t1-ct__d2.html">LEAK EXHIBITED</a><br><span class="muted small">allowed (1 of 2)</span></td><td><a href="results/CtrlTransmitter__lcm-t1-udt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 2)</span></td><td><a href="results/CtrlTransmitter__lcm-t1-uct__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 2)</span></td></tr><tr><td><code>DataTransmitter</code></td><td><a href="results/DataTransmitter__lcm-t1-dt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td><td><a href="results/DataTransmitter__lcm-t1-ct__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td><td><a href="results/DataTransmitter__lcm-t1-udt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td><td><a href="results/DataTransmitter__lcm-t1-uct__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td></tr><tr><td><code>DataTransmitterProbe</code></td><td><a href="results/DataTransmitterProbe__lcm-t1-dt__d2.html">LEAK EXHIBITED</a><br><span class="muted small">allowed (1 of 1)</span></td><td><a href="results/DataTransmitterProbe__lcm-t1-ct__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td><td><a href="results/DataTransmitterProbe__lcm-t1-udt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td><td><a href="results/DataTransmitterProbe__lcm-t1-uct__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 1)</span></td></tr><tr><td><code>SpectreV1</code></td><td><span class="muted">&mdash;</span></td><td><span class="muted">&mdash;</span></td><td><a href="results/SpectreV1__lcm-t1-udt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 2)</span></td><td><span class="muted">&mdash;</span></td></tr><tr><td><code>SpectreV1Fig3Probe</code></td><td><span class="muted">&mdash;</span></td><td><span class="muted">&mdash;</span></td><td><a href="results/SpectreV1Fig3Probe__lcm-t1-udt__d2.html">LEAK EXHIBITED</a><br><span class="muted small">allowed (1 of 2)</span></td><td><a href="results/SpectreV1Fig3Probe__lcm-t1-uct__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 2)</span></td></tr><tr><td><code>SpectreV1ProbeFixed</code></td><td><a href="results/SpectreV1ProbeFixed__lcm-t1-dt__d2.html">LEAK EXHIBITED</a><br><span class="muted small">allowed (1 of 2)</span></td><td><span class="muted">&mdash;</span></td><td><span class="muted">&mdash;</span></td><td><a href="results/SpectreV1ProbeFixed__lcm-t1-uct__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 2)</span></td></tr><tr><td><code>UnivCtrlTransmitter</code></td><td><a href="results/UnivCtrlTransmitter__lcm-t1-dt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 2)</span></td><td><span class="muted">&mdash;</span></td><td><a href="results/UnivCtrlTransmitter__lcm-t1-udt__d2.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 2)</span></td><td><a href="results/UnivCtrlTransmitter__lcm-t1-uct__d2.html">LEAK EXHIBITED</a><br><span class="muted small">allowed (1 of 2)</span></td></tr></tbody></table>
-<h3>RQ4: the constant-time dual</h3>
-<p class="muted small">The constant-time discipline on the six observed cells.</p>
-<table><thead><tr><th>Program</th><th>Contract</th><th>Result</th></tr></thead><tbody><tr><td><code>CtrlTransmitter</code></td><td><code>lcm-ct-ct</code></td><td><a href="results/CtrlTransmitter__lcm-ct-ct__d2.html">DISCIPLINE CAN BE MET</a><br><span class="muted small">allowed (1 of 2)</span></td></tr><tr><td><code>DataTransmitterProbe</code></td><td><code>lcm-ct-dt</code></td><td><a href="results/DataTransmitterProbe__lcm-ct-dt__d2.html">DISCIPLINE CANNOT BE MET</a><br><span class="muted small">forbidden (0 of 1)</span></td></tr><tr><td><code>SpectreV1Fig3Probe</code></td><td><code>lcm-ct-dt</code></td><td><a href="results/SpectreV1Fig3Probe__lcm-ct-dt__d2.html">DISCIPLINE CAN BE MET</a><br><span class="muted small">allowed (1 of 2)</span></td></tr><tr><td><code>SpectreV1ProbeFixed</code></td><td><code>lcm-ct-dt</code></td><td><a href="results/SpectreV1ProbeFixed__lcm-ct-dt__d2.html">DISCIPLINE CAN BE MET</a><br><span class="muted small">allowed (1 of 2)</span></td></tr><tr><td><code>SpectreV1Fig3Probe</code></td><td><code>lcm-ct-udt</code></td><td><a href="results/SpectreV1Fig3Probe__lcm-ct-udt__d2.html">DISCIPLINE CAN BE MET</a><br><span class="muted small">allowed (1 of 2)</span></td></tr><tr><td><code>UnivCtrlTransmitter</code></td><td><code>lcm-ct-uct</code></td><td><a href="results/UnivCtrlTransmitter__lcm-ct-uct__d2.html">DISCIPLINE CANNOT BE MET</a><br><span class="muted small">forbidden (0 of 2)</span></td></tr></tbody></table>
-<h3>RQ5: certification at the reference design's keying</h3>
-<table><thead><tr><th>Program</th><th>cross-level</th></tr></thead><tbody><tr><td><code>RVPageWalkShared</code></td><td><a href="results/RVPageWalkShared__lcm-rv-sm-xlevel__d0.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 9)</span></td></tr><tr><td><code>RVPageWalkDistinct</code></td><td><a href="results/RVPageWalkDistinct__lcm-rv-sm-xlevel__d0.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 9)</span></td></tr><tr><td><code>RVAddrDepWalk</code></td><td><a href="results/RVAddrDepWalk__lcm-rv-sm-xlevel__d0.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 10)</span></td></tr><tr><td><code>RVCtrlToTranslate</code></td><td><a href="results/RVCtrlToTranslate__lcm-rv-sm-xlevel__d0.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 20)</span></td></tr><tr><td><code>RVPteStoreThenTwoWalks</code></td><td><a href="results/RVPteStoreThenTwoWalks__lcm-rv-sm-xlevel__d0.html">LEAK EXHIBITED</a><br><span class="muted small">allowed (9 of 9)</span></td></tr><tr><td><code>RVTlbSectorContrast</code></td><td><a href="results/RVTlbSectorContrast__lcm-rv-sm-xlevel__d0.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 9)</span></td></tr><tr><td><code>RVTranslateMret</code></td><td><a href="results/RVTranslateMret__lcm-rv-sm-xlevel__d0.html">NO LEAK under this keying</a><br><span class="muted small">forbidden (0 of 8)</span></td></tr></tbody></table>
-<!-- results:end -->
 
   <footer>Analyses are performed with the Isla symbolic executor and the z3 solver.</footer>
 </main>
