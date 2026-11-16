@@ -104,7 +104,7 @@ white-space:pre;overflow:auto;text-align:left}
 No nodes drawn.</div>
 </aside><main>
 <div class="pane active" id="pane-graph">
-  <div class="gvbar">
+  <div class="gvbar" style="display:none">
     <button type="button" data-z="out" title="Zoom out">&minus;</button>
     <button type="button" data-z="in" title="Zoom in">+</button>
     <span id="gvpct">100%</span>
@@ -112,13 +112,7 @@ No nodes drawn.</div>
     <button type="button" data-z="fit" title="Fit the whole graph">Fit</button>
     <span class="gvhint">scroll to zoom &middot; drag to pan</span>
   </div>
-  <div id="gvport"><svg width="8pt" height="8pt"
- viewBox="0.00 0.00 8.00 8.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 4)">
-<title>G</title>
-</g>
-</svg>
-</div>
+  <div id="gvport"><div style="color:#656d76;max-width:34em;margin:60px auto;text-align:left;font:14px/1.6 system-ui"><p><strong style="color:#1f2328">No execution to draw.</strong> No execution of this program satisfies the query, so there is no graph and the trace is empty. That is the result, not a rendering failure.</p><p>The query is in the <em>Memory model</em> tab and the program in the <em>Litmus test</em> tab. Whether the result is vacuous is a separate question, answered by the companion run.</p></div></div>
 </div>
 <div class="pane" id="pane-trace"><div class="empty" style="padding:16px 20px">no events</div></div>
 <pre class="pane" id="pane-model">(* experiment 2, Table 1 transmitter taxonomy. *)

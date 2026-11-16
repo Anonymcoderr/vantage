@@ -104,7 +104,7 @@ white-space:pre;overflow:auto;text-align:left}
 No nodes drawn.</div>
 </aside><main>
 <div class="pane active" id="pane-graph">
-  <div class="gvbar">
+  <div class="gvbar" style="display:none">
     <button type="button" data-z="out" title="Zoom out">&minus;</button>
     <button type="button" data-z="in" title="Zoom in">+</button>
     <span id="gvpct">100%</span>
@@ -112,13 +112,7 @@ No nodes drawn.</div>
     <button type="button" data-z="fit" title="Fit the whole graph">Fit</button>
     <span class="gvhint">scroll to zoom &middot; drag to pan</span>
   </div>
-  <div id="gvport"><svg width="8pt" height="8pt"
- viewBox="0.00 0.00 8.00 8.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 4)">
-<title>G</title>
-</g>
-</svg>
-</div>
+  <div id="gvport"><div style="color:#656d76;max-width:34em;margin:60px auto;text-align:left"><p><strong>Every execution leaks, and nothing could be drawn.</strong> This model is a discipline that asks for a relation to be EMPTY, and the verdict says it is non-empty in every execution. No relation it names could be drawn for the chosen candidate, so there is no picture &mdash; but the absence is not safety.</p></div></div>
 </div>
 <div class="pane" id="pane-trace"><div class="empty" style="padding:16px 20px">no events</div></div>
 <pre class="pane" id="pane-model">(* constant-time discipline for transmitter class dt: no secret-dependent xstate *)

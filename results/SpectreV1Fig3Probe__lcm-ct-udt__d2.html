@@ -96,7 +96,7 @@ white-space:pre;overflow:auto;text-align:left}
 </nav>
 <div class="wrap"><aside id="side">
 <h2>Architectural</h2><label><input type="checkbox" data-rel="addr" checked><span class="sw" style="border-color:#0969da"></span>addr<span class="count">3</span></label><label><input type="checkbox" data-rel="ctrl" checked><span class="sw" style="border-color:#0969da"></span>ctrl<span class="count">2</span></label><details class="absent"><summary>5 with no edges here</summary><div class="absentlist">po, rf, co, fr, data</div><div class="absentwhy">Computed for this execution and empty. That can itself be the answer &mdash; a query over an empty relation is forbidden for a structural reason, not a semantic one.</div></details>
-<h2>Microarchitectural (LCM)</h2><div class="empty">no edges of this kind in this execution</div><details class="absent"><summary>5 with no edges here</summary><div class="absentlist">rfx, cox, fe, iio, ext</div><div class="absentwhy">Computed for this execution and empty. That can itself be the answer &mdash; a query over an empty relation is forbidden for a structural reason, not a semantic one.</div></details>
+<h2>Microarchitectural (LCM)</h2><label><input type="checkbox" data-rel="cox" checked><span class="sw" style="border-color:#8250df"></span>cox<span class="count">2</span></label><details class="absent"><summary>4 with no edges here</summary><div class="absentlist">rfx, fe, iio, ext</div><div class="absentwhy">Computed for this execution and empty. That can itself be the answer &mdash; a query over an empty relation is forbidden for a structural reason, not a semantic one.</div></details>
 <p class="cachenote" style="font-size:12px;color:#656d76;margin:8px 0 0">LCM edges and the witness highlight are recovered by re-solving the candidate file the tool cached, pinned to the drawn execution. That file is not the exact input the tool&rsquo;s own solver decided: on RISC-V MP the tool found every candidate satisfiable, and a solver run directly on the cached files found none. The verdict shown is the tool&rsquo;s own; nothing on this page decides it from a cached file.</p>
 <p class="cachenote" style="font-size:12px;color:#656d76;margin:8px 0 0">WHAT THE PICTURE CAN SHOW. Edges: <code>po rf co fr addr data ctrl</code> and <code>xloc rfx cox frx comx tfo fe iio ext</code>; a contract&rsquo;s <code>xstate-key</code> appears under the emitter&rsquo;s name <code>xloc</code>. Events in the emitted <code>Secret</code> set are marked <code>[secret]</code>. Set filters such as <code>[IF &amp; MX]</code> restrict which events an edge may join and are not themselves drawn, and a model may name relations beyond this list. Those take part in the verdict, which the solver computes over the whole assertion, so anything absent here is a limit of the drawing and NOT a claim that it is empty.</p>
 <h2>Nodes</h2>
@@ -112,92 +112,106 @@ Grey = committed.</div>
     <button type="button" data-z="fit" title="Fit the whole graph">Fit</button>
     <span class="gvhint">scroll to zoom &middot; drag to pan</span>
   </div>
-  <div id="gvport"><svg width="938pt" height="223pt"
- viewBox="0.00 0.00 938.00 223.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <div id="gvport"><svg width="826pt" height="223pt"
+ viewBox="0.00 0.00 825.68 223.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 219)">
 <title>G</title>
 <!-- R1_864_0 -->
 <g id="node1" class="node node committed step&#45;0">
 <title>R1_864_0</title>
-<polygon fill="#f6f8fa" stroke="#d0d7de" points="404,-215 171,-215 171,-174 404,-174 404,-215"/>
-<text text-anchor="middle" x="287.5" y="-203" font-family="monospace" font-size="10.00">R1_864_0</text>
-<text text-anchor="middle" x="287.5" y="-192" font-family="monospace" font-size="10.00">a0: &#39;ldr w2, [x3]&#39;: R 0x600010 = 0x0</text>
-<text text-anchor="middle" x="287.5" y="-181" font-family="monospace" font-size="10.00">[tlb 1]</text>
+<polygon fill="#f6f8fa" stroke="#d0d7de" points="288.68,-215 55.68,-215 55.68,-174 288.68,-174 288.68,-215"/>
+<text text-anchor="middle" x="172.18" y="-203" font-family="monospace" font-size="10.00">R1_864_0</text>
+<text text-anchor="middle" x="172.18" y="-192" font-family="monospace" font-size="10.00">a0: &#39;ldr w2, [x3]&#39;: R 0x600010 = 0x0</text>
+<text text-anchor="middle" x="172.18" y="-181" font-family="monospace" font-size="10.00">[tlb 1]</text>
 </g>
 <!-- R2_882_0 -->
 <g id="node2" class="node node committed step&#45;1">
 <title>R2_882_0</title>
-<polygon fill="#f6f8fa" stroke="#d0d7de" points="419,-128 156,-128 156,-87 419,-87 419,-128"/>
-<text text-anchor="middle" x="287.5" y="-116" font-family="monospace" font-size="10.00">R2_882_0</text>
-<text text-anchor="middle" x="287.5" y="-105" font-family="monospace" font-size="10.00">b0: &#39;ldr w4, [x5, x2, lsl #2]&#39;: R ? = 0x0</text>
-<text text-anchor="middle" x="287.5" y="-94" font-family="monospace" font-size="10.00">[tlb 1]</text>
+<polygon fill="#f6f8fa" stroke="#d0d7de" points="303.68,-128 40.68,-128 40.68,-87 303.68,-87 303.68,-128"/>
+<text text-anchor="middle" x="172.18" y="-116" font-family="monospace" font-size="10.00">R2_882_0</text>
+<text text-anchor="middle" x="172.18" y="-105" font-family="monospace" font-size="10.00">b0: &#39;ldr w4, [x5, x2, lsl #2]&#39;: R ? = 0x0</text>
+<text text-anchor="middle" x="172.18" y="-94" font-family="monospace" font-size="10.00">[tlb 1]</text>
 </g>
 <!-- R1_864_0&#45;&gt;R2_882_0 -->
-<g id="edge2" class="edge rel rel&#45;addr cls&#45;arch step&#45;1">
+<g id="edge3" class="edge rel rel&#45;addr cls&#45;arch step&#45;1">
 <title>R1_864_0&#45;&gt;R2_882_0</title>
-<path fill="none" stroke="#0969da" d="M287.5,-173.79C287.5,-163.27 287.5,-150.12 287.5,-138.38"/>
-<polygon fill="#0969da" stroke="#0969da" points="291,-138.11 287.5,-128.11 284,-138.11 291,-138.11"/>
-<text text-anchor="middle" x="298.5" y="-148.8" font-family="Times,serif" font-size="9.00" fill="#0969da">addr</text>
+<path fill="none" stroke="#0969da" d="M172.18,-173.79C172.18,-163.27 172.18,-150.12 172.18,-138.38"/>
+<polygon fill="#0969da" stroke="#0969da" points="175.68,-138.11 172.18,-128.11 168.68,-138.11 175.68,-138.11"/>
+<text text-anchor="middle" x="183.18" y="-148.8" font-family="Times,serif" font-size="9.00" fill="#0969da">addr</text>
 </g>
 <!-- R6_853_0 -->
 <g id="node4" class="node node committed step&#45;3">
 <title>R6_853_0</title>
-<polygon fill="#f6f8fa" stroke="#d0d7de" points="676,-128 437,-128 437,-87 676,-87 676,-128"/>
-<text text-anchor="middle" x="556.5" y="-116" font-family="monospace" font-size="10.00">R6_853_0</text>
-<text text-anchor="middle" x="556.5" y="-105" font-family="monospace" font-size="10.00">d0: &#39;ldr w10, [x7]&#39;: R 0x600030 = 0x0</text>
-<text text-anchor="middle" x="556.5" y="-94" font-family="monospace" font-size="10.00">[tlb 1]</text>
+<polygon fill="#f6f8fa" stroke="#d0d7de" points="560.68,-128 321.68,-128 321.68,-87 560.68,-87 560.68,-128"/>
+<text text-anchor="middle" x="441.18" y="-116" font-family="monospace" font-size="10.00">R6_853_0</text>
+<text text-anchor="middle" x="441.18" y="-105" font-family="monospace" font-size="10.00">d0: &#39;ldr w10, [x7]&#39;: R 0x600030 = 0x0</text>
+<text text-anchor="middle" x="441.18" y="-94" font-family="monospace" font-size="10.00">[tlb 1]</text>
 </g>
 <!-- R1_864_0&#45;&gt;R6_853_0 -->
 <g id="edge4" class="edge rel rel&#45;ctrl cls&#45;arch step&#45;3">
 <title>R1_864_0&#45;&gt;R6_853_0</title>
-<path fill="none" stroke="#0969da" d="M349.21,-174C389.65,-161.22 442.65,-144.48 484.93,-131.11"/>
-<polygon fill="#0969da" stroke="#0969da" points="486.13,-134.41 494.61,-128.06 484.02,-127.73 486.13,-134.41"/>
-<text text-anchor="middle" x="439" y="-148.8" font-family="Times,serif" font-size="9.00" fill="#0969da">ctrl</text>
+<path fill="none" stroke="#0969da" d="M233.89,-174C274.33,-161.22 327.33,-144.48 369.61,-131.11"/>
+<polygon fill="#0969da" stroke="#0969da" points="370.81,-134.41 379.29,-128.06 368.7,-127.73 370.81,-134.41"/>
+<text text-anchor="middle" x="323.68" y="-148.8" font-family="Times,serif" font-size="9.00" fill="#0969da">ctrl</text>
 </g>
 <!-- R9_881_0 -->
 <g id="node5" class="node node committed step&#45;4">
 <title>R9_881_0</title>
-<polygon fill="#f6f8fa" stroke="#d0d7de" points="263,-41 0,-41 0,0 263,0 263,-41"/>
-<text text-anchor="middle" x="131.5" y="-29" font-family="monospace" font-size="10.00">R9_881_0</text>
-<text text-anchor="middle" x="131.5" y="-18" font-family="monospace" font-size="10.00">e0: &#39;ldr w6, [x7, x4, lsl #2]&#39;: R ? = 0x0</text>
-<text text-anchor="middle" x="131.5" y="-7" font-family="monospace" font-size="10.00">[tlb 1]</text>
+<polygon fill="#f6f8fa" stroke="#d0d7de" points="471.68,-41 208.68,-41 208.68,0 471.68,0 471.68,-41"/>
+<text text-anchor="middle" x="340.18" y="-29" font-family="monospace" font-size="10.00">R9_881_0</text>
+<text text-anchor="middle" x="340.18" y="-18" font-family="monospace" font-size="10.00">e0: &#39;ldr w6, [x7, x4, lsl #2]&#39;: R ? = 0x0</text>
+<text text-anchor="middle" x="340.18" y="-7" font-family="monospace" font-size="10.00">[tlb 1]</text>
 </g>
 <!-- R1_864_0&#45;&gt;R9_881_0 -->
-<g id="edge1" class="edge rel rel&#45;addr cls&#45;arch step&#45;4">
+<g id="edge2" class="edge rel rel&#45;addr cls&#45;arch step&#45;4">
 <title>R1_864_0&#45;&gt;R9_881_0</title>
-<path fill="none" stroke="#0969da" d="M186.76,-173.96C162.4,-164.25 139.19,-149.73 124.5,-128 109.22,-105.4 113.83,-73.57 120.51,-50.61"/>
-<polygon fill="#0969da" stroke="#0969da" points="123.85,-51.64 123.55,-41.05 117.18,-49.52 123.85,-51.64"/>
-<text text-anchor="middle" x="135.5" y="-105.3" font-family="Times,serif" font-size="9.00" fill="#0969da">addr</text>
+<path fill="none" stroke="#0969da" d="M94.93,-174C38.49,-156.01 -23.01,-126.18 9.18,-87 33.6,-57.27 120.14,-40.8 198.6,-31.81"/>
+<polygon fill="#0969da" stroke="#0969da" points="199.06,-35.28 208.62,-30.7 198.29,-28.33 199.06,-35.28"/>
+<text text-anchor="middle" x="20.18" y="-105.3" font-family="Times,serif" font-size="9.00" fill="#0969da">addr</text>
 </g>
 <!-- R2_882_0&#45;&gt;R9_881_0 -->
-<g id="edge3" class="edge rel rel&#45;addr cls&#45;arch step&#45;4">
+<g id="edge1" class="edge rel rel&#45;addr cls&#45;arch step&#45;4">
 <title>R2_882_0&#45;&gt;R9_881_0</title>
-<path fill="none" stroke="#0969da" d="M251.71,-87C229.3,-74.79 200.23,-58.95 176.29,-45.91"/>
-<polygon fill="#0969da" stroke="#0969da" points="177.85,-42.77 167.39,-41.06 174.5,-48.91 177.85,-42.77"/>
-<text text-anchor="middle" x="225.5" y="-61.8" font-family="Times,serif" font-size="9.00" fill="#0969da">addr</text>
+<path fill="none" stroke="#0969da" d="M210.72,-87C234.96,-74.73 266.44,-58.81 292.28,-45.73"/>
+<polygon fill="#0969da" stroke="#0969da" points="294.18,-48.69 301.52,-41.06 291.02,-42.45 294.18,-48.69"/>
+<text text-anchor="middle" x="273.18" y="-61.8" font-family="Times,serif" font-size="9.00" fill="#0969da">addr</text>
 </g>
 <!-- R3_853_0 -->
 <g id="node3" class="node node committed step&#45;2">
 <title>R3_853_0</title>
-<polygon fill="#f6f8fa" stroke="#d0d7de" points="673,-215 440,-215 440,-174 673,-174 673,-215"/>
-<text text-anchor="middle" x="556.5" y="-203" font-family="monospace" font-size="10.00">R3_853_0</text>
-<text text-anchor="middle" x="556.5" y="-192" font-family="monospace" font-size="10.00">c0: &#39;ldr w0, [x1]&#39;: R 0x600000 = 0x0</text>
-<text text-anchor="middle" x="556.5" y="-181" font-family="monospace" font-size="10.00">[tlb 1]</text>
+<polygon fill="#f6f8fa" stroke="#d0d7de" points="557.68,-215 324.68,-215 324.68,-174 557.68,-174 557.68,-215"/>
+<text text-anchor="middle" x="441.18" y="-203" font-family="monospace" font-size="10.00">R3_853_0</text>
+<text text-anchor="middle" x="441.18" y="-192" font-family="monospace" font-size="10.00">c0: &#39;ldr w0, [x1]&#39;: R 0x600000 = 0x0</text>
+<text text-anchor="middle" x="441.18" y="-181" font-family="monospace" font-size="10.00">[tlb 1]</text>
 </g>
 <!-- R3_853_0&#45;&gt;R6_853_0 -->
 <g id="edge5" class="edge rel rel&#45;ctrl cls&#45;arch step&#45;3">
 <title>R3_853_0&#45;&gt;R6_853_0</title>
-<path fill="none" stroke="#0969da" d="M556.5,-173.79C556.5,-163.27 556.5,-150.12 556.5,-138.38"/>
-<polygon fill="#0969da" stroke="#0969da" points="560,-138.11 556.5,-128.11 553,-138.11 560,-138.11"/>
-<text text-anchor="middle" x="565" y="-148.8" font-family="Times,serif" font-size="9.00" fill="#0969da">ctrl</text>
+<path fill="none" stroke="#0969da" d="M441.18,-173.79C441.18,-163.27 441.18,-150.12 441.18,-138.38"/>
+<polygon fill="#0969da" stroke="#0969da" points="444.68,-138.11 441.18,-128.11 437.68,-138.11 444.68,-138.11"/>
+<text text-anchor="middle" x="449.68" y="-148.8" font-family="Times,serif" font-size="9.00" fill="#0969da">ctrl</text>
+</g>
+<!-- R6_853_0&#45;&gt;R9_881_0 -->
+<g id="edge7" class="edge rel rel&#45;cox cls&#45;lcm">
+<title>R6_853_0&#45;&gt;R9_881_0</title>
+<path fill="none" stroke="#8250df" d="M418.01,-87C404.25,-75.42 386.62,-60.58 371.61,-47.96"/>
+<polygon fill="#8250df" stroke="#8250df" points="373.5,-44.97 363.59,-41.2 368.99,-50.32 373.5,-44.97"/>
+<text text-anchor="middle" x="402.18" y="-61.8" font-family="Times,serif" font-size="9.00" fill="#8250df">cox</text>
 </g>
 <!-- R10_853_0 -->
 <g id="node6" class="node node committed step&#45;5">
 <title>R10_853_0</title>
-<polygon fill="#f6f8fa" stroke="#d0d7de" points="930,-215 691,-215 691,-174 930,-174 930,-215"/>
-<text text-anchor="middle" x="810.5" y="-203" font-family="monospace" font-size="10.00">R10_853_0</text>
-<text text-anchor="middle" x="810.5" y="-192" font-family="monospace" font-size="10.00">f0: &#39;ldr w10, [x7]&#39;: R 0x600030 = 0x0</text>
-<text text-anchor="middle" x="810.5" y="-181" font-family="monospace" font-size="10.00">[tlb 1]</text>
+<polygon fill="#f6f8fa" stroke="#d0d7de" points="817.68,-128 578.68,-128 578.68,-87 817.68,-87 817.68,-128"/>
+<text text-anchor="middle" x="698.18" y="-116" font-family="monospace" font-size="10.00">R10_853_0</text>
+<text text-anchor="middle" x="698.18" y="-105" font-family="monospace" font-size="10.00">f0: &#39;ldr w10, [x7]&#39;: R 0x600030 = 0x0</text>
+<text text-anchor="middle" x="698.18" y="-94" font-family="monospace" font-size="10.00">[tlb 1]</text>
+</g>
+<!-- R10_853_0&#45;&gt;R9_881_0 -->
+<g id="edge6" class="edge rel rel&#45;cox cls&#45;lcm">
+<title>R10_853_0&#45;&gt;R9_881_0</title>
+<path fill="none" stroke="#8250df" d="M616.05,-87C561.32,-74.01 489.32,-56.91 432.59,-43.44"/>
+<polygon fill="#8250df" stroke="#8250df" points="433.09,-39.96 422.55,-41.06 431.47,-46.77 433.09,-39.96"/>
+<text text-anchor="middle" x="538.18" y="-61.8" font-family="Times,serif" font-size="9.00" fill="#8250df">cox</text>
 </g>
 </g>
 </svg>
