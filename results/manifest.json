@@ -725,30 +725,42 @@
    "test": "lcm-if/IF7-sep32.toml",
    "model": "lcm-if/uct-64.cat",
    "depth": "0"
-  }
- },
- "skipped": [
-  {
+  },
+  "riscv64 (virtual memory)|riscv64/RVPageWalkShared.toml|lcm-rv-share-leaf.cat|0": {
+   "file": "RVPageWalkShared__lcm-rv-share-leaf__d0.html",
+   "verdict": "allowed (structural: query non-empty in all 9 candidates, companion sat)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ1 page-walk channels",
+   "seconds": 0.3,
    "arch": "riscv64 (virtual memory)",
    "test": "riscv64/RVPageWalkShared.toml",
    "model": "lcm-rv-share-leaf.cat",
-   "depth": "0",
-   "why": "no verdict after 2401s"
+   "depth": "0"
   },
-  {
+  "riscv64 (virtual memory)|riscv64/RVPageWalkDistinct.toml|lcm-rv-walker.cat|0": {
+   "file": "RVPageWalkDistinct__lcm-rv-walker__d0.html",
+   "verdict": "allowed (structural: query non-empty in all 9 candidates, companion sat)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ1 third keying",
+   "seconds": 0.2,
    "arch": "riscv64 (virtual memory)",
    "test": "riscv64/RVPageWalkDistinct.toml",
    "model": "lcm-rv-walker.cat",
-   "depth": "0",
-   "why": "no verdict after 2402s"
+   "depth": "0"
   },
-  {
+  "riscv64 (virtual memory)|riscv64/RVAddrDepWalk.toml|lcm-rv-sm-walker.cat|0": {
+   "file": "RVAddrDepWalk__lcm-rv-sm-walker__d0.html",
+   "verdict": "allowed (structural: query non-empty in all 10 candidates, companion sat)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ5 certification, interior-keyed",
+   "seconds": 0.4,
    "arch": "riscv64 (virtual memory)",
    "test": "riscv64/RVAddrDepWalk.toml",
    "model": "lcm-rv-sm-walker.cat",
-   "depth": "0",
-   "why": "no verdict after 2402s"
-  },
+   "depth": "0"
+  }
+ },
+ "skipped": [
   {
    "arch": "riscv64 (virtual memory)",
    "test": "lcm-if/IF15-read-not-branched.toml",
