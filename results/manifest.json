@@ -703,6 +703,28 @@
    "test": "riscv64/RVTranslateMret.toml",
    "model": "lcm-rv-sm-walker.cat",
    "depth": "0"
+  },
+  "riscv64 (virtual memory)|lcm-if/IF13-nonsecret.toml|lcm-if/secret-128.cat|0": {
+   "file": "IF13-nonsecret__lcm-if_secret-128__d0.html",
+   "verdict": "allowed (4 of 8)",
+   "banner": "DISCIPLINE CAN BE MET  allowed",
+   "label": "RQ6 fetch keying, non-secret control",
+   "seconds": 349.3,
+   "arch": "riscv64 (virtual memory)",
+   "test": "lcm-if/IF13-nonsecret.toml",
+   "model": "lcm-if/secret-128.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|lcm-if/IF7-sep32.toml|lcm-if/uct-64.cat|0": {
+   "file": "IF7-sep32__lcm-if_uct-64__d0.html",
+   "verdict": "forbidden (0 of 8)",
+   "banner": "DISCIPLINE CANNOT BE MET  forb",
+   "label": "RQ6 fetch line, arms 32 bytes apart",
+   "seconds": 158.5,
+   "arch": "riscv64 (virtual memory)",
+   "test": "lcm-if/IF7-sep32.toml",
+   "model": "lcm-if/uct-64.cat",
+   "depth": "0"
   }
  },
  "skipped": [
@@ -724,6 +746,34 @@
    "arch": "riscv64 (virtual memory)",
    "test": "riscv64/RVAddrDepWalk.toml",
    "model": "lcm-rv-sm-walker.cat",
+   "depth": "0",
+   "why": "no verdict after 2402s"
+  },
+  {
+   "arch": "riscv64 (virtual memory)",
+   "test": "lcm-if/IF15-read-not-branched.toml",
+   "model": "lcm-if/secret-128.cat",
+   "depth": "0",
+   "why": "no verdict after 2403s"
+  },
+  {
+   "arch": "riscv64 (virtual memory)",
+   "test": "lcm-if/IF7-sep96.toml",
+   "model": "lcm-if/uct-64.cat",
+   "depth": "0",
+   "why": "no verdict after 2402s"
+  },
+  {
+   "arch": "riscv64 (virtual memory)",
+   "test": "lcm-if/IF7-sep160.toml",
+   "model": "lcm-if/uct-64.cat",
+   "depth": "0",
+   "why": "no verdict after 2402s"
+  },
+  {
+   "arch": "riscv64 (virtual memory)",
+   "test": "lcm-if/IF7-sep320.toml",
+   "model": "lcm-if/uct-64.cat",
    "depth": "0",
    "why": "no verdict after 2402s"
   }
