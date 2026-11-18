@@ -1,0 +1,755 @@
+<div style="padding:14px 20px 12px;background:#fff;border-bottom:1px solid #d0d7de;font:13px/1.5 system-ui"><div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><b style="color:#a40e26;font-size:17px;letter-spacing:-.01em">LEAK EXHIBITED</b><code style="font-size:12px;color:#57606a;background:#f6f8fa;padding:1px 6px;border-radius:4px">allowed (8 of 8)</code></div><div style="color:#57606a;font-size:12px;margin-top:5px;max-width:78ch">The pattern this model asks about does occur: the graph below is an execution in which it happens. The edges realising it are drawn <b>thicker, with red endpoints</b>. That path is the finding, and the rest of the graph is context.</div><details open style="margin:8px 0 0"><summary style="cursor:pointer;font-size:12px;color:#0969da">how to read this result</summary><table style="border-collapse:collapse;font-size:12px;margin-top:6px"><tr><th style="text-align:left;padding:3px 12px 3px 0;color:#57606a;font-weight:600;white-space:nowrap;vertical-align:top">What was asked</th><td style="padding:3px 0"><code>~empty ([Level3] ; xstate-key ; [Level3])</code> &mdash; named <code>leaf-at-sigma-M</code></td></tr><tr><th style="text-align:left;padding:3px 12px 3px 0;color:#57606a;font-weight:600;white-space:nowrap;vertical-align:top">Where it was found</th><td style="padding:3px 0"><code>R12_130_0</code> &rarr; <code>R9_211_0</code> via <code>q</code> &mdash; drawn in red below; one satisfying pair, not the only one</td></tr><tr><th style="text-align:left;padding:3px 12px 3px 0;color:#57606a;font-weight:600;white-space:nowrap;vertical-align:top">Why a relation may show 0</th><td style="padding:3px 0">Only edges the model <b>forces</b> are drawn, so a relation the constraints leave free is counted 0 rather than guessed at.</td></tr></table></details></div><!doctype html><html><head><meta charset="utf-8">
+<title>Vantage — RVTranslateMret.toml</title><style>
+
+body{font:14px/1.5 system-ui,sans-serif;margin:0;background:#fff;color:#1f2328;
+display:flex;flex-direction:column;height:100vh;overflow:hidden}
+header{padding:14px 20px;border-bottom:1px solid #d0d7de;background:#f6f8fa;flex:none}
+h1{font-size:16px;margin:0 0 4px} .meta{color:#656d76;font-size:12px}
+.verdict{font-weight:600} .leak{color:#cf222e} .noleak{color:#1a7f37} .errverdict{color:#9a6700}
+.wrap{display:flex;flex:1;min-height:0}
+aside{width:250px;padding:14px 18px;border-right:1px solid #d0d7de;overflow:auto;font-size:13px}
+main{flex:1;overflow:auto;padding:16px;text-align:center;min-width:0}
+svg{max-width:100%;height:auto}
+h2{font-size:11px;text-transform:uppercase;color:#656d76;margin:16px 0 6px;letter-spacing:.04em}
+label{display:flex;align-items:center;gap:7px;padding:3px 0;cursor:pointer}
+.sw{width:22px;height:0;border-top:3px solid;flex:none}
+.count{color:#656d76;font-size:11px;margin-left:auto}
+.hidden{display:none} .empty{color:#656d76;font-style:italic;font-size:12px}
+label.off{color:#8c959f;cursor:default}
+.step{padding:10px 18px;border-bottom:1px solid #d0d7de;background:#fff;display:flex;
+gap:12px;align-items:center;flex-wrap:wrap;flex:none}
+.step input[type=range]{flex:1;min-width:180px}
+.step button{font:13px system-ui;padding:4px 12px;border:1px solid #d0d7de;border-radius:6px;
+background:#f6f8fa;cursor:pointer}.step button:hover{background:#eef1f4}
+#stepinfo{font-size:12px;color:#656d76;min-width:16em}
+#stepinfo b{color:#1f2328} #stepinfo .fire{color:#cf222e;font-weight:600}
+.leak-edge path,.leak-edge polygon{stroke-width:2.4}
+
+.witness-edge path,.witness-edge polygon{stroke-width:3.4}
+.witness-edge text{font-weight:700}
+.witness-node polygon{filter:drop-shadow(0 0 3px rgba(164,14,38,.45))}
+.wit-legend{margin:8px 20px;padding:8px 11px;border-radius:6px;background:#ffe9ec;
+  border:1px solid #a40e2633;font:12px/1.5 system-ui;color:#7d1327}
+.dim{opacity:.10}
+nav.tabs{display:flex;gap:2px;padding:0 18px;border-bottom:1px solid #d0d7de;
+background:#f6f8fa;flex:none}
+nav.tabs button{font:13px system-ui;padding:9px 16px;border:0;border-bottom:2px solid transparent;
+background:none;color:#656d76;cursor:pointer}
+nav.tabs button:hover{color:#1f2328}
+nav.tabs button.active{color:#1f2328;font-weight:600;border-bottom-color:#fd8c73}
+.pane{display:none} .pane.active{display:block}
+/* Absent relations: available, not shouting. */
+.absent{margin:5px 0 0}
+.absent summary{cursor:pointer;font-size:11px;color:#8c959f;list-style:none;
+padding:2px 0}
+.absent summary::-webkit-details-marker{display:none}
+.absent summary::before{content:"+ ";color:#8c959f}
+.absent[open] summary::before{content:"2 "}
+.absent summary:hover{color:#57606a}
+.absentlist{font:11px ui-monospace,SFMono-Regular,monospace;color:#8c959f;
+padding:2px 0 0 12px;line-height:1.6}
+.absentwhy{font-size:10.5px;color:#a0a8b0;padding:4px 0 0 12px;line-height:1.45}
+
+.gvbar{display:flex;gap:6px;align-items:center;padding:0 0 8px}
+.gvbar button{font:600 12px system-ui;padding:4px 10px;border:1px solid #d0d7de;
+border-radius:6px;background:#fff;cursor:pointer;color:#24292f}
+.gvbar button:hover{background:#f6f8fa}
+#gvpct{font:12px ui-monospace,SFMono-Regular,monospace;color:#57606a;
+min-width:46px;text-align:center}
+.gvhint{font-size:11px;color:#8c959f;margin-left:auto}
+#gvport{overflow:hidden;border:1px solid #eaeef2;border-radius:8px;background:#fff;
+height:calc(100vh - 210px);min-height:320px;cursor:grab;position:relative;
+overscroll-behavior:contain}
+#gvport.drag{cursor:grabbing}
+#gvport svg{transform-origin:0 0;max-width:none;max-height:none;display:block}
+table.trace{border-collapse:collapse;width:100%;text-align:left;font:12px/1.6 ui-monospace,monospace}
+table.trace th{font:600 11px system-ui;text-transform:uppercase;letter-spacing:.04em;
+color:#656d76;border-bottom:1px solid #d0d7de;padding:6px 10px}
+table.trace td{padding:5px 10px;border-bottom:1px solid #eaeef2;vertical-align:top}
+table.trace tr.speculative td{background:#fff8e6}
+table.trace tr.speculative td.k{color:#bf8700;font-weight:600}
+table.trace tr.committed td.k{color:#656d76}
+#pane-trace{margin:-16px;padding:0}
+.runnote{background:#fff8c5;border:1px solid #d4a72c;border-radius:6px;
+padding:8px 12px;margin:12px 0 0;font-size:13px;line-height:1.5;text-align:left}
+pre.pane{margin:-16px -16px;padding:16px 20px;font:12px/1.6 ui-monospace,SFMono-Regular,monospace;
+white-space:pre;overflow:auto;text-align:left}
+</style></head><body>
+
+<div id="lcm-verdict" hidden data-verdict="allowed (8 of 8)"></div>
+<header><h1>RVTranslateMret.toml &mdash; lcm-rv-sm-leaf.cat</h1>
+
+<div class="meta">speculation depth 0 &middot; 0 speculative event(s)</div></header>
+
+<div class="step" id="stepbar">
+<button id="prev" type="button">&larr;</button>
+<button id="next" type="button">&rarr;</button>
+<input type="range" id="slider" min="0" max="10" value="10">
+<span id="stepinfo"></span>
+<button id="all" type="button">Show all</button>
+</div>
+<nav class="tabs">
+<button class="tab active" data-pane="graph" type="button">Execution graph</button>
+<button class="tab" data-pane="trace" type="button">Trace</button>
+<button class="tab" data-pane="model" type="button">Memory model &mdash; lcm-rv-sm-leaf.cat</button>
+<button class="tab" data-pane="test" type="button">Litmus test &mdash; RVTranslateMret.toml</button>
+</nav>
+<div class="wrap"><aside id="side">
+<h2>Architectural</h2><label><input type="checkbox" data-rel="co" checked><span class="sw" style="border-color:#8250df"></span>co<span class="count">1</span></label><details class="absent"><summary>6 with no edges here</summary><div class="absentlist">po, rf, fr, addr, data, ctrl</div><div class="absentwhy">Computed for this execution and empty. That can itself be the answer &mdash; a query over an empty relation is forbidden for a structural reason, not a semantic one.</div></details>
+<h2>Microarchitectural (LCM)</h2><label><input type="checkbox" data-rel="iio" checked><span class="sw" style="border-color:#8c959f"></span>iio<span class="count">20</span></label><label><input type="checkbox" data-rel="xloc" checked><span class="sw" style="border-color:#6e40c9"></span>xloc<span class="count">32</span></label><details class="absent"><summary>4 with no edges here</summary><div class="absentlist">rfx, cox, fe, ext</div><div class="absentwhy">Computed for this execution and empty. That can itself be the answer &mdash; a query over an empty relation is forbidden for a structural reason, not a semantic one.</div></details>
+<p class="cachenote" style="font-size:12px;color:#656d76;margin:8px 0 0">LCM edges and the witness highlight are recovered by re-solving the candidate file the tool cached, pinned to the drawn execution. That file is not the exact input the tool&rsquo;s own solver decided: on RISC-V MP the tool found every candidate satisfiable, and a solver run directly on the cached files found none. The verdict shown is the tool&rsquo;s own; nothing on this page decides it from a cached file.</p>
+<p class="cachenote" style="font-size:12px;color:#656d76;margin:8px 0 0">WHAT THE PICTURE CAN SHOW. Edges: <code>po rf co fr addr data ctrl</code> and <code>xloc rfx cox frx comx tfo fe iio ext</code>; a contract&rsquo;s <code>xstate-key</code> appears under the emitter&rsquo;s name <code>xloc</code>. Events in the emitted <code>Secret</code> set are marked <code>[secret]</code>. Set filters such as <code>[IF &amp; MX]</code> restrict which events an edge may join and are not themselves drawn, and a model may name relations beyond this list. Those take part in the verdict, which the solver computes over the whole assertion, so anything absent here is a limit of the drawing and NOT a claim that it is empty.</p>
+<h2>Nodes</h2>
+<div style="font-size:12px;color:#656d76">
+<b style="color:#a40e26">Red outline, red glow</b> = on the leak path the model found. Composes with the kinds below rather than replacing them, so a speculative event on the leak path shows both.<br>Grey = committed.</div>
+</aside><main>
+<div class="pane active" id="pane-graph">
+  <div class="gvbar">
+    <button type="button" data-z="out" title="Zoom out">&minus;</button>
+    <button type="button" data-z="in" title="Zoom in">+</button>
+    <span id="gvpct">100%</span>
+    <button type="button" data-z="reset" title="Natural size">Actual size</button>
+    <button type="button" data-z="fit" title="Fit the whole graph">Fit</button>
+    <span class="gvhint">scroll to zoom &middot; drag to pan</span>
+  </div>
+  <div id="gvport"><svg width="1163pt" height="740pt"
+ viewBox="0.00 0.00 1163.25 740.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 736)">
+<title>G</title>
+<!-- IW -->
+<g id="node1" class="node node committed step&#45;0">
+<title>IW</title>
+<polygon fill="#f6f8fa" stroke="#d0d7de" points="711.25,-120.5 657.25,-120.5 657.25,-84.5 711.25,-84.5 711.25,-120.5"/>
+<text text-anchor="middle" x="684.25" y="-100" font-family="monospace" font-size="10.00">IW</text>
+</g>
+<!-- W12_148_0 -->
+<g id="node11" class="node node committed step&#45;10">
+<title>W12_148_0</title>
+<polygon fill="#f6f8fa" stroke="#d0d7de" points="1052.75,-36 981.75,-36 981.75,0 1052.75,0 1052.75,-36"/>
+<text text-anchor="middle" x="1017.25" y="-21" font-family="monospace" font-size="10.00">W12_148_0</text>
+<text text-anchor="middle" x="1017.25" y="-10" font-family="monospace" font-size="10.00">b4: W pa2</text>
+</g>
+<!-- IW&#45;&gt;W12_148_0 -->
+<g id="edge1" class="edge rel rel&#45;co cls&#45;arch step&#45;10">
+<title>IW&#45;&gt;W12_148_0</title>
+<path fill="none" stroke="#8250df" d="M711.34,-86.15C714.62,-84.61 717.97,-83.19 721.25,-82 807,-50.95 912.55,-33.05 971.62,-24.73"/>
+<polygon fill="#8250df" stroke="#8250df" points="972.32,-28.17 981.75,-23.34 971.36,-21.23 972.32,-28.17"/>
+<text text-anchor="middle" x="813.75" y="-56.8" font-family="Times,serif" font-size="9.00" fill="#8250df">co</text>
+</g>
+<!-- R9_178_0 -->
+<g id="node2" class="node node committed step&#45;1">
+<title>R9_178_0</title>
+<polygon fill="#f6f8fa" stroke="#d0d7de" points="602.75,-645 489.75,-645 489.75,-604 602.75,-604 602.75,-645"/>
+<text text-anchor="middle" x="546.25" y="-633" font-family="monospace" font-size="10.00">R9_178_0</text>
+<text text-anchor="middle" x="546.25" y="-622" font-family="monospace" font-size="10.00">a0: T 0x80500000</text>
+<text text-anchor="middle" x="546.25" y="-611" font-family="monospace" font-size="10.00">[cache+tlb 1]</text>
+</g>
+<!-- R9_189_0 -->
+<g id="node3" class="node node committed step&#45;2">
+<title>R9_189_0</title>
+<polygon fill="#f6f8fa" stroke="#d0d7de" points="825.75,-558 712.75,-558 712.75,-517 825.75,-517 825.75,-558"/>
+<text text-anchor="middle" x="769.25" y="-546" font-family="monospace" font-size="10.00">R9_189_0</text>
+<text text-anchor="middle" x="769.25" y="-535" font-family="monospace" font-size="10.00">a1: T 0x80501010</text>
+<text text-anchor="middle" x="769.25" y="-524" font-family="monospace" font-size="10.00">[cache+tlb 1]</text>
+</g>
+<!-- R9_178_0&#45;&gt;R9_189_0 -->
+<g id="edge2" class="edge rel rel&#45;iio cls&#45;lcm step&#45;2">
+<title>R9_178_0&#45;&gt;R9_189_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M602.85,-613.76C631.3,-607.75 665.87,-598.72 695.25,-586 708.89,-580.09 722.86,-571.81 734.93,-563.81"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="737.06,-566.59 743.36,-558.07 733.12,-560.81 737.06,-566.59"/>
+<text text-anchor="middle" x="720.25" y="-578.8" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R9_200_0 -->
+<g id="node4" class="node node committed step&#45;3">
+<title>R9_200_0</title>
+<polygon fill="#f6f8fa" stroke="#d0d7de" points="320.75,-471 207.75,-471 207.75,-430 320.75,-430 320.75,-471"/>
+<text text-anchor="middle" x="264.25" y="-459" font-family="monospace" font-size="10.00">R9_200_0</text>
+<text text-anchor="middle" x="264.25" y="-448" font-family="monospace" font-size="10.00">a2: T 0x80502008</text>
+<text text-anchor="middle" x="264.25" y="-437" font-family="monospace" font-size="10.00">[cache+tlb 1]</text>
+</g>
+<!-- R9_178_0&#45;&gt;R9_200_0 -->
+<g id="edge3" class="edge rel rel&#45;iio cls&#45;lcm step&#45;3">
+<title>R9_178_0&#45;&gt;R9_200_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M489.34,-605.68C476.84,-600.4 464.1,-593.87 453.25,-586 420.82,-562.48 426.7,-541.81 395.25,-517 373.92,-500.18 347.58,-485.99 324.13,-475.17"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="325.51,-471.96 314.96,-471.04 322.64,-478.34 325.51,-471.96"/>
+<text text-anchor="middle" x="434.25" y="-535.3" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R9_211_0 -->
+<g id="node5" class="node node committed step&#45;4 witness&#45;node">
+<title>R9_211_0</title>
+<polygon fill="#f6f8fa" stroke="#d0d7de" points="196.75,-384 83.75,-384 83.75,-343 196.75,-343 196.75,-384"/>
+<text text-anchor="middle" x="140.25" y="-372" font-family="monospace" font-size="10.00">R9_211_0</text>
+<text text-anchor="middle" x="140.25" y="-361" font-family="monospace" font-size="10.00">a3: T 0x80503880</text>
+<text text-anchor="middle" x="140.25" y="-350" font-family="monospace" font-size="10.00">[cache+tlb 1]</text>
+</g>
+<!-- R9_178_0&#45;&gt;R9_211_0 -->
+<g id="edge4" class="edge rel rel&#45;iio cls&#45;lcm step&#45;4">
+<title>R9_178_0&#45;&gt;R9_211_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M489.56,-611.39C414.6,-592.8 282.2,-550.71 198.25,-471 175.54,-449.44 159.64,-416.98 150.3,-393.56"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="153.54,-392.23 146.7,-384.14 147,-394.73 153.54,-392.23"/>
+<text text-anchor="middle" x="238.25" y="-491.8" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R9_228_0 -->
+<g id="node6" class="node node committed step&#45;5">
+<title>R9_228_0</title>
+<polygon fill="#f6f8fa" stroke="#d0d7de" points="432.75,-294.5 361.75,-294.5 361.75,-258.5 432.75,-258.5 432.75,-294.5"/>
+<text text-anchor="middle" x="397.25" y="-279.5" font-family="monospace" font-size="10.00">R9_228_0</text>
+<text text-anchor="middle" x="397.25" y="-268.5" font-family="monospace" font-size="10.00">a4: R pa1</text>
+</g>
+<!-- R9_178_0&#45;&gt;R9_228_0 -->
+<g id="edge5" class="edge rel rel&#45;iio cls&#45;lcm step&#45;5">
+<title>R9_178_0&#45;&gt;R9_228_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M538.5,-603.84C525.61,-573.88 496.8,-517.32 453.25,-489 417.22,-465.57 385.66,-504.09 358.25,-471 346.62,-456.97 355.97,-448.08 358.25,-430 363.89,-385.13 378.54,-334.54 388.19,-304.38"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="391.6,-305.2 391.37,-294.61 384.94,-303.03 391.6,-305.2"/>
+<text text-anchor="middle" x="364.25" y="-448.3" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R12_97_0 -->
+<g id="node7" class="node node committed step&#45;6">
+<title>R12_97_0</title>
+<polygon fill="#f6f8fa" stroke="#d0d7de" points="478.75,-732 365.75,-732 365.75,-691 478.75,-691 478.75,-732"/>
+<text text-anchor="middle" x="422.25" y="-720" font-family="monospace" font-size="10.00">R12_97_0</text>
+<text text-anchor="middle" x="422.25" y="-709" font-family="monospace" font-size="10.00">b0: T 0x80500000</text>
+<text text-anchor="middle" x="422.25" y="-698" font-family="monospace" font-size="10.00">[cache+tlb 1]</text>
+</g>
+<!-- R9_178_0&#45;&gt;R12_97_0 -->
+<g id="edge41" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R9_178_0&#45;&gt;R12_97_0</title>
+<path fill="none" stroke="#6e40c9" d="M522.43,-645.16C511.36,-654.01 497.88,-664.37 485.25,-673 479.1,-677.2 472.48,-681.43 465.92,-685.47"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="463.81,-682.65 457.06,-690.83 467.43,-688.64 463.81,-682.65"/>
+<text text-anchor="middle" x="508.75" y="-665.8" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_108_0 -->
+<g id="node8" class="node node committed step&#45;7">
+<title>R12_108_0</title>
+<polygon fill="#f6f8fa" stroke="#d0d7de" points="608.75,-297 495.75,-297 495.75,-256 608.75,-256 608.75,-297"/>
+<text text-anchor="middle" x="552.25" y="-285" font-family="monospace" font-size="10.00">R12_108_0</text>
+<text text-anchor="middle" x="552.25" y="-274" font-family="monospace" font-size="10.00">b1: T 0x80501010</text>
+<text text-anchor="middle" x="552.25" y="-263" font-family="monospace" font-size="10.00">[cache+tlb 1]</text>
+</g>
+<!-- R9_178_0&#45;&gt;R12_108_0 -->
+<g id="edge38" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R9_178_0&#45;&gt;R12_108_0</title>
+<path fill="none" stroke="#6e40c9" d="M547.04,-603.95C548.93,-556.27 553.66,-430.24 555.25,-325 555.31,-320.56 555.42,-319.44 555.25,-315 555.15,-312.58 555.02,-310.07 554.86,-307.55"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="558.34,-307.06 554.13,-297.33 551.36,-307.56 558.34,-307.06"/>
+<text text-anchor="middle" x="562.75" y="-448.3" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_119_0 -->
+<g id="node9" class="node node committed step&#45;8">
+<title>R12_119_0</title>
+<polygon fill="#f6f8fa" stroke="#d0d7de" points="676.75,-210 563.75,-210 563.75,-169 676.75,-169 676.75,-210"/>
+<text text-anchor="middle" x="620.25" y="-198" font-family="monospace" font-size="10.00">R12_119_0</text>
+<text text-anchor="middle" x="620.25" y="-187" font-family="monospace" font-size="10.00">b2: T 0x80502008</text>
+<text text-anchor="middle" x="620.25" y="-176" font-family="monospace" font-size="10.00">[cache+tlb 1]</text>
+</g>
+<!-- R9_178_0&#45;&gt;R12_119_0 -->
+<g id="edge39" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R9_178_0&#45;&gt;R12_119_0</title>
+<path fill="none" stroke="#6e40c9" d="M560.19,-603.81C563.78,-598.22 567.41,-592.01 570.25,-586 575.82,-574.17 575.44,-570.51 579.25,-558 590.96,-519.51 597.04,-510.58 604.25,-471 618.14,-394.67 614.41,-374.49 618.25,-297 619.53,-271.09 620.01,-241.59 620.18,-220.22"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="623.68,-220.16 620.24,-210.14 616.68,-220.12 623.68,-220.16"/>
+<text text-anchor="middle" x="622.75" y="-404.8" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_130_0 -->
+<g id="node10" class="node node committed step&#45;9 witness&#45;node">
+<title>R12_130_0</title>
+<polygon fill="#f6f8fa" stroke="#d0d7de" points="842.75,-123 729.75,-123 729.75,-82 842.75,-82 842.75,-123"/>
+<text text-anchor="middle" x="786.25" y="-111" font-family="monospace" font-size="10.00">R12_130_0</text>
+<text text-anchor="middle" x="786.25" y="-100" font-family="monospace" font-size="10.00">b3: T 0x80503888</text>
+<text text-anchor="middle" x="786.25" y="-89" font-family="monospace" font-size="10.00">[cache+tlb 1]</text>
+</g>
+<!-- R9_178_0&#45;&gt;R12_130_0 -->
+<g id="edge40" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R9_178_0&#45;&gt;R12_130_0</title>
+<path fill="none" stroke="#6e40c9" d="M603.15,-609.04C612.49,-607.07 622.1,-605.29 631.25,-604 714.38,-592.27 962.69,-629.77 1006.25,-558 1054.8,-477.99 1018.18,-202.06 947.25,-141 915.74,-113.88 894.77,-130.9 852.82,-123.71"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="853.44,-120.27 842.93,-121.64 852,-127.12 853.44,-120.27"/>
+<text text-anchor="middle" x="1034.75" y="-361.3" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R9_189_0&#45;&gt;R9_200_0 -->
+<g id="edge6" class="edge rel rel&#45;iio cls&#45;lcm step&#45;3">
+<title>R9_189_0&#45;&gt;R9_200_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M712.64,-535.99C640.4,-534.14 512.11,-526.77 406.25,-499 395.47,-496.17 393.69,-492.9 383.25,-489 366.46,-482.72 348.08,-476.59 330.91,-471.15"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="331.55,-467.69 320.96,-468.04 329.46,-474.37 331.55,-467.69"/>
+<text text-anchor="middle" x="412.25" y="-491.8" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R9_189_0&#45;&gt;R9_211_0 -->
+<g id="edge7" class="edge rel rel&#45;iio cls&#45;lcm step&#45;4">
+<title>R9_189_0&#45;&gt;R9_211_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M712.69,-527.26C652.14,-516.64 553.65,-497.23 471.25,-471 426.65,-456.81 418.43,-445.45 374.25,-430 318.67,-410.56 254.14,-392.85 206.94,-380.76"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="207.69,-377.34 197.14,-378.27 205.96,-384.12 207.69,-377.34"/>
+<text text-anchor="middle" x="477.25" y="-448.3" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R9_189_0&#45;&gt;R9_228_0 -->
+<g id="edge8" class="edge rel rel&#45;iio cls&#45;lcm step&#45;5">
+<title>R9_189_0&#45;&gt;R9_228_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M712.38,-523.31C672.61,-512.66 619.16,-495.4 576.25,-471 551.86,-457.13 552.02,-444.9 528.25,-430 485.08,-402.94 454.97,-423.87 423.25,-384 403.82,-359.58 418.27,-345.16 410.25,-315 409.32,-311.5 408.22,-307.85 407.06,-304.27"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="410.28,-302.85 403.74,-294.51 403.65,-305.1 410.28,-302.85"/>
+<text text-anchor="middle" x="478.25" y="-404.8" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R9_189_0&#45;&gt;R12_97_0 -->
+<g id="edge45" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R9_189_0&#45;&gt;R12_97_0</title>
+<path fill="none" stroke="#6e40c9" d="M766.48,-558.26C762.01,-582.47 750.83,-622.98 724.25,-645 689.06,-674.15 566.97,-693.51 489.22,-703.2"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="488.53,-699.76 479.03,-704.45 489.38,-706.71 488.53,-699.76"/>
+<text text-anchor="middle" x="761.75" y="-622.3" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R9_189_0&#45;&gt;R12_108_0 -->
+<g id="edge42" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R9_189_0&#45;&gt;R12_108_0</title>
+<path fill="none" stroke="#6e40c9" d="M762.45,-516.76C752.6,-489.58 732.71,-439.72 707.25,-402 677.51,-357.96 667.71,-346.93 625.25,-315 619.08,-310.36 612.26,-306.01 605.33,-302.03"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="606.99,-298.95 596.55,-297.19 603.62,-305.08 606.99,-298.95"/>
+<text text-anchor="middle" x="721.75" y="-404.8" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R9_189_0&#45;&gt;R12_119_0 -->
+<g id="edge43" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R9_189_0&#45;&gt;R12_119_0</title>
+<path fill="none" stroke="#6e40c9" d="M784.6,-516.77C795.88,-500.28 809.25,-475.64 809.25,-451.5 809.25,-451.5 809.25,-451.5 809.25,-275.5 809.25,-220.29 741.34,-200.73 686.94,-193.91"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="687.28,-190.43 676.95,-192.78 686.5,-197.39 687.28,-190.43"/>
+<text text-anchor="middle" x="818.75" y="-361.3" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R9_189_0&#45;&gt;R12_130_0 -->
+<g id="edge44" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R9_189_0&#45;&gt;R12_130_0</title>
+<path fill="none" stroke="#6e40c9" d="M825.75,-524.06C843.38,-518.37 862.15,-510.3 877.25,-499 889.49,-489.84 891.67,-485.24 897.25,-471 939.86,-362.12 922.9,-326.69 930.25,-210 932.17,-179.39 949.47,-164.9 930.25,-141 908.78,-114.31 888.01,-129.55 852.76,-123.68"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="853.47,-120.25 842.95,-121.56 851.98,-127.09 853.47,-120.25"/>
+<text text-anchor="middle" x="936.75" y="-317.8" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R9_200_0&#45;&gt;R9_211_0 -->
+<g id="edge9" class="edge rel rel&#45;iio cls&#45;lcm step&#45;4">
+<title>R9_200_0&#45;&gt;R9_211_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M235.8,-430C218.44,-418.1 196.05,-402.75 177.31,-389.91"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="179.22,-386.97 168.99,-384.2 175.26,-392.75 179.22,-386.97"/>
+<text text-anchor="middle" x="212.25" y="-404.8" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R9_200_0&#45;&gt;R9_228_0 -->
+<g id="edge10" class="edge rel rel&#45;iio cls&#45;lcm step&#45;5">
+<title>R9_200_0&#45;&gt;R9_228_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M270.92,-429.89C279.71,-406.58 297.17,-367.72 323.25,-343 336.52,-330.42 346.04,-336.51 360.25,-325 367.72,-318.95 374.6,-311.11 380.35,-303.55"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="383.55,-305.1 386.54,-294.93 377.87,-301.01 383.55,-305.1"/>
+<text text-anchor="middle" x="329.25" y="-361.3" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R9_200_0&#45;&gt;R12_97_0 -->
+<g id="edge49" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R9_200_0&#45;&gt;R12_97_0</title>
+<path fill="none" stroke="#6e40c9" d="M259.89,-471.43C258.61,-479.94 257.88,-489.98 259.25,-499 271.51,-579.88 261.02,-615.55 319.25,-673 329.54,-683.15 342.79,-690.58 356.34,-696.01"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="355.15,-699.3 365.74,-699.46 357.56,-692.73 355.15,-699.3"/>
+<text text-anchor="middle" x="279.75" y="-578.8" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R9_200_0&#45;&gt;R12_108_0 -->
+<g id="edge46" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R9_200_0&#45;&gt;R12_108_0</title>
+<path fill="none" stroke="#6e40c9" d="M320.83,-434.1C326.04,-432.71 331.24,-431.32 336.25,-430 367.31,-421.8 380.44,-431.13 406.25,-412 435.09,-390.62 423.06,-368.58 448.25,-343 464.07,-326.93 484.56,-312.96 503.16,-302.1"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="505.14,-305 512.11,-297.03 501.69,-298.92 505.14,-305"/>
+<text text-anchor="middle" x="457.75" y="-361.3" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R9_200_0&#45;&gt;R12_119_0 -->
+<g id="edge47" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R9_200_0&#45;&gt;R12_119_0</title>
+<path fill="none" stroke="#6e40c9" d="M257.33,-429.54C248.98,-401.66 238.59,-350.5 260.25,-315 269.36,-300.07 280.33,-306.13 295.25,-297 321.86,-280.71 323.77,-268.77 352.25,-256 434.83,-218.96 465.48,-233.21 553.67,-211.11"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="554.74,-214.45 563.54,-208.55 552.98,-207.67 554.74,-214.45"/>
+<text text-anchor="middle" x="269.75" y="-317.8" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R9_200_0&#45;&gt;R12_130_0 -->
+<g id="edge48" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R9_200_0&#45;&gt;R12_130_0</title>
+<path fill="none" stroke="#6e40c9" d="M207.46,-449.18C156.51,-445.59 83.85,-431.66 44.25,-384 -16.88,-310.42 -14.95,-235.05 54.25,-169 76.71,-147.56 87.96,-147.81 118.25,-141 245.76,-112.33 572.3,-142.65 719.31,-122.77"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="720.2,-126.18 729.58,-121.25 719.17,-119.25 720.2,-126.18"/>
+<text text-anchor="middle" x="11.75" y="-274.3" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R9_211_0&#45;&gt;R9_228_0 -->
+<g id="edge11" class="edge rel rel&#45;iio cls&#45;lcm step&#45;5">
+<title>R9_211_0&#45;&gt;R9_228_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M196.87,-349.78C223.39,-343.28 255.23,-334.7 283.25,-325 293.78,-321.35 295.98,-319.35 306.25,-315 321.22,-308.66 337.64,-301.85 352.35,-295.8"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="353.82,-298.98 361.74,-291.95 351.16,-292.5 353.82,-298.98"/>
+<text text-anchor="middle" x="312.25" y="-317.8" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R9_211_0&#45;&gt;R12_97_0 -->
+<g id="edge53" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R9_211_0&#45;&gt;R12_97_0</title>
+<path fill="none" stroke="#6e40c9" d="M112.22,-384.18C93.86,-399.58 73.25,-422.82 73.25,-449.5 73.25,-625.5 73.25,-625.5 73.25,-625.5 73.25,-682.93 253.88,-701.72 355.25,-707.74"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="355.22,-711.25 365.4,-708.32 355.61,-704.26 355.22,-711.25"/>
+<text text-anchor="middle" x="82.75" y="-535.3" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R9_211_0&#45;&gt;R12_108_0 -->
+<g id="edge50" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R9_211_0&#45;&gt;R12_108_0</title>
+<path fill="none" stroke="#6e40c9" d="M196.8,-353.85C232.2,-347.64 278.49,-338.05 318.25,-325 328.45,-321.65 329.99,-318.18 340.25,-315 341.14,-314.72 423.58,-300.17 485.37,-289.28"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="486.24,-292.68 495.48,-287.5 485.03,-285.79 486.24,-292.68"/>
+<text text-anchor="middle" x="349.75" y="-317.8" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R9_211_0&#45;&gt;R12_119_0 -->
+<g id="edge51" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R9_211_0&#45;&gt;R12_119_0</title>
+<path fill="none" stroke="#6e40c9" d="M144.47,-342.64C150.43,-319.07 163.47,-279.98 188.25,-256 211.73,-233.27 224.39,-235.29 256.25,-228 384.12,-198.72 424.07,-232.62 553.72,-210.67"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="554.39,-214.11 563.62,-208.92 553.17,-207.22 554.39,-214.11"/>
+<text text-anchor="middle" x="197.75" y="-274.3" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R9_211_0&#45;&gt;R12_130_0 -->
+<g id="edge52" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R9_211_0&#45;&gt;R12_130_0</title>
+<path fill="none" stroke="#6e40c9" d="M137.47,-342.61C135.06,-321.01 132.85,-285.64 139.25,-256 150.92,-201.93 176.81,-189.35 228.25,-169 429.37,-89.41 502.08,-160.71 719.42,-122.89"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="720.33,-126.29 729.55,-121.07 719.09,-119.4 720.33,-126.29"/>
+<text text-anchor="middle" x="157.75" y="-230.8" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_97_0&#45;&gt;R9_178_0 -->
+<g id="edge34" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R12_97_0&#45;&gt;R9_178_0</title>
+<path fill="none" stroke="#6e40c9" d="M437.48,-690.79C445.35,-681.53 455.54,-670.83 466.25,-663 472.78,-658.23 480.01,-653.83 487.39,-649.86"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="489.45,-652.73 496.75,-645.05 486.26,-646.5 489.45,-652.73"/>
+<text text-anchor="middle" x="475.75" y="-665.8" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_97_0&#45;&gt;R9_189_0 -->
+<g id="edge35" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R12_97_0&#45;&gt;R9_189_0</title>
+<path fill="none" stroke="#6e40c9" d="M478.97,-698.05C544.88,-681.37 654.28,-646.62 730.25,-586 737.32,-580.36 743.99,-573.24 749.74,-566.24"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="752.64,-568.21 756.05,-558.18 747.13,-563.9 752.64,-568.21"/>
+<text text-anchor="middle" x="710.75" y="-622.3" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_97_0&#45;&gt;R9_200_0 -->
+<g id="edge36" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R12_97_0&#45;&gt;R9_200_0</title>
+<path fill="none" stroke="#6e40c9" d="M365.49,-697.59C351.94,-692.05 338.68,-684.17 329.25,-673 303.71,-642.76 318.27,-624.76 310.25,-586 301.34,-542.98 308.71,-529.31 291.25,-489 289.87,-485.81 288.18,-482.63 286.33,-479.54"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="289.23,-477.59 280.81,-471.16 283.39,-481.44 289.23,-477.59"/>
+<text text-anchor="middle" x="319.75" y="-578.8" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_97_0&#45;&gt;R9_211_0 -->
+<g id="edge37" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R12_97_0&#45;&gt;R9_211_0</title>
+<path fill="none" stroke="#6e40c9" d="M365.56,-705.71C280.13,-696.91 128.25,-674.38 128.25,-625.5 128.25,-625.5 128.25,-625.5 128.25,-449.5 128.25,-431.04 131.06,-410.54 133.96,-394.3"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="137.43,-394.79 135.85,-384.31 130.55,-393.49 137.43,-394.79"/>
+<text text-anchor="middle" x="137.75" y="-535.3" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_97_0&#45;&gt;R12_108_0 -->
+<g id="edge12" class="edge rel rel&#45;iio cls&#45;lcm step&#45;7">
+<title>R12_97_0&#45;&gt;R12_108_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M411.48,-690.78C393.1,-654.22 360.5,-574.44 391.25,-517 398.05,-504.28 407.35,-508.45 418.25,-499 470.09,-454.06 487.94,-443.99 521.25,-384 534.64,-359.87 542.75,-329.39 547.3,-307.22"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="550.74,-307.85 549.2,-297.37 543.87,-306.53 550.74,-307.85"/>
+<text text-anchor="middle" x="436.25" y="-491.8" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R12_97_0&#45;&gt;R12_119_0 -->
+<g id="edge13" class="edge rel rel&#45;iio cls&#45;lcm step&#45;8">
+<title>R12_97_0&#45;&gt;R12_119_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M365.36,-710.21C254.27,-708.11 19.25,-695.4 19.25,-625.5 19.25,-625.5 19.25,-625.5 19.25,-362.5 19.25,-317.73 127.81,-244.96 169.25,-228 246.52,-196.36 457.49,-223.08 553.59,-210.49"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="554.28,-213.92 563.63,-208.95 553.22,-207.01 554.28,-213.92"/>
+<text text-anchor="middle" x="25.25" y="-448.3" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R12_97_0&#45;&gt;R12_130_0 -->
+<g id="edge14" class="edge rel rel&#45;iio cls&#45;lcm step&#45;9">
+<title>R12_97_0&#45;&gt;R12_130_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M478.93,-709.28C641.41,-705.04 1097.25,-687.62 1097.25,-625.5 1097.25,-625.5 1097.25,-625.5 1097.25,-406 1097.25,-274.42 1082.62,-200.48 965.25,-141 921.16,-118.66 901.87,-132.93 852.79,-123.78"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="853.42,-120.34 842.91,-121.7 851.98,-127.19 853.42,-120.34"/>
+<text text-anchor="middle" x="1103.25" y="-404.8" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R12_97_0&#45;&gt;W12_148_0 -->
+<g id="edge15" class="edge rel rel&#45;iio cls&#45;lcm step&#45;10">
+<title>R12_97_0&#45;&gt;W12_148_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M478.82,-709.75C648.79,-706.76 1143.25,-692.3 1143.25,-625.5 1143.25,-625.5 1143.25,-625.5 1143.25,-101.5 1143.25,-61.83 1098.98,-40.2 1062.93,-29.16"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="1063.59,-25.72 1053.02,-26.33 1061.67,-32.44 1063.59,-25.72"/>
+<text text-anchor="middle" x="1149.25" y="-361.3" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R12_108_0&#45;&gt;R9_178_0 -->
+<g id="edge22" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R12_108_0&#45;&gt;R9_178_0</title>
+<path fill="none" stroke="#6e40c9" d="M575.79,-297.3C580.46,-302.53 584.7,-308.54 587.25,-315 598.49,-343.53 589.84,-353.44 587.25,-384 580.77,-460.27 562.87,-548.74 553,-593.8"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="549.54,-593.25 550.79,-603.78 556.37,-594.77 549.54,-593.25"/>
+<text text-anchor="middle" x="590.75" y="-448.3" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_108_0&#45;&gt;R9_189_0 -->
+<g id="edge23" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R12_108_0&#45;&gt;R9_189_0</title>
+<path fill="none" stroke="#6e40c9" d="M609.03,-282.77C654.97,-288.19 714.81,-298.24 732.25,-315 784.38,-365.11 780.39,-458.88 774.24,-506.74"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="770.76,-506.38 772.83,-516.77 777.69,-507.36 770.76,-506.38"/>
+<text text-anchor="middle" x="783.75" y="-404.8" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_108_0&#45;&gt;R9_200_0 -->
+<g id="edge24" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R12_108_0&#45;&gt;R9_200_0</title>
+<path fill="none" stroke="#6e40c9" d="M537.3,-297.02C509.04,-333.87 450.34,-410.17 447.25,-412 404.24,-437.45 385.1,-419.45 336.25,-430 334.55,-430.37 332.83,-430.75 331.1,-431.14"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="330.02,-427.8 321.1,-433.52 331.64,-434.61 330.02,-427.8"/>
+<text text-anchor="middle" x="511.75" y="-361.3" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_108_0&#45;&gt;R9_211_0 -->
+<g id="edge25" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R12_108_0&#45;&gt;R9_211_0</title>
+<path fill="none" stroke="#6e40c9" d="M495.45,-293.03C458.07,-302.94 407.95,-315.64 363.25,-325 311.02,-335.94 251.39,-345.83 206.95,-352.71"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="206.2,-349.28 196.84,-354.26 207.26,-356.2 206.2,-349.28"/>
+<text text-anchor="middle" x="414.75" y="-317.8" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_108_0&#45;&gt;R12_119_0 -->
+<g id="edge16" class="edge rel rel&#45;iio cls&#45;lcm step&#45;8">
+<title>R12_108_0&#45;&gt;R12_119_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M568.02,-255.79C576.94,-244.63 588.25,-230.5 598.06,-218.24"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="601.05,-220.1 604.56,-210.11 595.58,-215.73 601.05,-220.1"/>
+<text text-anchor="middle" x="594.25" y="-230.8" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R12_108_0&#45;&gt;R12_130_0 -->
+<g id="edge17" class="edge rel rel&#45;iio cls&#45;lcm step&#45;9">
+<title>R12_108_0&#45;&gt;R12_130_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M543.08,-255.97C533.67,-232.73 522.92,-193.96 542.25,-169 590.32,-106.92 637.65,-141.81 719.27,-123"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="720.57,-126.28 729.4,-120.43 718.85,-119.5 720.57,-126.28"/>
+<text text-anchor="middle" x="548.25" y="-187.3" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R12_108_0&#45;&gt;W12_148_0 -->
+<g id="edge18" class="edge rel rel&#45;iio cls&#45;lcm step&#45;10">
+<title>R12_108_0&#45;&gt;W12_148_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M609.08,-263.85C689.61,-245.12 838.55,-202.16 941.25,-123 968.65,-101.88 990.68,-68.31 1003.83,-45.05"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="1007.01,-46.53 1008.75,-36.08 1000.87,-43.17 1007.01,-46.53"/>
+<text text-anchor="middle" x="918.25" y="-143.8" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R12_119_0&#45;&gt;R9_178_0 -->
+<g id="edge26" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R12_119_0&#45;&gt;R9_178_0</title>
+<path fill="none" stroke="#6e40c9" d="M649.89,-210.32C655.29,-215.4 660.17,-221.35 663.25,-228 679.92,-264.12 681.18,-554.22 657.25,-586 651.09,-594.17 632.64,-601.71 612.51,-607.85"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="611.48,-604.51 602.86,-610.66 613.44,-611.23 611.48,-604.51"/>
+<text text-anchor="middle" x="684.75" y="-404.8" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_119_0&#45;&gt;R9_189_0 -->
+<g id="edge27" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R12_119_0&#45;&gt;R9_189_0</title>
+<path fill="none" stroke="#6e40c9" d="M677.11,-191.01C719.84,-193.67 778.48,-202.33 823.25,-228 847.44,-241.87 864.25,-247.61 864.25,-275.5 864.25,-451.5 864.25,-451.5 864.25,-451.5 864.25,-477.49 844.26,-497.51 822.63,-511.59"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="820.68,-508.68 813.97,-516.87 824.32,-514.65 820.68,-508.68"/>
+<text text-anchor="middle" x="873.75" y="-361.3" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_119_0&#45;&gt;R9_200_0 -->
+<g id="edge28" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R12_119_0&#45;&gt;R9_200_0</title>
+<path fill="none" stroke="#6e40c9" d="M563.62,-208.88C561.81,-209.28 560.02,-209.66 558.25,-210 507.48,-219.82 372.53,-204.94 326.25,-228 289.61,-246.25 298.52,-273.16 265.25,-297 248.41,-309.07 233.73,-297.75 222.25,-315 200.38,-347.85 222.75,-392.71 242.29,-421.39"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="239.57,-423.61 248.21,-429.75 245.28,-419.56 239.57,-423.61"/>
+<text text-anchor="middle" x="231.75" y="-317.8" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_119_0&#45;&gt;R9_211_0 -->
+<g id="edge29" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R12_119_0&#45;&gt;R9_211_0</title>
+<path fill="none" stroke="#6e40c9" d="M563.62,-208.91C561.82,-209.3 560.02,-209.67 558.25,-210 496.52,-221.5 333.07,-201.28 276.25,-228 238.12,-245.93 241.19,-267.36 211.25,-297 198.02,-310.09 182.92,-324.14 170.05,-335.86"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="167.43,-333.51 162.37,-342.82 172.13,-338.7 167.43,-333.51"/>
+<text text-anchor="middle" x="251.75" y="-274.3" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_119_0&#45;&gt;R12_130_0 -->
+<g id="edge19" class="edge rel rel&#45;iio cls&#45;lcm step&#45;9">
+<title>R12_119_0&#45;&gt;R12_130_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M658.33,-169C682.29,-156.73 713.39,-140.81 738.92,-127.73"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="740.75,-130.73 748.05,-123.06 737.56,-124.5 740.75,-130.73"/>
+<text text-anchor="middle" x="713.25" y="-143.8" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R12_119_0&#45;&gt;W12_148_0 -->
+<g id="edge20" class="edge rel rel&#45;iio cls&#45;lcm step&#45;10">
+<title>R12_119_0&#45;&gt;W12_148_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M677.14,-177.24C725.1,-166.63 794.89,-148.53 852.25,-123 902.23,-100.75 954.84,-65.16 986.86,-41.93"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="988.93,-44.75 994.93,-36.02 984.79,-39.11 988.93,-44.75"/>
+<text text-anchor="middle" x="931.25" y="-100.3" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+<!-- R12_130_0&#45;&gt;R9_178_0 -->
+<g id="edge30" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R12_130_0&#45;&gt;R9_178_0</title>
+<path fill="none" stroke="#6e40c9" d="M813.14,-123.25C869.59,-167.21 995.25,-279.29 995.25,-406 995.25,-538.5 995.25,-538.5 995.25,-538.5 995.25,-620.69 711.77,-587.53 631.25,-604 625.21,-605.23 618.95,-606.57 612.68,-607.94"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="611.87,-604.54 602.86,-610.12 613.38,-611.37 611.87,-604.54"/>
+<text text-anchor="middle" x="1002.75" y="-361.3" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_130_0&#45;&gt;R9_189_0 -->
+<g id="edge31" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R12_130_0&#45;&gt;R9_189_0</title>
+<path fill="none" stroke="#6e40c9" d="M802.16,-123.28C823.55,-151.07 860.88,-204.1 878.25,-256 896.35,-310.08 890.83,-327.08 887.25,-384 883.93,-436.61 898.59,-465.08 858.25,-499 851.27,-504.86 843.25,-509.93 834.94,-514.27"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="833.3,-511.17 825.84,-518.7 836.36,-517.47 833.3,-511.17"/>
+<text text-anchor="middle" x="899.75" y="-317.8" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_130_0&#45;&gt;R9_200_0 -->
+<g id="edge32" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R12_130_0&#45;&gt;R9_200_0</title>
+<path fill="none" stroke="#6e40c9" d="M729.58,-121.23C726.44,-121.9 723.31,-122.5 720.25,-123 492.87,-159.93 430.22,-107.9 202.25,-141 153.17,-148.13 131.33,-136.08 94.25,-169 22.48,-232.71 12.48,-310.55 74.25,-384 104.54,-420.02 155.65,-436.27 197.24,-443.58"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="196.88,-447.06 207.31,-445.21 198,-440.15 196.88,-447.06"/>
+<text text-anchor="middle" x="46.75" y="-274.3" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_130_0&#45;&gt;R9_211_0 -->
+<g id="edge33" class="edge rel rel&#45;xloc cls&#45;lcm">
+<title>R12_130_0&#45;&gt;R9_211_0</title>
+<path fill="none" stroke="#6e40c9" d="M729.53,-120.95C726.4,-121.7 723.29,-122.39 720.25,-123 648.8,-137.38 629.06,-128.53 557.25,-141 392.94,-169.54 342.09,-154.81 192.25,-228 174.35,-236.74 167.27,-238.78 157.25,-256 143.73,-279.22 140.02,-309.88 139.38,-332.34"/>
+<polygon fill="#6e40c9" stroke="#6e40c9" points="135.88,-332.6 139.28,-342.63 142.88,-332.67 135.88,-332.6"/>
+<text text-anchor="middle" x="201.75" y="-230.8" font-family="Times,serif" font-size="9.00" fill="#6e40c9">xloc</text>
+</g>
+<!-- R12_130_0&#45;&gt;R9_211_0 -->
+<g id="edge54" class="edge rel rel&#45;q cls&#45;lcm witness&#45;edge">
+<title>R12_130_0&#45;&gt;R9_211_0</title>
+<path fill="none" stroke="#a40e26" stroke-width="3.2" d="M729.57,-121.21C726.43,-121.89 723.31,-122.49 720.25,-123 574.83,-147.06 285.45,-102.38 155.25,-169 119.92,-187.07 104.59,-191.84 88.25,-228 71.9,-264.18 95.76,-307.15 116.29,-334.62"/>
+<polygon fill="#a40e26" stroke="#a40e26" stroke-width="3.2" points="113.61,-336.87 122.51,-342.62 119.13,-332.57 113.61,-336.87"/>
+<text text-anchor="middle" x="114.25" y="-230.8" font-family="Times,serif" font-size="9.00" fill="#a40e26">q (witness)</text>
+</g>
+<!-- R12_130_0&#45;&gt;W12_148_0 -->
+<g id="edge21" class="edge rel rel&#45;iio cls&#45;lcm step&#45;10">
+<title>R12_130_0&#45;&gt;W12_148_0</title>
+<path fill="none" stroke="#8c959f" stroke-dasharray="5,2" d="M840.99,-81.95C880.92,-67.69 934.38,-48.59 971.92,-35.19"/>
+<polygon fill="#8c959f" stroke="#8c959f" points="973.34,-38.4 981.58,-31.74 970.99,-31.8 973.34,-38.4"/>
+<text text-anchor="middle" x="921.25" y="-56.8" font-family="Times,serif" font-size="9.00" fill="#8c959f">iio</text>
+</g>
+</g>
+</svg>
+</div>
+</div>
+<div class="pane" id="pane-trace"><table class="trace"><tr><th>step</th><th>event</th><th>kind</th><th>instruction / access</th></tr><tr class="committed"><td>0</td><td>IW</td><td class="k">committed</td><td>&mdash;</td></tr><tr class="committed"><td>1</td><td>R9_178_0</td><td class="k">committed</td><td>a0: T 0x80500000</td></tr><tr class="committed"><td>2</td><td>R9_189_0</td><td class="k">committed</td><td>a1: T 0x80501010</td></tr><tr class="committed"><td>3</td><td>R9_200_0</td><td class="k">committed</td><td>a2: T 0x80502008</td></tr><tr class="committed"><td>4</td><td>R9_211_0</td><td class="k">committed</td><td>a3: T 0x80503880</td></tr><tr class="committed"><td>5</td><td>R9_228_0</td><td class="k">committed</td><td>a4: R pa1</td></tr><tr class="committed"><td>6</td><td>R12_97_0</td><td class="k">committed</td><td>b0: T 0x80500000</td></tr><tr class="committed"><td>7</td><td>R12_108_0</td><td class="k">committed</td><td>b1: T 0x80501010</td></tr><tr class="committed"><td>8</td><td>R12_119_0</td><td class="k">committed</td><td>b2: T 0x80502008</td></tr><tr class="committed"><td>9</td><td>R12_130_0</td><td class="k">committed</td><td>b3: T 0x80503888</td></tr><tr class="committed"><td>10</td><td>W12_148_0</td><td class="k">committed</td><td>b4: W pa2</td></tr></table></div>
+<pre class="pane" id="pane-model">(* leaf at sigma_M, the reference machine&#x27;s own keying.
+ * B = 64 (BankedCoherenceParams.scala:23), N = 4 (TLB.scala:257). *)
+include &quot;riscv.cat&quot;
+let TranslationXstate = rfx
+let xstate-key = xloc-line-64 | xloc-tlb-sector-4
+let q = [Level3] ; xstate-key ; [Level3]
+~empty q as leaf-at-sigma-M
+</pre>
+<pre class="pane" id="pane-test">
+arch = &quot;RISCV&quot;
+name = &quot;RVTranslateMret&quot;
+symbolic = [&quot;x&quot;, &quot;sent&quot;]
+
+page_table_setup = &quot;&quot;&quot;
+    physical pa1 pa2;
+    x |-&gt; pa1;
+    sent |-&gt; pa2;
+    identity 0x80100000 with code;
+&quot;&quot;&quot;
+
+[thread.0]
+init = { x6 = &quot;x&quot;, x11 = &quot;sent&quot; }
+code = &quot;&quot;&quot;
+	la t4,2f
+	csrw mtvec,t4
+	csrw stvec,t4
+	la t2,1f
+	csrw mepc,t2
+	mret
+1:
+	ld x5,0(x6)
+	li x30,0x50CC
+	sd x30,0(x11)
+	li x28,0
+	beq x28,x28,3f
+2:
+	li x29,0x7AAB
+	sd x29,0(x11)
+3:
+	addi x0,x0,0
+&quot;&quot;&quot;
+
+[final]
+expect = &quot;sat&quot;
+assertion = &quot;true&quot;
+</pre>
+</main></div>
+<script>
+
+(function () {
+  var port = document.getElementById('gvport');
+  var svg = port && port.querySelector('svg');
+  if (!port || !svg) return;
+  var z = 1, x = 0, y = 0, pct = document.getElementById('gvpct');
+
+  function apply() {
+    svg.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + z + ')';
+    if (pct) pct.textContent = Math.round(z * 100) + '%';
+  }
+  function clamp(v) { return Math.max(0.05, Math.min(8, v)); }
+  
+  function zoomAt(cx, cy, f) {
+    var nz = clamp(z * f);
+    x = cx - (cx - x) * (nz / z);
+    y = cy - (cy - y) * (nz / z);
+    z = nz; apply();
+  }
+  function natural() {
+    var vb = svg.getAttribute('viewBox');
+    if (vb) {
+      var q = vb.split(/[ ,]+/);
+      if (q.length === 4) return [parseFloat(q[2]), parseFloat(q[3])];
+    }
+    var r = svg.getBoundingClientRect();
+    return [r.width / z, r.height / z];
+  }
+  function fit() {
+    var n = natural();
+    if (!n[0] || !n[1]) return;
+    z = clamp(Math.min((port.clientWidth - 16) / n[0], (port.clientHeight - 16) / n[1]));
+    x = Math.max(0, (port.clientWidth - n[0] * z) / 2); y = 8; apply();
+  }
+  function reset() { z = 1; x = 0; y = 0; apply(); }
+
+  port.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    var r = port.getBoundingClientRect();
+    zoomAt(e.clientX - r.left, e.clientY - r.top, e.deltaY < 0 ? 1.15 : 1 / 1.15);
+  }, {passive: false});
+
+  var dragging = false, sx = 0, sy = 0;
+  port.addEventListener('mousedown', function (e) {
+    dragging = true; sx = e.clientX - x; sy = e.clientY - y;
+    port.classList.add('drag'); e.preventDefault();
+  });
+  window.addEventListener('mousemove', function (e) {
+    if (!dragging) return;
+    x = e.clientX - sx; y = e.clientY - sy; apply();
+  });
+  window.addEventListener('mouseup', function () {
+    dragging = false; port.classList.remove('drag');
+  });
+
+  document.querySelectorAll('.gvbar button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var k = b.getAttribute('data-z'), r = port.getBoundingClientRect();
+      if (k === 'in') zoomAt(r.width / 2, r.height / 2, 1.25);
+      else if (k === 'out') zoomAt(r.width / 2, r.height / 2, 1 / 1.25);
+      else if (k === 'fit') fit();
+      else reset();
+    });
+  });
+  /* +/-/0 without needing the pointer over the toolbar. */
+  window.addEventListener('keydown', function (e) {
+    if (e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
+    var r = port.getBoundingClientRect();
+    if (e.key === '+' || e.key === '=') zoomAt(r.width / 2, r.height / 2, 1.25);
+    else if (e.key === '-') zoomAt(r.width / 2, r.height / 2, 1 / 1.25);
+    else if (e.key === '0') reset();
+    else if (e.key.toLowerCase() === 'f') fit();
+    else return;
+    e.preventDefault();
+  });
+  apply();
+})();
+
+document.querySelectorAll('input[data-rel]').forEach(cb=>{
+  cb.addEventListener('change',()=>{
+    document.querySelectorAll('.rel-'+cb.dataset.rel).forEach(e=>{
+      e.classList.toggle('hidden',!cb.checked);});});});
+
+var MAX=10, LEAK=null, HAS_LEAK=true;
+var slider=document.getElementById('slider'), info=document.getElementById('stepinfo');
+function stepOf(el){
+  var m=(el.getAttribute('class')||'').match(/step-(\d+)/); return m?+m[1]:0;
+}
+function render(k){
+  document.querySelectorAll('g.node,g.rel').forEach(function(el){
+    el.classList.toggle('dim', stepOf(el)>k);
+  });
+  var txt='step <b>'+k+'</b> of '+MAX;
+  if(LEAK!==null){
+    txt += (k>=LEAK) ? ' &middot; <span class="fire">leak present (step '+LEAK+')</span>'
+                     : ' &middot; no leak yet';
+  }
+  info.innerHTML=txt;
+}
+slider.addEventListener('input',function(){render(+slider.value);});
+document.getElementById('prev').onclick=function(){slider.value=Math.max(0,+slider.value-1);render(+slider.value);};
+document.getElementById('next').onclick=function(){slider.value=Math.min(MAX,+slider.value+1);render(+slider.value);};
+document.getElementById('all').onclick=function(){slider.value=MAX;render(MAX);};
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowLeft')document.getElementById('prev').click();
+  if(e.key==='ArrowRight')document.getElementById('next').click();
+});
+render(MAX);
+
+document.querySelectorAll('nav.tabs button').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var want=btn.dataset.pane;
+    document.querySelectorAll('nav.tabs button').forEach(function(b){
+      b.classList.toggle('active',b===btn);});
+    ['graph','trace','model','test'].forEach(function(n){
+      document.getElementById('pane-'+n).classList.toggle('active',n===want);});
+    var g = want==='graph';
+    document.getElementById('side').style.display = g ? '' : 'none';
+    document.getElementById('stepbar').style.display = g ? '' : 'none';
+  });
+});
+</script></body></html>

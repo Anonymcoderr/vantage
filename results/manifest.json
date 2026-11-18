@@ -461,7 +461,271 @@
    "test": "riscv64/RVTranslateMret.toml",
    "model": "lcm-rv-sm-xlevel.cat",
    "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVPageWalkShared.toml|lcm-rv-share-wholewalk.cat|0": {
+   "file": "RVPageWalkShared__lcm-rv-share-wholewalk__d0.html",
+   "verdict": "allowed (9 of 9)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ1 page-walk channels",
+   "seconds": 847.6,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVPageWalkShared.toml",
+   "model": "lcm-rv-share-wholewalk.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVPageWalkDistinct.toml|lcm-rv-share-wholewalk.cat|0": {
+   "file": "RVPageWalkDistinct__lcm-rv-share-wholewalk__d0.html",
+   "verdict": "allowed (9 of 9)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ1 page-walk channels",
+   "seconds": 1004.5,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVPageWalkDistinct.toml",
+   "model": "lcm-rv-share-wholewalk.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVPageWalkDistinct.toml|lcm-rv-share-leaf.cat|0": {
+   "file": "RVPageWalkDistinct__lcm-rv-share-leaf__d0.html",
+   "verdict": "forbidden (0 of 9)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ1 page-walk channels",
+   "seconds": 12.9,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVPageWalkDistinct.toml",
+   "model": "lcm-rv-share-leaf.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|lcm-if/IF12-secret.toml|lcm-if/secret-128.cat|0": {
+   "file": "IF12-secret__lcm-if_secret-128__d0.html",
+   "verdict": "forbidden (0 of 8)",
+   "banner": "DISCIPLINE CANNOT BE MET  forb",
+   "label": "RQ6 fetch keying, secret reaches branch",
+   "seconds": 13.4,
+   "arch": "riscv64 (virtual memory)",
+   "test": "lcm-if/IF12-secret.toml",
+   "model": "lcm-if/secret-128.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|lcm-if/IF14-masked.toml|lcm-if/secret-128.cat|0": {
+   "file": "IF14-masked__lcm-if_secret-128__d0.html",
+   "verdict": "forbidden (0 of 4)",
+   "banner": "DISCIPLINE CANNOT BE MET  forb",
+   "label": "RQ6 fetch keying, secret masked",
+   "seconds": 15.9,
+   "arch": "riscv64 (virtual memory)",
+   "test": "lcm-if/IF14-masked.toml",
+   "model": "lcm-if/secret-128.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|lcm-if/IF12-secret.toml|lcm-if/secret-128-DATA.cat|0": {
+   "file": "IF12-secret__lcm-if_secret-128-DATA__d0.html",
+   "verdict": "allowed (4 of 8)",
+   "banner": "DISCIPLINE CAN BE MET  allowed",
+   "label": "RQ6 data keying on the same program",
+   "seconds": 672.9,
+   "arch": "riscv64 (virtual memory)",
+   "test": "lcm-if/IF12-secret.toml",
+   "model": "lcm-if/secret-128-DATA.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|lcm-if/IF7-sep8.toml|lcm-if/uct-64.cat|0": {
+   "file": "IF7-sep8__lcm-if_uct-64__d0.html",
+   "verdict": "forbidden (0 of 8)",
+   "banner": "DISCIPLINE CANNOT BE MET  forb",
+   "label": "RQ6 fetch line, arms 8 bytes apart",
+   "seconds": 165.9,
+   "arch": "riscv64 (virtual memory)",
+   "test": "lcm-if/IF7-sep8.toml",
+   "model": "lcm-if/uct-64.cat",
+   "depth": "0"
+  },
+  "armv9p4 (virtual memory)|lcm-vmsa/PageWalkShared.toml|lcm-vm-share-leaf.cat|0": {
+   "file": "PageWalkShared__lcm-vm-share-leaf__d0.html",
+   "verdict": "allowed (1 of 4)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ1 page-walk channels, Arm",
+   "seconds": 1010.5,
+   "arch": "armv9p4 (virtual memory)",
+   "test": "lcm-vmsa/PageWalkShared.toml",
+   "model": "lcm-vm-share-leaf.cat",
+   "depth": "0"
+  },
+  "armv9p4 (virtual memory)|lcm-vmsa/PageWalkDistinct.toml|lcm-vm-share-leaf.cat|0": {
+   "file": "PageWalkDistinct__lcm-vm-share-leaf__d0.html",
+   "verdict": "forbidden (0 of 4)",
+   "banner": "NO LEAK under this keying  fo",
+   "label": "RQ1 page-walk channels, Arm",
+   "seconds": 87.1,
+   "arch": "armv9p4 (virtual memory)",
+   "test": "lcm-vmsa/PageWalkDistinct.toml",
+   "model": "lcm-vm-share-leaf.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVPageWalkShared.toml|lcm-rv-sm-leaf.cat|0": {
+   "file": "RVPageWalkShared__lcm-rv-sm-leaf__d0.html",
+   "verdict": "allowed (9 of 9)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ5 certification, leaf-keyed",
+   "seconds": 1005.8,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVPageWalkShared.toml",
+   "model": "lcm-rv-sm-leaf.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVPageWalkDistinct.toml|lcm-rv-sm-leaf.cat|0": {
+   "file": "RVPageWalkDistinct__lcm-rv-sm-leaf__d0.html",
+   "verdict": "allowed (9 of 9)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ5 certification, leaf-keyed",
+   "seconds": 937.1,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVPageWalkDistinct.toml",
+   "model": "lcm-rv-sm-leaf.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVAddrDepWalk.toml|lcm-rv-sm-leaf.cat|0": {
+   "file": "RVAddrDepWalk__lcm-rv-sm-leaf__d0.html",
+   "verdict": "allowed (10 of 10)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ5 certification, leaf-keyed",
+   "seconds": 1086.4,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVAddrDepWalk.toml",
+   "model": "lcm-rv-sm-leaf.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVCtrlToTranslate.toml|lcm-rv-sm-leaf.cat|0": {
+   "file": "RVCtrlToTranslate__lcm-rv-sm-leaf__d0.html",
+   "verdict": "allowed (10 of 20)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ5 certification, leaf-keyed",
+   "seconds": 803.5,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVCtrlToTranslate.toml",
+   "model": "lcm-rv-sm-leaf.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVPteStoreThenTwoWalks.toml|lcm-rv-sm-leaf.cat|0": {
+   "file": "RVPteStoreThenTwoWalks__lcm-rv-sm-leaf__d0.html",
+   "verdict": "allowed (9 of 9)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ5 certification, leaf-keyed",
+   "seconds": 970.7,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVPteStoreThenTwoWalks.toml",
+   "model": "lcm-rv-sm-leaf.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVTlbSectorContrast.toml|lcm-rv-sm-leaf.cat|0": {
+   "file": "RVTlbSectorContrast__lcm-rv-sm-leaf__d0.html",
+   "verdict": "allowed (9 of 9)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ5 certification, leaf-keyed",
+   "seconds": 743.2,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVTlbSectorContrast.toml",
+   "model": "lcm-rv-sm-leaf.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVTranslateMret.toml|lcm-rv-sm-leaf.cat|0": {
+   "file": "RVTranslateMret__lcm-rv-sm-leaf__d0.html",
+   "verdict": "allowed (8 of 8)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ5 certification, leaf-keyed",
+   "seconds": 154.8,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVTranslateMret.toml",
+   "model": "lcm-rv-sm-leaf.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVPageWalkShared.toml|lcm-rv-sm-walker.cat|0": {
+   "file": "RVPageWalkShared__lcm-rv-sm-walker__d0.html",
+   "verdict": "allowed (9 of 9)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ5 certification, interior-keyed",
+   "seconds": 1541.3,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVPageWalkShared.toml",
+   "model": "lcm-rv-sm-walker.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVPageWalkDistinct.toml|lcm-rv-sm-walker.cat|0": {
+   "file": "RVPageWalkDistinct__lcm-rv-sm-walker__d0.html",
+   "verdict": "allowed (9 of 9)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ5 certification, interior-keyed",
+   "seconds": 1590.4,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVPageWalkDistinct.toml",
+   "model": "lcm-rv-sm-walker.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVCtrlToTranslate.toml|lcm-rv-sm-walker.cat|0": {
+   "file": "RVCtrlToTranslate__lcm-rv-sm-walker__d0.html",
+   "verdict": "allowed (10 of 20)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ5 certification, interior-keyed",
+   "seconds": 1370.7,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVCtrlToTranslate.toml",
+   "model": "lcm-rv-sm-walker.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVPteStoreThenTwoWalks.toml|lcm-rv-sm-walker.cat|0": {
+   "file": "RVPteStoreThenTwoWalks__lcm-rv-sm-walker__d0.html",
+   "verdict": "allowed (9 of 9)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ5 certification, interior-keyed",
+   "seconds": 1919.5,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVPteStoreThenTwoWalks.toml",
+   "model": "lcm-rv-sm-walker.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVTlbSectorContrast.toml|lcm-rv-sm-walker.cat|0": {
+   "file": "RVTlbSectorContrast__lcm-rv-sm-walker__d0.html",
+   "verdict": "allowed (9 of 9)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ5 certification, interior-keyed",
+   "seconds": 1191.7,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVTlbSectorContrast.toml",
+   "model": "lcm-rv-sm-walker.cat",
+   "depth": "0"
+  },
+  "riscv64 (virtual memory)|riscv64/RVTranslateMret.toml|lcm-rv-sm-walker.cat|0": {
+   "file": "RVTranslateMret__lcm-rv-sm-walker__d0.html",
+   "verdict": "allowed (8 of 8)",
+   "banner": "LEAK EXHIBITED",
+   "label": "RQ5 certification, interior-keyed",
+   "seconds": 265.2,
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVTranslateMret.toml",
+   "model": "lcm-rv-sm-walker.cat",
+   "depth": "0"
   }
  },
- "skipped": []
+ "skipped": [
+  {
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVPageWalkShared.toml",
+   "model": "lcm-rv-share-leaf.cat",
+   "depth": "0",
+   "why": "no verdict after 2401s"
+  },
+  {
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVPageWalkDistinct.toml",
+   "model": "lcm-rv-walker.cat",
+   "depth": "0",
+   "why": "no verdict after 2402s"
+  },
+  {
+   "arch": "riscv64 (virtual memory)",
+   "test": "riscv64/RVAddrDepWalk.toml",
+   "model": "lcm-rv-sm-walker.cat",
+   "depth": "0",
+   "why": "no verdict after 2402s"
+  }
+ ]
 }
